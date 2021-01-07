@@ -1,0 +1,29 @@
+html {
+    height: 100%;
+}
+
+.container-md {
+    margin-top: 80px;
+    height: 100%;
+}
+
+.modal-content, .card {
+    border: none;
+    border-radius: 10px;
+}
+
+.border-clean {
+    border-radius: .25rem;
+}
+
+@media (max-width: 991.98px) {
+    .fc-dayGridMonth-button, .fc-timeGridWeek-button, .fc-timeGridDay-button {
+        display: none !important;
+    }
+    #calendar {
+        height: 100%;
+    }
+    body {
+        height: calc(100% - 160px);
+    }
+}
