@@ -1,9 +1,5 @@
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').prop('content')
-    }
-});
-var DateTime = luxon.DateTime
+var DateTime = luxon.DateTime;
+var now = DateTime.local();
 var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     headerToolbar: {
         left: 'prev,next today',
@@ -31,40 +27,37 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     },
     eventClick: function (info) {
         if (accounttype == 'student') {
-            if (info.event.extendedProps.student == 'n/a') {
+            if (!info.event.extendedProps.claimed) {
                 $('#claimSlotModalLabel').text(`Slot: ${info.event.title}`);
                 $('#startClaim input').val(DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm"));
-                $('#tutorClaim input').val(info.event.extendedProps.tutor);
+                $('#tutornameClaim input').val(info.event.extendedProps.tutorname);
                 $('#tutorbioClaim textarea').val(info.event.extendedProps.tutorbio);
                 $('#infoClaim textarea').val('');
                 if ($('#calendarSubjects').val() == 'General') {
-                    getSubjects(info.event.extendedProps.tutor);
+                    $('#subjectClaim').html('<div class="input-group-prepend"><span class="input-group-text">Subject</span> </div><select class="custom-select" name="subject"></select>')
+                    for (var key in info.event.extendedProps.tutorsubjects) {
+                        let temp = info.event.extendedProps.tutorsubjects;
+                        $('#subjectClaim select').append(`<option val="${key}">${temp[key]}</option>`);
+                    }
                 } else {
-                    $('#subjectClaim').html(`<div class="input-group-prepend"> <span class="input-group-text">subject</span> </div><input type="text" class="form-control" value="${$('#calendarSubjects option:selected').val()}" disabled>`);
+                    $('#subjectClaim').html(`<div class="input-group-prepend"> <span class="input-group-text">Subject</span> </div><input type="text" class="form-control" name="subject" value="${$('#calendarSubjects option:selected').text()}" disabled>`);
                 }
                 $('#claimSlotModal').modal();
             } else {
-                storage.ref().child(`${info.event.extendedProps.tutor}.png`).getDownloadURL().then(function (url) {
-                    $('#tutorUnclaim .input-group-append span').html(`<img src='${url}' class='shadow rounded-circle border border-secondary mx-1 my-1' width='42' height='42'>`);
-                }).catch(function () {
-                    storage.ref().child(`default.png`).getDownloadURL().then(function (url) {
-                        $('#tutorUnclaim .input-group-append span').html(`<img src='${url}' class='shadow rounded-circle border border-secondary mx-1 my-1' width='42' height='42'>`);
-                    })
-                });
                 $('#unclaimSlotModalLabel').text(`Slot: ${info.event.title}`);
                 $('#startUnclaim input').val(DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm"));
-                $('#tutorUnclaim input').val(info.event.extendedProps.tutor);
-                $('#zoomUnclaim').html(`<a class="btn btn-info btn-block" href="${info.event.extendedProps.zoom}" target="_blank"><i class="fas fa-video"></i>&nbsp;zoom link</a>`);
-                $('#contactUnclaim div span').text('contact tutor');
-                $('#contactUnclaim input').val(info.event.extendedProps.tutoremail);
+                $('#tutornameUnclaim input').val(info.event.extendedProps.tutorname);
+                $('#meetinglinkUnclaim a').prop('href', info.event.extendedProps.meeting_link);
+                $('#tutoremailUnclaim input').val(info.event.extendedProps.tutoremail);
                 $('#tutorbioUnclaim textarea').val(info.event.extendedProps.tutorbio);
                 $('#infoUnclaim textarea').val(info.event.extendedProps.info);
-                $('#subjectUnclaim').html(`<div class="input-group-prepend"> <span class="input-group-text">subject</span> </div><input type="text" class="form-control" value="${info.event.extendedProps.subject}" disabled>`);
+                $('#subjectUnclaim input').val(info.event.extendedProps.subject);
                 $('#unclaimSlotModal').modal();
             }
         } else if (accounttype == 'tutor') {
             $('#deleteSlotModalLabel').text(`Slot: ${info.event.title}`);
             $('#startDelete input').val(DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm"));
+            $('#claimedDelete').data('claimed', info.event.extendedProps.claimed);
             if (!info.event.extendedProps.studentname) {
                 $('#studentnameDelete, #studentemailDelete, #subjectDelete, #infoDelete').hide();
                 $('#repeatDelete').show();
@@ -74,7 +67,7 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
                 $('#studentnameDelete input').val(info.event.extendedProps.studentname);
                 $('#studentemailDelete input').val(info.event.extendedProps.studentemail);
                 $('#infoDelete textarea').val(info.event.extendedProps.info);
-                $('#subjectDelete').html(`<div class="input-group-prepend"> <span class="input-group-text">subject</span> </div><input type="text" class="form-control" value="${info.event.extendedProps.subject}" disabled>`);
+                $('#subjectDelete input').val(info.event.extendedProps.subject);
             }
             $('#deleteSlotModal').modal();
         }
@@ -100,16 +93,39 @@ $(function () {
         $('#claimSlotForm').submit();
     });
     $('#createSlotForm').submit(function (event) {
-        createSlot();
+        event.preventDefault();
+        if (DateTime.fromFormat($('#createSlotForm').find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm") < now.plus({ hours: 2 })) {
+            $('#createSlotForm').find('input[name="start"]')[0].setCustomValidity('invalid');
+        } else {
+            $('#createSlotForm').find('input[name="start"]')[0].setCustomValidity('');
+        }
+        if (!this.checkValidity()) {
+            event.stopPropagation();
+        } else {
+            createSlot();
+        }
+        $(this).addClass('was-validated');
     });
     $('#deleteSlotForm').submit(function (event) {
-        deleteSlot();
+        event.preventDefault();
+        if (!this.checkValidity()) {
+            event.stopPropagation();
+        } else {
+            deleteSlot();
+        }
+        $(this).addClass('was-validated');
     });
     $('#unclaimSlotForm').submit(function (event) {
         unclaimSlot();
     });
     $('#claimSlotForm').submit(function (event) {
-        claimSlot();
+        event.preventDefault();
+        if (!this.checkValidity()) {
+            event.stopPropagation();
+        } else {
+            claimSlot();
+        }
+        $(this).addClass('was-validated');
     });
 });
 
@@ -141,17 +157,50 @@ function createSlot() {
 function deleteSlot() {
     let form = $('#deleteSlotForm');
     let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
-    let repeat = form.find('input[name="repeat"]').is(':checked');
+    if (form.find('div[data-claimed]').data('claimed')) {
+        let studentname = form.find('input[name="studentname"]').val();
+        $.redirect('/cancel', {
+            _token: $('meta[name="csrf-token"]').prop('content'),
+            start: start,
+            studentname: studentname
+        });
+    } else {
+        let repeat = form.find('input[name="repeat"]').is(':checked');
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/cancel',
+            data: {
+                start: start,
+                repeat: repeat
+            },
+            success: function () {
+                calendar.refetchEvents();
+                $('#deleteSlotModal').modal('hide');
+                form.trigger('reset').removeClass('was-validated');
+            }
+        });
+    }
+
+}
+
+function claimSlot() {
+    let form = $('#claimSlotForm');
+    let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
+    let tutorname = form.find('input[name="tutorname"]').val();
+    let subject = form.find('[name="subject"]').val();
+    let info = form.find('textarea[name="info"]').val();
     $.ajax({
         type: 'POST',
-        url: '/ajax/cancel',
+        url: '/ajax/claim',
         data: {
             start: start,
-            repeat: repeat
+            tutorname: tutorname,
+            subject: subject,
+            info: info
         },
         success: function () {
             calendar.refetchEvents();
-            $('#deleteSlotModal').modal('hide');
+            $('#claimSlotModal').modal('hide');
             form.trigger('reset').removeClass('was-validated');
         }
     });

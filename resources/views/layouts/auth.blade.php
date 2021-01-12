@@ -20,12 +20,13 @@
     @yield('content')
 
     <!-- scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha256-XfzdiC+S1keia+s9l07y7ye5a874sBq67zK4u7LTjvk=" crossorigin="anonymous"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     @yield('scripts')
 </body>
 <footer class="fixed-bottom pb-3">
-    <p class="text-center text-muted">tfa © <span id="year"></span>, dennis eum</p>
+    <p class="text-center text-muted">dennis eum © <span id="year"></span>, tfa</p>
 </footer>
 
 </html>

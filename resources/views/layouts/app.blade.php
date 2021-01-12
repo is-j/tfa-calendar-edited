@@ -1,4 +1,5 @@
 @php
+use App\Models\User;
 use App\Models\Subject;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,6 @@ $name = Route::currentRouteName();
 
     <title>{{ config('app.name', 'tfa-calendar') }}</title>
 
-    <!-- fonts -->
-    <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet">
-
     <!-- css -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -35,7 +33,7 @@ $name = Route::currentRouteName();
         </button>
 
         <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarSupportedContent">
-            @if (Auth::user()->role_id == 3)
+            @if (User::find(Auth::user()->id)->role() == 'student' && $name != 'settings')
             <ul class="navbar-nav mr-auto my-3 my-md-0">
                 <div class="row" style="width:500px;">
                     <div class="col input-group">
@@ -55,6 +53,11 @@ $name = Route::currentRouteName();
                         </div>
                     </div>
                 </div>
+            </ul>
+            @endif
+            @if ($name == 'settings')
+            <ul class="navbar-nav mr-auto my-3 my-md-0">
+                <a class="btn btn-primary" href="{{ route('dashboard') }}"><i data-feather="chevron-left"></i><span class="align-middle">Back to dashboard</span></a>
             </ul>
             @endif
             <ul class="navbar-nav ml-auto">
@@ -91,12 +94,13 @@ $name = Route::currentRouteName();
     @yield('content')
 
     <!-- scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha256-XfzdiC+S1keia+s9l07y7ye5a874sBq67zK4u7LTjvk=" crossorigin="anonymous"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     @yield('scripts')
 </body>
 <footer class="mt-4 pb-3">
-    <p class="text-center text-muted">tfa © <span id="year"></span>, dennis eum</p>
+    <p class="text-center text-muted">dennis eum © <span id="year"></span>, tfa</p>
 </footer>
 
 </html>

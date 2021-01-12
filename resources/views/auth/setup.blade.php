@@ -49,7 +49,7 @@ use App\Models\Subject;
                 @enderror
             </div>
             <div class="form-group">
-                <textarea class="form-control @error('bio') is-invalid @enderror" name="bio" value="{{ old('bio') }}" placeholder="Introduce yourself to students" rows="3" maxlength="1000" required></textarea>
+                <textarea class="form-control @error('bio') is-invalid @enderror" name="bio" placeholder="Introduce yourself to students" rows="3" maxlength="1000" required>{{ old('bio') }}</textarea>
                 <small class="form-text text-muted">
                     Limit 1000 characters.
                 </small>

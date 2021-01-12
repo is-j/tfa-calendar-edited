@@ -18,7 +18,7 @@ class CreateSlotsTable extends Migration
             $table->dateTime('start');
             $table->foreignId('tutor_id')->constrained('users');
             $table->foreignId('student_id')->nullable()->constrained('users');
-            $table->string('subject')->nullable();
+            $table->foreignId('subject')->nullable()->constrained('subjects');
             $table->string('info')->nullable();
             $table->timestamps();
         });
