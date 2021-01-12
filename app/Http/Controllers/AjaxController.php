@@ -73,7 +73,7 @@ class AjaxController extends Controller
                     $temp['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start));
                     $temp['end'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start . "+1 hours"));
                     $temp['extendedProps'] = $extended;
-                    
+
                     error_log('hello');
                     array_push($output, $temp);
                 }
@@ -111,6 +111,7 @@ class AjaxController extends Controller
     {
         if (User::find(Auth::user()->id)->role() == 'tutor') {
             if (isset($request->studentname)) {
+                Slot::where('tutor_id', Auth::user()->id)->where('start', $request->start)->delete();
             } else {
                 if ($request->repeat == 'true') {
                     for ($i = 0; $i < 20; $i++) {

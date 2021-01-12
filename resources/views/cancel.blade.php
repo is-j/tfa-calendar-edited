@@ -1,3 +1,6 @@
+@php
+use App\Models\User;
+@endphp
 @extends('layouts.auth')
 
 @section('content')
@@ -8,102 +11,85 @@
         </h5>
         @if (User::find(Auth::user()->id)->role() == 'tutor')
         <form class="needs-validation ajax" id="cancelSlotForm" novalidate>
-            <div class="input-group mb-3" id="startCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Date/Time</span>
-                </div>
+            <div class="form-floating mb-3" id="startCancel">
                 <input type="datetime-local" class="form-control" value="{{ app('request')->input('start') }}" name="start" disabled>
+                <label>Date/Time</label>
             </div>
-            <div class="input-group mb-3" id="studentnameCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Student name</span>
-                </div>
+            <div class="form-floating mb-3" id="studentnameCancel">
                 <input type="text" class="form-control" value="{{ app('request')->input('studentname') }}" name="studentname" disabled>
+                <label>Student name</label>
             </div>
-            <div class="input-group mb-3" id="studentemailCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Student email</span>
-                </div>
+            <div class="form-floating mb-3" id="studentemailCancel">
                 <input type="text" class="form-control" value="{{ app('request')->input('studentemail') }}" name="studentemail" disabled>
+                <label>Student email</label>
             </div>
-            <div class="input-group mb-3" id="subjectCancel">
-                <div class="input-group-prepend"> <span class="input-group-text">Subject</span> </div><input type="text" class="form-control" value="{{ app('request')->input('subject') }}" name="subject" disabled>
+            <div class="form-floating mb-3" id="subjectCancel">
+                <input type="text" class="form-control" value="{{ app('request')->input('subject') }}" name="subject" disabled>
+                <label>Subject</label>
             </div>
-            <div class="input-group mb-3" id="infoCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Topic needs</span>
+            <div class="form-floating mb-3" id="infoCancel">
+                <textarea class="form-control" maxlength="1000" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
+                <label>Topic needs</label>
+            </div>
+            <div class="form-floating mb-3" id="reasonCancel">
+                <textarea class="form-control" maxlength="1000" rows="3" name="reason" required></textarea>
+                <label>Cancellation reason</label>
+                <div class="invalid-feedback text-left">
+                    You must provide a reason.
                 </div>
-                <textarea class="form-control" maxlength="1000" rows="3" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
             </div>
-            <div class="input-group" id="reasonCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Cancellation reason</span>
+            <div class="form-row">
+                <div class="col-md">
+                <button type="submit" class="btn btn-danger btn-block">Cancel slot</button>
                 </div>
-                <textarea class="form-control" maxlength="1000" rows="3" name="reason" disabled required></textarea>
+                <div class="col-md">
+                <a class="btn btn-primary btn-block">Back to dashboard</a>
+                </div>
             </div>
         </form>
         @elseif (User::find(Auth::user()->id)->role() == 'student')
         <form class="needs-validation ajax" id="cancelSlotForm" novalidate>
-            <div class="input-group mb-3" id="startCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Date/Time</span>
-                </div>
+            <div class="form-floating mb-3" id="startCancel">
                 <input type="datetime-local" class="form-control" value="{{ app('request')->input('start') }}" name="start" disabled>
+                <label>Date/Time</label>
             </div>
-            <div class="input-group mb-3" id="tutornameCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Tutor name</span>
-                </div>
+            <div class="form-floating mb-3" id="tutornameCancel">
                 <input type="text" class="form-control" value="{{ app('request')->input('tutorname') }}" name="tutorname" disabled>
+                <label>Tutor name</label>
             </div>
-            <div class="input-group mb-3" id="tutoremailCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Tutor email</span>
-                </div>
+            <div class="form-floating mb-3" id="tutoremailCancel">
                 <input type="text" class="form-control" value="{{ app('request')->input('tutoremail') }}" name="tutoremail" disabled>
+                <label>Tutor email</label>
             </div>
-            <div class="input-group mb-3" id="subjectCancel">
-                <div class="input-group-prepend"> <span class="input-group-text">Subject</span> </div><input type="text" class="form-control" value="{{ app('request')->input('subject') }}" name="subject" disabled>
+            <div class="form-floating mb-3" id="subjectCancel">
+                <input type="text" class="form-control" value="{{ app('request')->input('subject') }}" name="subject" disabled>
+                <label>Subject</label>
             </div>
-            <div class="input-group mb-3" id="infoCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Topic needs</span>
-                </div>
-                <textarea class="form-control" maxlength="1000" rows="3" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
+            <div class="form-floating mb-3" id="infoCancel">
+                <textarea class="form-control" maxlength="1000" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
+                <label>Topic needs</label>
             </div>
-            <div class="input-group" id="reasonCancel">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Cancellation reason</span>
-                </div>
+            <div class="form-floating mb-3" id="reasonCancel">
                 <textarea class="form-control" maxlength="1000" rows="3" name="reason" required></textarea>
+                <label>Cancellation reason</label>
+                <div class="invalid-feedback text-left">
+                    You must provide a reason.
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md">
+                <button type="submit" class="btn btn-danger btn-block">Cancel slot</button>
+                </div>
+                <div class="col-md">
+                <a class="btn btn-primary btn-block">Back to dashboard</a>
+                </div>
             </div>
         </form>
         @endif
-        <form class="needs-validation text-left" method="POST" action="{{ route('login') }}" novalidate>
-            @csrf
-            <div class="form-group">
-                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Email" required autocomplete="email" autofocus>
-                @error('email')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" required autocomplete="current-password">
-                @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">
-                {{ __('Login') }}
-            </button>
-            <div class="text-center">
-                <p class="mt-3 mb-0">Don't have an account? <a href="{{ route('register') }}">Register here.</a></p>
-            </div>
-        </form>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/cancel.js') }}"></script>
 @endsection

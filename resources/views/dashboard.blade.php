@@ -54,32 +54,25 @@ use App\Models\User;
             </div>
             <div class="modal-body">
                 <form class="needs-validation ajax" id="deleteSlotForm" novalidate>
-                    <div class="input-group mb-3" id="startDelete">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Date/Time</span>
-                        </div>
-                        <input type="datetime-local" class="form-control" name="start" disabled>
+                    <div class="form-floating mb-3" id="startDelete">
+                        <input type="datetime-local" class="form-control" value="{{ app('request')->input('start') }}" name="start" disabled>
+                        <label>Date/Time</label>
                     </div>
-                    <div class="input-group mb-3" id="studentnameDelete">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Student name</span>
-                        </div>
-                        <input type="text" class="form-control" name="studentname" disabled>
+                    <div class="form-floating mb-3" id="studentnameDelete">
+                        <input type="text" class="form-control" value="{{ app('request')->input('studentname') }}" name="studentname" disabled>
+                        <label>Student name</label>
                     </div>
-                    <div class="input-group mb-3" id="studentemailDelete">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Student email</span>
-                        </div>
-                        <input type="text" class="form-control" name="studentemail" disabled>
+                    <div class="form-floating mb-3" id="studentemailDelete">
+                        <input type="text" class="form-control" value="{{ app('request')->input('studentemail') }}" name="studentemail" disabled>
+                        <label>Student email</label>
                     </div>
-                    <div class="input-group mb-3" id="subjectDelete">
-                        <div class="input-group-prepend"> <span class="input-group-text">Subject</span> </div><input type="text" class="form-control" name="subject" disabled>
+                    <div class="form-floating mb-3" id="subjectDelete">
+                        <input type="text" class="form-control" value="{{ app('request')->input('subject') }}" name="subject" disabled>
+                        <label>Subject</label>
                     </div>
-                    <div class="input-group" id="infoDelete">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Topic needs</span>
-                        </div>
-                        <textarea class="form-control" maxlength="1000" rows="3" name="info" disabled required></textarea>
+                    <div class="form-floating mb-3" id="infoDelete">
+                        <textarea class="form-control" maxlength="1000" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
+                        <label>Topic needs</label>
                     </div>
                     <div class="form-check" id="repeatDelete">
                         <input class="form-check-input" type="checkbox" name="repeat" id="repeatLabel">

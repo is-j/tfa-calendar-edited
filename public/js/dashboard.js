@@ -156,15 +156,22 @@ function createSlot() {
 
 function deleteSlot() {
     let form = $('#deleteSlotForm');
-    let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
+    let start = form.find('input[name="start"]').val();
     if (form.find('div[data-claimed]').data('claimed')) {
         let studentname = form.find('input[name="studentname"]').val();
+        let studentemail = form.find('input[name="studentemail"]').val();
+        let subject = form.find('input[name="subject"]').val();
+        let info = form.find('textarea[name="info"]').val();
         $.redirect('/cancel', {
             _token: $('meta[name="csrf-token"]').prop('content'),
             start: start,
-            studentname: studentname
+            studentname: studentname,
+            studentemail: studentemail,
+            subject: subject,
+            info: info
         });
     } else {
+        start = DateTime.fromFormat(start, "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
         let repeat = form.find('input[name="repeat"]').is(':checked');
         $.ajax({
             type: 'POST',
