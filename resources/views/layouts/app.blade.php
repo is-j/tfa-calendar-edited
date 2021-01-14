@@ -41,16 +41,13 @@ $name = Route::currentRouteName();
                             <label class="input-group-text">Subjects</label>
                         </div>
                         <select class="custom-select" id="calendarSubjects">
-                            <option selected>General</option>
+                            <option value="0" selected>General</option>
                             @foreach(Subject::get() as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-4" id="spinnerArea" style="padding-top:3px;">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
                     </div>
                 </div>
             </ul>

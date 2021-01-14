@@ -26,7 +26,7 @@ Route::middleware(['auth', 'setup'])->group(function () {
     Route::get('/settings', function () {
         return view('settings');
     })->name('settings');
-    Route::get('/ajax/get', [AjaxController::class, 'get']);
+    Route::get('/ajax/get/{id}', [AjaxController::class, 'get']);
     Route::post('/ajax/cancel', [AjaxController::class, 'cancel']);
     Route::get('/reset', [ResetController::class, 'index'])->name('reset');
     Route::post('/reset', [ResetController::class, 'reset']);

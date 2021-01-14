@@ -48,6 +48,9 @@
                 </span>
                 @enderror
             </div>
+            <div class="d-none">
+                <input type="number" step="1" name="timezone">
+            </div>
             <button type="submit" class="btn btn-primary btn-block">
                 {{ __('Register') }}
             </button>
@@ -57,4 +60,13 @@
         </form>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0/build/global/luxon.min.js" integrity="sha256-OVk2fwTRcXYlVFxr/ECXsakqelJbOg5WCj1dXSIb+nU=" crossorigin="anonymous"></script>
+<script>
+$(function() {
+    var DateTime = luxon.DateTime;
+    $('input[name="timezone"]').val(DateTime.local().toFormat('Z'));
+});
+</script>
 @endsection

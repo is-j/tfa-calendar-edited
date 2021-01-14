@@ -30,7 +30,7 @@ use App\Models\User;
                     <div class="form-group">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="repeat" id="repeatCreate">
-                            <label class="form-check-label" for="repeatCreate">
+                            <label class="form-check-label text-dark" for="repeatCreate">
                                 Repeat this slot on this day of the week at this time for the next 20 weeks.
                             </label>
                         </div>
@@ -55,23 +55,23 @@ use App\Models\User;
             <div class="modal-body">
                 <form class="needs-validation ajax" id="deleteSlotForm" novalidate>
                     <div class="form-floating mb-3" id="startDelete">
-                        <input type="datetime-local" class="form-control" value="{{ app('request')->input('start') }}" name="start" disabled>
+                        <input type="datetime-local" class="form-control" name="start" disabled>
                         <label>Date/Time</label>
                     </div>
                     <div class="form-floating mb-3" id="studentnameDelete">
-                        <input type="text" class="form-control" value="{{ app('request')->input('studentname') }}" name="studentname" disabled>
+                        <input type="text" class="form-control" name="studentname" disabled>
                         <label>Student name</label>
                     </div>
                     <div class="form-floating mb-3" id="studentemailDelete">
-                        <input type="text" class="form-control" value="{{ app('request')->input('studentemail') }}" name="studentemail" disabled>
+                        <input type="text" class="form-control" name="studentemail" disabled>
                         <label>Student email</label>
                     </div>
                     <div class="form-floating mb-3" id="subjectDelete">
-                        <input type="text" class="form-control" value="{{ app('request')->input('subject') }}" name="subject" disabled>
+                        <input type="text" class="form-control" name="subject" disabled>
                         <label>Subject</label>
                     </div>
-                    <div class="form-floating mb-3" id="infoDelete">
-                        <textarea class="form-control" maxlength="1000" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
+                    <div class="form-floating" id="infoDelete">
+                        <textarea class="form-control" maxlength="1000" name="info" disabled></textarea>
                         <label>Topic needs</label>
                     </div>
                     <div class="form-check" id="repeatDelete">
@@ -100,44 +100,29 @@ use App\Models\User;
             </div>
             <div class="modal-body">
                 <form class="needs-validation ajax" id="unclaimSlotForm" novalidate>
-                    <div class="input-group mb-3" id="startUnclaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Date/Time</span>
-                        </div>
+                    <div class="form-floating mb-3" id="startUnclaim">
                         <input type="datetime-local" class="form-control" name="start" disabled>
+                        <label>Date/Time</label>
                     </div>
-                    <div class="input-group mb-3" id="tutornameUnclaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Tutor name</span>
-                        </div>
+                    <div class="form-floating mb-3" id="tutornameUnclaim">
                         <input type="text" class="form-control" name="tutorname" disabled>
-                        <div class="input-group-append">
-                            <span class="input-group-text"></span>
-                        </div>
+                        <label>Tutor name</label>
                     </div>
-                    <div class="input-group mb-3" id="tutorbioUnclaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Tutor bio</span>
-                        </div>
-                        <textarea class="form-control" maxlength="1000" rows="3" disabled></textarea>
-                    </div>
-                    <div class="input-group mb-3" id="tutoremailUnclaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Tutor email</span>
-                        </div>
+                    <div class="form-floating mb-3" id="tutoremailUnclaim">
                         <input type="text" class="form-control" name="tutoremail" disabled>
+                        <label>Tutor email</label>
                     </div>
-                    <div class=" input-group mb-3" id="subjectUnclaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Subject</span>
-                        </div>
-                        <input type="text" class="form-control" name="subject" name="subject" disabled>
+                    <div class="form-floating mb-3" id="tutorbioUnclaim">
+                        <textarea class="form-control" maxlength="1000" name="tutorbio" disabled></textarea>
+                        <label>Tutor bio</label>
                     </div>
-                    <div class="input-group" id="infoUnclaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Topic needs</span>
-                        </div>
-                        <textarea class="form-control" maxlength="1000" rows="3" name="info" disabled required></textarea>
+                    <div class="form-floating mb-3" id="subjectUnclaim">
+                        <input type="text" class="form-control" name="subject" disabled>
+                        <label>Subject</label>
+                    </div>
+                    <div class="form-floating" id="infoUnclaim">
+                        <textarea class="form-control" maxlength="1000" name="info" disabled required></textarea>
+                        <label>Topic needs</label>
                     </div>
                     <div class="input-group mt-3" id="meetinglinkUnclaim">
                         <a class="btn btn-info btn-block" href="#" target="_blank"><i data-feather="video"></i>&nbsp;&nbsp;<span class="align-middle">Meeting link</span></a>
@@ -161,35 +146,27 @@ use App\Models\User;
             </div>
             <div class="modal-body">
                 <form class="needs-validation ajax" id="claimSlotForm" novalidate>
-                    <div class="input-group mb-3" id="startClaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Date/Time</span>
-                        </div>
+                    <div class="form-floating mb-3" id="startClaim">
                         <input type="datetime-local" class="form-control" name="start" disabled>
+                        <label>Date/Time</label>
                     </div>
-                    <div class="input-group mb-3" id="tutornameClaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Tutor name</span>
-                        </div>
+                    <div class="form-floating mb-3" id="tutornameClaim">
                         <input type="text" class="form-control" name="tutorname" disabled>
+                        <label>Tutor name</label>
                     </div>
-                    <div class="input-group mb-3" id="tutorbioClaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Tutor bio</span>
-                        </div>
-                        <textarea class="form-control" maxlength="1000" rows="3" name="tutorbio" disabled></textarea>
+                    <div class="form-floating mb-3" id="tutorbioClaim">
+                        <textarea class="form-control" maxlength="1000" name="tutorbio" disabled></textarea>
+                        <label>Tutor bio</label>
                     </div>
                     <div class="input-group mb-3" id="subjectClaim">
                     </div>
-                    <div class="input-group" id="infoClaim">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Topic needs</span>
-                        </div>
-                        <textarea class="form-control" maxlength="1000" rows="3" name="info" required></textarea>
+                    <div class="form-floating" id="infoClaim">
+                        <textarea class="form-control" maxlength="1000" name="info" required></textarea>
+                        <label>Topic needs</label>
+                        <small class="form-text text-muted">
+                            Limit 1000 characters.
+                        </small>
                     </div>
-                    <small class="form-text text-muted">
-                        Limit 1000 characters.
-                    </small>
                 </form>
             </div>
             <div class="modal-footer">

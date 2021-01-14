@@ -1,4 +1,5 @@
 $(function () {
+    var DateTime = luxon.DateTime;
     $('#cancelSlotForm').submit(function (event) {
         event.preventDefault();
         if (!this.checkValidity()) {
@@ -6,8 +7,8 @@ $(function () {
         } else {
             let form = $(this);
             let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
-            let studentname = form.find('input[name="studentname"]').val();
-            let studentemail = form.find('input[name="studentemail"]').val();
+            let name = form.find('input[name="name"]').val();
+            let email = form.find('input[name="email"]').val();
             let subject = form.find('input[name="subject"]').val();
             let info = form.find('textarea[name="info"]').val();
             let reason = form.find('textarea[name="reason"]').val();
@@ -16,8 +17,8 @@ $(function () {
                 url: '/ajax/cancel',
                 data: {
                     start: start,
-                    studentname: studentname,
-                    studentemail: studentemail,
+                    name: name,
+                    email: email,
                     subject: subject,
                     info: info,
                     reason: reason

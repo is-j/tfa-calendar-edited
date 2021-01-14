@@ -8,15 +8,15 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     },
     timeZone: 'local',
     initialView: 'dayGridMonth',
-    events: '/ajax/get',
+    events: '/ajax/get/0',
     selectable: true,
     nowIndicator: true,
     lazyFetching: true,
     loading: function (isLoading) {
         if (isLoading) {
-            $('#spinnerarea').append('<div class="spinner-border text-primary" role="status"> <span class="sr-only">Loading...</span> </div>');
+            $('#spinnerArea').html('<div class="spinner-border" role="status"> <span class="sr-only">Loading...</span> </div>');
         } else {
-            $('#spinnerarea').html('');
+            $('#spinnerArea .spinner-border').remove();
         }
     },
     dateClick: function (info) {
@@ -33,7 +33,7 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
                 $('#tutornameClaim input').val(info.event.extendedProps.tutorname);
                 $('#tutorbioClaim textarea').val(info.event.extendedProps.tutorbio);
                 $('#infoClaim textarea').val('');
-                if ($('#calendarSubjects').val() == 'General') {
+                if ($('#calendarSubjects').val() == 0) {
                     $('#subjectClaim').html('<div class="input-group-prepend"><span class="input-group-text">Subject</span> </div><select class="custom-select" name="subject"></select>')
                     for (var key in info.event.extendedProps.tutorsubjects) {
                         let temp = info.event.extendedProps.tutorsubjects;
@@ -80,6 +80,11 @@ $(function () {
     $(window).resize(function () {
         checkView();
     });
+    $('#calendarSubjects').change(function() {
+        calendar.getEventSources()[0].remove();
+        calendar.addEventSource(`/ajax/get/${$('#calendarSubjects option:selected').val()}`);
+        calendar.refetchEvents();
+    });
     $('#createSlotBtn').click(function () {
         $('#createSlotForm').submit();
     });
@@ -116,7 +121,13 @@ $(function () {
         $(this).addClass('was-validated');
     });
     $('#unclaimSlotForm').submit(function (event) {
-        unclaimSlot();
+        event.preventDefault();
+        if (!this.checkValidity()) {
+            event.stopPropagation();
+        } else {
+            unclaimSlot();
+        }
+        $(this).addClass('was-validated');
     });
     $('#claimSlotForm').submit(function (event) {
         event.preventDefault();
@@ -187,7 +198,6 @@ function deleteSlot() {
             }
         });
     }
-
 }
 
 function claimSlot() {
@@ -210,5 +220,22 @@ function claimSlot() {
             $('#claimSlotModal').modal('hide');
             form.trigger('reset').removeClass('was-validated');
         }
+    });
+}
+
+function unclaimSlot() {
+    let form = $('#unclaimSlotForm');
+    let start = form.find('input[name="start"]').val();
+    let tutorname = form.find('input[name="tutorname"]').val();
+    let tutoremail = form.find('input[name="tutoremail"]').val();
+    let subject = form.find('input[name="subject"]').val();
+    let info = form.find('textarea[name="info"]').val();
+    $.redirect('/cancel', {
+        _token: $('meta[name="csrf-token"]').prop('content'),
+        start: start,
+        tutorname: tutorname,
+        tutoremail: tutoremail,
+        subject: subject,
+        info: info
     });
 }

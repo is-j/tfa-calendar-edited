@@ -16,11 +16,11 @@ use App\Models\User;
                 <label>Date/Time</label>
             </div>
             <div class="form-floating mb-3" id="studentnameCancel">
-                <input type="text" class="form-control" value="{{ app('request')->input('studentname') }}" name="studentname" disabled>
+                <input type="text" class="form-control" value="{{ app('request')->input('studentname') }}" name="name" disabled>
                 <label>Student name</label>
             </div>
             <div class="form-floating mb-3" id="studentemailCancel">
-                <input type="text" class="form-control" value="{{ app('request')->input('studentemail') }}" name="studentemail" disabled>
+                <input type="text" class="form-control" value="{{ app('request')->input('studentemail') }}" name="email" disabled>
                 <label>Student email</label>
             </div>
             <div class="form-floating mb-3" id="subjectCancel">
@@ -54,11 +54,11 @@ use App\Models\User;
                 <label>Date/Time</label>
             </div>
             <div class="form-floating mb-3" id="tutornameCancel">
-                <input type="text" class="form-control" value="{{ app('request')->input('tutorname') }}" name="tutorname" disabled>
+                <input type="text" class="form-control" value="{{ app('request')->input('tutorname') }}" name="name" disabled>
                 <label>Tutor name</label>
             </div>
             <div class="form-floating mb-3" id="tutoremailCancel">
-                <input type="text" class="form-control" value="{{ app('request')->input('tutoremail') }}" name="tutoremail" disabled>
+                <input type="text" class="form-control" value="{{ app('request')->input('tutoremail') }}" name="email" disabled>
                 <label>Tutor email</label>
             </div>
             <div class="form-floating mb-3" id="subjectCancel">
@@ -81,7 +81,7 @@ use App\Models\User;
                 <button type="submit" class="btn btn-danger btn-block">Cancel slot</button>
                 </div>
                 <div class="col-md">
-                <a class="btn btn-primary btn-block">Back to dashboard</a>
+                <a class="btn btn-primary btn-block" href="{{ route('dashboard') }}">Back to dashboard</a>
                 </div>
             </div>
         </form>
@@ -91,5 +91,6 @@ use App\Models\User;
 @endsection
 
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0/build/global/luxon.min.js" integrity="sha256-OVk2fwTRcXYlVFxr/ECXsakqelJbOg5WCj1dXSIb+nU=" crossorigin="anonymous"></script>
 <script src="{{ asset('js/cancel.js') }}"></script>
 @endsection

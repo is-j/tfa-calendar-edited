@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Slot;
 use App\Models\User;
 use App\Models\Tutor;
 use App\Models\Subject;
+use App\Jobs\ProcessShare;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class AjaxController extends Controller
 {
-    protected function get()
+    public function get($id)
     {
         date_default_timezone_set('UTC');
         $datefilter = date('Y-m-d H:i:s', strtotime('-2 hours'));
         $datebefore = date('Y-m-d H:i:s', strtotime('+6 hours'));
+        $id = intval($id);
         if (User::find(Auth::user()->id)->role() == 'tutor') {
             $output = [];
             foreach (Slot::where('tutor_id', Auth::user()->id)->get() as $item) {
@@ -44,38 +46,37 @@ class AjaxController extends Controller
         } else if (User::find(Auth::user()->id)->role() == 'student') {
             $output = [];
             foreach (Slot::whereNull('student_id')->orWhere('student_id', Auth::user()->id)->get() as $item) {
-                $temp = [];
-                $extended = [];
-                $tutorname = User::select('name')->where('id', $item->tutor_id)->first()->name;
-                if (is_null($item->student_id) && $item->start >= $datebefore) {
-                    $temp['title'] = "Unclaimed session";
-                    $temp['color'] = 'red';
-                    foreach (Tutor::find($item->tutor_id)->subjects() as $key) {
-                        $extended['tutorsubjects'][$key] = Subject::find($key)->name;
+                if ($id == 0 || in_array($id, Tutor::find($item->tutor_id)->subjects())) {
+                    $temp = [];
+                    $extended = [];
+                    $tutorname = User::select('name')->where('id', $item->tutor_id)->first()->name;
+                    if (is_null($item->student_id) && $item->start >= $datebefore) {
+                        $temp['title'] = "Unclaimed session";
+                        $temp['color'] = 'red';
+                        foreach (Tutor::find($item->tutor_id)->subjects() as $key) {
+                            $extended['tutorsubjects'][$key] = Subject::find($key)->name;
+                        }
+                        $extended['claimed'] = false;
+                        $extended['tutorname'] = $tutorname;
+                        $extended['tutorbio'] = Tutor::find($item->tutor_id)->bio;
+                        $temp['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start));
+                        $temp['end'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start . "+1 hours"));
+                        $temp['extendedProps'] = $extended;
+                        array_push($output, $temp);
+                    } else if (!is_null($item->student_id) && $item->start >= $datefilter) {
+                        $temp['title'] = "Session with $tutorname";
+                        $extended['tutoremail'] = User::find($item->tutor_id)->email;
+                        $extended['info'] = $item->info;
+                        $extended['meeting_link'] = Tutor::find($item->tutor_id)->meeting_link;
+                        $extended['subject'] = Subject::find($item->subject)->name;
+                        $extended['claimed'] = true;
+                        $extended['tutorname'] = $tutorname;
+                        $extended['tutorbio'] = Tutor::find($item->tutor_id)->bio;
+                        $temp['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start));
+                        $temp['end'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start . "+1 hours"));
+                        $temp['extendedProps'] = $extended;
+                        array_push($output, $temp);
                     }
-                    $extended['claimed'] = false;
-                    $extended['tutorname'] = $tutorname;
-                    $extended['tutorbio'] = Tutor::find($item->tutor_id)->bio;
-                    $temp['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start));
-                    $temp['end'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start . "+1 hours"));
-                    $temp['extendedProps'] = $extended;
-                    array_push($output, $temp);
-                } else if (!is_null($item->student_id) && $item->start >= $datefilter) {
-                    $temp['title'] = "Session with $tutorname";
-                    $extended['tutoremail'] = User::find($item->tutor_id)->email;
-                    $extended['info'] = $item->info;
-                    $extended['meeting_link'] = Tutor::find($item->tutor_id)->meeting_link;
-                    error_log($item->subject);
-                    $extended['subject'] = Subject::find($item->subject)->name;
-                    $extended['claimed'] = true;
-                    $extended['tutorname'] = $tutorname;
-                    $extended['tutorbio'] = Tutor::find($item->tutor_id)->bio;
-                    $temp['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start));
-                    $temp['end'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start . "+1 hours"));
-                    $temp['extendedProps'] = $extended;
-
-                    error_log('hello');
-                    array_push($output, $temp);
                 }
             };
             return json_encode($output);
@@ -110,7 +111,9 @@ class AjaxController extends Controller
     protected function cancel(Request $request)
     {
         if (User::find(Auth::user()->id)->role() == 'tutor') {
-            if (isset($request->studentname)) {
+            if (isset($request->name)) {
+                $eventid = Slot::where('tutor_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
+                ProcessShare::dispatch('delete', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->reason);
                 Slot::where('tutor_id', Auth::user()->id)->where('start', $request->start)->delete();
             } else {
                 if ($request->repeat == 'true') {
@@ -125,6 +128,9 @@ class AjaxController extends Controller
                 }
             }
         } else if (User::find(Auth::user()->id)->role() == 'student') {
+            $eventid = Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
+            ProcessShare::dispatch('unclaim', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->reason);
+            Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->update(['student_id' => NULL, 'subject' => NULL, 'info' => NULL]);
         }
     }
     protected function plusSubject(Request $request)
@@ -159,6 +165,8 @@ class AjaxController extends Controller
         $subjectid = Subject::select('id')->where('name', $request->subject)->first()->id;
         if (is_null(Slot::where('start', $request->start)->where('tutor_id', $tutorid)->first()->student_id)) {
             Slot::where('start', $request->start)->where('tutor_id', $tutorid)->update(['student_id' => Auth::user()->id, 'subject' => $subjectid, 'info' => $request->info]);
+            $eventid = Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
+            ProcessShare::dispatch('claim', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->info);
         }
     }
 }

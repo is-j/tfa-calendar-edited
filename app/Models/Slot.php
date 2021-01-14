@@ -11,6 +11,9 @@ class Slot extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'event_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
         'event_id',
         'start',

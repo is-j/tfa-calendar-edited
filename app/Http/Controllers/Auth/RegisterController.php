@@ -56,6 +56,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'code' => ['required', 'string', 'max:5', new AccountCode],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'timezone' => ['required', 'integer']
         ]);
     }
 
@@ -72,6 +73,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'role_id' => DB::table('roles')->select('id')->where('code',$data['code'])->first()->id,
             'password' => Hash::make($data['password']),
+            'timezone' => intval($data['timezone'])
         ]);
     }
 }
