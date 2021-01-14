@@ -1,4 +1,4 @@
-FROM php:8-apache
+FROM php:8.0-fpm-alpine
 
 RUN apk add --no-cache nginx supervisor wget
 
