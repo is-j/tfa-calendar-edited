@@ -48,7 +48,7 @@ COPY . ./
 # https://cloud.google.com/run/docs/reference/container-contract#port
 RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
 
-COPY backend/.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
 # Configure PHP for development.
 # Switch to the production php.ini for production operations.
