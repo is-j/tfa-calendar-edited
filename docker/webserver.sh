@@ -1,3 +1,3 @@
 #!/bin/sh
-supervisorctl start php-fpms
+supervisorctl start php-fpm
 supervisorctl start nginx
