@@ -6,7 +6,7 @@ fi
 
 while ! pgrep -x "php-fpm" > /dev/null
 do
-    echo "checking..."
+    sleep .01
 done
 
 if ! pgrep -x "nginx" > /dev/null
