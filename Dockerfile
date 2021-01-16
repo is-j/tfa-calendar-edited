@@ -36,5 +36,5 @@ RUN cd /app && \
     /usr/local/bin/composer install --no-dev
 
 RUN chown -R www-data: /app
-
+RUN chmod +x /app/docker/webstart.sh
 CMD sh /app/docker/startup.sh
