@@ -4,9 +4,16 @@ then
     supervisorctl start php-fpm
 fi
 
-while [$(ps aux | grep php-fpm) -eq ""];
+while [$(ps aux | grep php-fpm) -eq ""]
 do
-    sleep .05
+    if [$(ps aux | grep php-fpm) -ne ""] && [$(ps aux | grep php-fpm) -eq ""]
+    then
+        supervisorctl start nginx
+    fi
 done
 
-supervisorctl start nginx
+if [$(ps aux | grep php-fpm) -ne ""] && [$(ps aux | grep php-fpm) -eq ""]
+then
+    supervisorctl start nginx
+fi
+
