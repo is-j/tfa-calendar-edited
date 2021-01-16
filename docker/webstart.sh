@@ -1,19 +1,16 @@
 #!/bin/sh
 if ! pgrep -x "php-fpm" > /dev/null
-    then
-        supervisorctl start php-fpm
+then
+    supervisorctl start php-fpm
 fi
 
-while [! pgrep -x "php-fpm" > /dev/null]
+while ! pgrep -x "php-fpm" > /dev/null
 do
-    if pgrep -x "php-fpm" > /dev/null
-        then
-            supervisorctl start nginx
-    fi
+    echo "checking..."
 done
 
-if [pgrep -x "php-fpm" > /dev/null] && [! pgrep -x "nginx" > /dev/null]
-    then
-        supervisorctl start nginx
+if ! pgrep -x "nginx" > /dev/null
+then
+    supervisorctl start nginx
 fi
 
