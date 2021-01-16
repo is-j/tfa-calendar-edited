@@ -1,13 +1,13 @@
 #!/bin/sh
 supervisorctl start php-fpm
 
-while [[ $(ps -aux | grep "[p]hp-fpm: master process") == "" ]];
+while [[ $(ps aux | grep php-fpm) == "" ]];
 do
-    if [[ $(ps -aux | grep "[p]hp-fpm: master process") != "" ]]; then
-        supervisorctl start nginx
+    if [[ $(ps aux | grep php-fpm) != "" ]]; then
+        supervisorctl start nginx;
         exit
     fi
 done
-if [[ $(ps -aux | grep "[p]hp-fpm: master process") != "" ]]; then
+if [[ $(ps aux | grep php-fpm) != "" ]]; then
     supervisorctl start nginx
 fi
