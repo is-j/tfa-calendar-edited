@@ -5,5 +5,9 @@ while [[ $(ps -aux | grep "[p]hp-fpm: master process") == "" ]];
 do
     if [[ $(ps -aux | grep "[p]hp-fpm: master process") != "" ]]; then
         supervisorctl start nginx
+        exit
     fi
 done
+if [[ $(ps -aux | grep "[p]hp-fpm: master process") != "" ]]; then
+    supervisorctl start nginx
+fi
