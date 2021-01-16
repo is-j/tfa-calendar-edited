@@ -1,18 +1,18 @@
 #!/bin/sh
-if ["$(ps aux | grep php-fpm: master process)" -eq ""]
+if ! pgrep -x "php-fpm" > /dev/null
 then
     supervisorctl start php-fpm
 fi
 
-while ["$(ps aux | grep php-fpm: master process)" -eq ""]
+while ! pgrep -x "php-fpm" > /dev/null
 do
-    if ["$(ps aux | grep php-fpm: master process)" -ne ""] && ["$(ps aux | grep nginx)" -eq ""]
+    if pgrep -x "php-fpm" > /dev/null && ! pgrep -x "nginx" > /dev/null
     then
         supervisorctl start nginx
     fi
 done
 
-if ["$(ps aux | grep php-fpm: master process)" -ne ""] && ["$(ps aux | grep nginx)" -eq ""]
+if pgrep -x "php-fpm" > /dev/null && ! pgrep -x "nginx" > /dev/null
 then
     supervisorctl start nginx
 fi
