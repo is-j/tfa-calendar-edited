@@ -1,13 +1,8 @@
 #!/bin/sh
 supervisorctl start php-fpm
 
-while [[ $(ps aux | grep php-fpm) == "" ]];
+while [$(ps aux | grep php-fpm) -eq ""];
 do
-    if [[ $(ps aux | grep php-fpm) != "" ]]; then
-        supervisorctl start nginx;
-        exit
-    fi
 done
-if [[ $(ps aux | grep php-fpm) != "" ]]; then
-    supervisorctl start nginx
-fi
+
+supervisorctl start nginx
