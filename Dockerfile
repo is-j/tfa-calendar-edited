@@ -39,6 +39,5 @@ RUN cd /app && \
     /usr/local/bin/composer remove --dev facade/ignition
 
 RUN chown -R www-data: /app
-RUN php /app/artisan route:cache && php /app/artisan view:cache
 RUN chmod +x /app/docker/webstart.sh
 CMD sh /app/docker/startup.sh
