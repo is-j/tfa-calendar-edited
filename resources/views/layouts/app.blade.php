@@ -101,7 +101,7 @@ $name = Route::currentRouteName();
     @yield('scripts')
 </body>
 <footer class="mt-4 pb-3">
-    <p class="text-center text-muted">Copyright © <span id="year"></span>Tutoring For All. Designed by Dennis Eum.</p>
+    <p class="text-center text-muted">Copyright © <span id="year"></span> Dennis Eum. Tutoring For All.</p>
 </footer>
 
 </html>
