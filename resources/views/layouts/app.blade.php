@@ -15,6 +15,10 @@ $name = Route::currentRouteName();
     <meta name="author" content="Dennis Eum">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
     <title>{{ config('app.name', 'tfa-calendar') }}</title>
 
     <!-- css -->
@@ -97,7 +101,7 @@ $name = Route::currentRouteName();
     @yield('scripts')
 </body>
 <footer class="mt-4 pb-3">
-    <p class="text-center text-muted">dennis eum © <span id="year"></span>, tfa</p>
+    <p class="text-center text-muted">Copyright © <span id="year"></span>Tutoring For All. Designed by Dennis Eum.</p>
 </footer>
 
 </html>

@@ -1,3 +1,6 @@
+@php
+$name = Route::currentRouteName();
+@endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -6,6 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Dennis Eum">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
     <title>{{ config('app.name', 'tfa-calendar') }}</title>
 
@@ -25,8 +32,9 @@
     <script src="{{ asset('js/main.js') }}"></script>
     @yield('scripts')
 </body>
+@if ($name != 'cancel')
 <footer class="fixed-bottom pb-3">
-    <p class="text-center text-muted">dennis eum © <span id="year"></span>, tfa</p>
+    <p class="text-center text-muted">Copyright © <span id="year"></span>Tutoring For All. Designed by Dennis Eum.</p>
 </footer>
-
+@endif
 </html>

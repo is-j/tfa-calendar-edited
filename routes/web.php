@@ -32,7 +32,7 @@ Route::middleware(['auth', 'setup'])->group(function () {
     Route::post('/reset', [ResetController::class, 'reset']);
     Route::post('/cancel', function() {
         return view('cancel');
-    });
+    })->name('cancel');
 });
 
 Route::middleware(['auth', 'setup', 'tutor'])->group(function () {
