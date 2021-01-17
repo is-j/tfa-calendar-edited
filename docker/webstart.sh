@@ -1,9 +1,14 @@
 #!/bin/sh
-if ! pgrep -x "php-fpm" > /dev/null
+if ["$(ps aux | grep php-fpm: master process)" -eq ""]
 then
     supervisorctl start php-fpm
 fi
-if pgrep -x "php-fpm" > /dev/null
-then
-    supervisorctl start nginx
-fi
+
+while :
+do
+    if ["$(ps aux | grep php-fpm: master process)" -ne ""]
+    then
+        supervisorctl start nginx
+        exit
+    fi
+done
