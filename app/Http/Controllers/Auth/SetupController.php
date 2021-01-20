@@ -27,13 +27,17 @@ class SetupController extends Controller
     {
         if (User::find(Auth::user()->id)->role() == 'tutor') {
             $request->validate([
-                'meeting_link' => 'required|url',
+                'meeting_link' => 'required',
                 'bio' => 'required|max:1000',
                 'subject' => 'required'
             ]);
+            $meetinglink = $request->meeting_link;
+            if (!(strpos($meetinglink, 'http://') !== false || strpos($meetinglink, 'https://') !== false)) {
+                $meetinglink = 'https://' . $meetinglink;
+            }
             Tutor::create([
                 'user_id' => Auth::user()->id,
-                'meeting_link' => $request->meeting_link,
+                'meeting_link' => $meetinglink,
                 'bio' => $request->bio,
                 'subjects' => json_encode(['subjects' => [intval($request->subject)]])
             ]);

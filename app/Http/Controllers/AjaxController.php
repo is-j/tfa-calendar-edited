@@ -139,7 +139,11 @@ class AjaxController extends Controller
             $eventid = Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
             ProcessShare::dispatch('unclaim', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->reason);
             Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->update(['student_id' => NULL, 'info' => NULL]);
+            if (date('Y-m-d H:i:s', strtotime($request->start)) < date('Y-m-d H:i:s', strtotime('+2 hours'))) {
+                $date = date('Y-m-d H:i:s', strtotime($request->start));
+            }
         }
+
     }
     protected function plusSubject(Request $request)
     {
@@ -161,10 +165,14 @@ class AjaxController extends Controller
     protected function updateInformation(Request $request)
     {
         $request->validate([
-            'meeting_link' => 'required|url',
+            'meeting_link' => 'required',
             'bio' => 'required|max:1000'
         ]);
-        Tutor::where('user_id', Auth::user()->id)->update(['meeting_link' => $request->meeting_link, 'bio' => $request->bio]);
+        $meetinglink = $request->meeting_link;
+        if (!(strpos($meetinglink, 'http://') !== false || strpos($meetinglink, 'https://') !== false)) {
+            $meetinglink = 'https://' . $meetinglink;
+        }
+        Tutor::where('user_id', Auth::user()->id)->update(['meeting_link' => $meetinglink, 'bio' => $request->bio]);
     }
 
     protected function claim(Request $request)

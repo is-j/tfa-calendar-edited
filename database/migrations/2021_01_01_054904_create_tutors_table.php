@@ -18,6 +18,7 @@ class CreateTutorsTable extends Migration
             $table->string('meeting_link');
             $table->string('bio', 1000);
             $table->json('subjects');
+            $table->unsignedTinyInteger('strikes')->default(0);
             $table->timestamps();
         });
     }

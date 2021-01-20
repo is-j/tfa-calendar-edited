@@ -14,7 +14,7 @@ class ResetController extends Controller
 
     protected function index()
     {
-        return view('auth/reset');
+        return view('auth.reset');
     }
     protected function reset(Request $request)
     {

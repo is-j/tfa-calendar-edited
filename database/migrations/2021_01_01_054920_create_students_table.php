@@ -16,6 +16,7 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->foreignId('user_id');
             $table->boolean('terms');
+            $table->unsignedTinyInteger('strikes')->default(0);
             $table->timestamps();
         });
     }

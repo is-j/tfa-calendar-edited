@@ -40,7 +40,7 @@ use App\Models\Subject;
             <div class="my-3">
                 <input type="text" class="form-control @error('meeting_link') is-invalid @enderror" name="meeting_link" value="{{ old('meeting_link') }}" placeholder="Meeting link" required>
                 <small class="form-text text-muted">
-                    E.g. Personal Zoom or Google Meet Links. Must begin with "https://".
+                    E.g. Personal Zoom or Google Meet Links.
                 </small>
                 @error('meeting_link')
                 <span class="invalid-feedback" role="alert">
