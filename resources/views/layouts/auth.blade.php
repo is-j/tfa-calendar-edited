@@ -17,7 +17,7 @@ $name = Route::currentRouteName();
     <title>{{ config('app.name', 'tfa-calendar') }}</title>
 
     <!-- css -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
 </head>
@@ -28,13 +28,15 @@ $name = Route::currentRouteName();
 
     <!-- scripts -->
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha256-XfzdiC+S1keia+s9l07y7ye5a874sBq67zK4u7LTjvk=" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     @yield('scripts')
 </body>
 @if ($name != 'cancel')
 <footer class="fixed-bottom pb-3">
-    <p class="text-center text-muted">© <span id="year"></span> Dennis Eum. Tutoring For All.</p>
+    <p class="text-center text-muted">© <span id="year"></span> Dennis Eum. Tutoring for All.</p>
 </footer>
 @endif
+
 </html>

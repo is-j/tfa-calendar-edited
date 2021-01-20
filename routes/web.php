@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
-use App\Http\Controllers\Auth\ResetController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\ResetController;
 use App\Http\Controllers\Auth\SetupController;
 
 /*
@@ -17,8 +16,6 @@ use App\Http\Controllers\Auth\SetupController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Auth::routes();
 
 Route::middleware(['auth', 'setup'])->group(function () {
     Route::get('/', [DashboardController::class, 'redirect']);
@@ -49,4 +46,5 @@ Route::middleware(['auth', 'setup', 'student'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/setup', [SetupController::class, 'index'])->name('setup');
     Route::post('/setup', [SetupController::class, 'create']);
+    Route::get('/ml/{eventid}', [AjaxController::class, 'meetingLink'])->name('meetinglink');
 });

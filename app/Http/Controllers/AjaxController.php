@@ -24,6 +24,7 @@ class AjaxController extends Controller
             foreach (Slot::where('tutor_id', Auth::user()->id)->get() as $item) {
                 $temp = [];
                 $extended = [];
+                $extended['subject'] = Subject::find($item->subject)->name;
                 if (is_null($item->student_id)) {
                     $temp['title'] = "Unclaimed session";
                     $temp['color'] = 'red';
@@ -33,7 +34,6 @@ class AjaxController extends Controller
                     $temp['title'] = "Session with $studentname";
                     $extended['studentname'] = $studentname;
                     $extended['studentemail'] = User::find($item->student_id)->email;
-                    $extended['subject'] = Subject::find($item->subject)->name;
                     $extended['info'] = $item->info;
                     $extended['claimed'] = true;
                 }
@@ -45,20 +45,22 @@ class AjaxController extends Controller
             return json_encode($output);
         } else if (User::find(Auth::user()->id)->role() == 'student') {
             $output = [];
+            $taken = [];
+            foreach (Slot::where('student_id', Auth::user()->id)->get() as $item) {
+                array_push($taken, date('Y-m-d H:i:s', strtotime($item->start)));
+            }
             foreach (Slot::whereNull('student_id')->orWhere('student_id', Auth::user()->id)->get() as $item) {
-                if ($id == 0 || in_array($id, Tutor::find($item->tutor_id)->subjects())) {
+                if ($id == 0 || $id == $item->subject) {
                     $temp = [];
                     $extended = [];
                     $tutorname = User::select('name')->where('id', $item->tutor_id)->first()->name;
-                    if (is_null($item->student_id) && $item->start >= $datebefore) {
+                    if (is_null($item->student_id) && $item->start >= $datebefore && !in_array(date('Y-m-d H:i:s', strtotime($item->start)), $taken)) {
                         $temp['title'] = "Unclaimed session";
                         $temp['color'] = 'red';
-                        foreach (Tutor::find($item->tutor_id)->subjects() as $key) {
-                            $extended['tutorsubjects'][$key] = Subject::find($key)->name;
-                        }
                         $extended['claimed'] = false;
                         $extended['tutorname'] = $tutorname;
                         $extended['tutorbio'] = Tutor::find($item->tutor_id)->bio;
+                        $extended['subject'] = Subject::find($item->subject)->name;
                         $temp['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start));
                         $temp['end'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start . "+1 hours"));
                         $temp['extendedProps'] = $extended;
@@ -67,7 +69,7 @@ class AjaxController extends Controller
                         $temp['title'] = "Session with $tutorname";
                         $extended['tutoremail'] = User::find($item->tutor_id)->email;
                         $extended['info'] = $item->info;
-                        $extended['meeting_link'] = Tutor::find($item->tutor_id)->meeting_link;
+                        $extended['meeting_link'] = url('/ml/') . '/' . $item->event_id;
                         $extended['subject'] = Subject::find($item->subject)->name;
                         $extended['claimed'] = true;
                         $extended['tutorname'] = $tutorname;
@@ -85,8 +87,12 @@ class AjaxController extends Controller
     protected function create(Request $request)
     {
         $request->validate([
-            'start' => 'required|date|after:+2 hours'
+            'start' => 'required|date|after:+2 hours',
+            'subject' => 'required|integer'
         ]);
+        if (Slot::where('tutor_id', Auth::user()->id)->where('start', $request->start)->exists()) {
+            return json_encode(['error' => true, 'msg' => 'The slot already exists.']);
+        }
         if ($request->repeat == 'true') {
             for ($i = 0; $i < 20; $i++) {
                 $start = date("Y-m-d H:i:s", strtotime($request->start . "+$i weeks"));
@@ -94,18 +100,20 @@ class AjaxController extends Controller
                     Slot::create([
                         'event_id' => uniqid(),
                         'start' => $start,
+                        'subject' => $request->subject,
                         'tutor_id' => Auth::user()->id
                     ]);
                 }
             }
+            return json_encode(['error' => false]);
         } else {
-            if (!Slot::where('tutor_id', Auth::user()->id)->where('start', $request->start)->exists()) {
-                Slot::create([
-                    'event_id' => uniqid(),
-                    'start' => $request->start,
-                    'tutor_id' => Auth::user()->id
-                ]);
-            }
+            Slot::create([
+                'event_id' => uniqid(),
+                'start' => $request->start,
+                'subject' => $request->subject,
+                'tutor_id' => Auth::user()->id
+            ]);
+            return json_encode(['error' => false]);
         }
     }
     protected function cancel(Request $request)
@@ -130,7 +138,7 @@ class AjaxController extends Controller
         } else if (User::find(Auth::user()->id)->role() == 'student') {
             $eventid = Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
             ProcessShare::dispatch('unclaim', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->reason);
-            Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->update(['student_id' => NULL, 'subject' => NULL, 'info' => NULL]);
+            Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->update(['student_id' => NULL, 'info' => NULL]);
         }
     }
     protected function plusSubject(Request $request)
@@ -162,11 +170,36 @@ class AjaxController extends Controller
     protected function claim(Request $request)
     {
         $tutorid = User::select('id')->where('name', $request->tutorname)->first()->id;
-        $subjectid = Subject::select('id')->where('name', $request->subject)->first()->id;
         if (is_null(Slot::where('start', $request->start)->where('tutor_id', $tutorid)->first()->student_id)) {
-            Slot::where('start', $request->start)->where('tutor_id', $tutorid)->update(['student_id' => Auth::user()->id, 'subject' => $subjectid, 'info' => $request->info]);
+            Slot::where('start', $request->start)->where('tutor_id', $tutorid)->update(['student_id' => Auth::user()->id, 'info' => $request->info]);
             $eventid = Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
             ProcessShare::dispatch('claim', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->info);
+            $date = date('Y-m-d', strtotime($request->start));
+            $time = date('H:i:s', strtotime($request->start));
+            foreach (Slot::where('student_id', Auth::user()->id)->get() as $item) {
+                if (date('Y-m-d', strtotime($item->start)) == $date && date('H:i:s', strtotime($item->start)) != $time) {
+                    return json_encode(['error' => true, 'msg' => 'You have another slot the same day. Be mindful of the other students who also need tutoring.']);
+                }
+            }
+            return json_encode(['error' => false]);
+        }
+    }
+
+    protected function meetingLink($eventid)
+    {
+        if (Slot::where('event_id', $eventid)->exists()) {
+            if (Auth::user()->id == Slot::find($eventid)->student_id) {
+                $tutorid = Slot::find($eventid)->tutor_id;
+                $meetinglink = Tutor::find($tutorid)->meeting_link;
+                return redirect()->away($meetinglink);
+            } else if (Auth::user()->id == Slot::find($eventid)->tutor_id) {
+                $meetinglink = Tutor::find(Auth::user()->id)->meeting_link;
+                return redirect()->away($meetinglink);
+            } else {
+                abort(403);
+            }
+        } else {
+            abort(404);
         }
     }
 }

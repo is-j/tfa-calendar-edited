@@ -48,7 +48,7 @@ $(function () {
         } else {
             $('fieldset').prop('disabled', true);
             $(this).find('button').prop('disabled', true);
-            $(this).find('button').html('Updating&nbsp;&nbsp;<div class="spinner-border spinner-border-sm align-middle" role="status"> <span class="sr-only">Loading...</span> </div>');
+            $(this).find('button').html('Updating&nbsp;&nbsp;<div class="spinner-border spinner-border-sm" role="status"> <span class="visually-hidden">Loading...</span> </div>');
             let meeting_link = $('input[name="meeting_link"]').val();
             let bio = $('textarea[name="bio"]').val();
             $.ajax({

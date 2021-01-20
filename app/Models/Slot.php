@@ -17,6 +17,7 @@ class Slot extends Model
     protected $fillable = [
         'event_id',
         'start',
+        'subject',
         'tutor_id'
     ];
 }

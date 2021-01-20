@@ -2,6 +2,15 @@ html {
     height: 100%;
 }
 
+body {
+    font-family: 'Roboto', var(--bs-font-sans-serif);
+}
+
+a {
+    text-decoration: none;
+    color:black;
+}
+
 .container-md {
     margin-top: 80px;
     height: 100%;
@@ -12,8 +21,11 @@ html {
     border-radius: 10px;
 }
 
-.border-clean {
+.style-brand {
     border-radius: .25rem;
+    background-color: var(--bs-secondary) !important;
+    color: var(--bs-light) !important;
+    font-weight: bold;
 }
 
 [data-toggle] {
@@ -55,82 +67,6 @@ textarea.form-control {
 
 @media (min-width: 991.98px) {
     .subjectContent {
-        height: 500px;
+        height: 350px;
     }
-}
-
-/* floating labels lifted from bootstrap 5 */
-
-.form-floating {
-    position: relative
-}
-
-.form-floating>.form-control, .form-floating>.form-select {
-    height: calc(3.5rem + 2px);
-    padding: 1rem .75rem
-}
-
-.form-floating>label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    padding: 1rem .75rem;
-    pointer-events: none;
-    border: 1px solid transparent;
-    transform-origin: 0 0;
-    transition: opacity .1s ease-in-out, transform .1s ease-in-out
-}
-
-@media (prefers-reduced-motion:reduce) {
-    .form-floating>label {
-        transition: none
-    }
-}
-
-.form-floating>.form-control::-webkit-input-placeholder {
-    color: transparent
-}
-
-.form-floating>.form-control::-moz-placeholder {
-    color: transparent
-}
-
-.form-floating>.form-control::placeholder {
-    color: transparent
-}
-
-.form-floating>.form-control:not(:-moz-placeholder-shown) {
-    padding-top: 1.625rem;
-    padding-bottom: .625rem
-}
-
-.form-floating>.form-control:focus, .form-floating>.form-control:not(:placeholder-shown) {
-    padding-top: 1.625rem;
-    padding-bottom: .625rem
-}
-
-.form-floating>.form-control:-webkit-autofill {
-    padding-top: 1.625rem;
-    padding-bottom: .625rem
-}
-
-.form-floating>.form-select {
-    padding-top: 1.625rem;
-    padding-bottom: .625rem
-}
-
-.form-floating>.form-control:not(:-moz-placeholder-shown)~label {
-    opacity: .65;
-    transform: scale(.85) translateY(-.5rem) translateX(.15rem)
-}
-
-.form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
-    opacity: .65;
-    transform: scale(.85) translateY(-.5rem) translateX(.15rem)
-}
-
-.form-floating>.form-control:-webkit-autofill~label {
-    opacity: .65;
-    transform: scale(.85) translateY(-.5rem) translateX(.15rem)
 }
