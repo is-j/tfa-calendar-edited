@@ -10,7 +10,7 @@ use App\Models\Subject;
 <div class="card form-accounts mx-3 shadow">
     <div class="card-body">
         <h5 class="card-title">
-            <div class="d-inline-block bg-secondary text-light p-2 border-clean">tfa-calendar</div>&nbsp;&nbsp;{{ __('Setup') }}
+            <div class="d-inline-block style-brand text-dark shadow-sm p-2">tfa-calendar</div>&nbsp;&nbsp;{{ __('Setup') }}
         </h5>
         <form class="needs-validation text-start" method="POST" action="{{ route('setup') }}" novalidate>
             @csrf
@@ -25,13 +25,13 @@ use App\Models\Subject;
             </div>
             <div class="mb-3">
                 <div class="form-check">
-                    <input class="form-check-input @error('terms') is-invalid @enderror" type="checkbox" name="terms" type="checkbox" value="" id="terms" required>
+                    <input class="form-check-input @error('terms') is-invalid @enderror" type="checkbox" name="terms" type="checkbox" id="terms" required>
                     <label class="form-check-label" for="terms">
                         I agree to the terms.
                     </label>
                 </div>
                 @error('terms')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedback">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
@@ -75,9 +75,9 @@ use App\Models\Subject;
                 @enderror
             </div>
             @endif
-            <button type="submit" class="btn btn-primary btn-block">
-                {{ __('Submit') }}
-            </button>
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
         </form>
     </div>
 </div>

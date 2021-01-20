@@ -46,4 +46,5 @@ Route::middleware(['auth', 'setup', 'student'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/setup', [SetupController::class, 'index'])->name('setup');
     Route::post('/setup', [SetupController::class, 'create']);
+    Route::get('/ml/{eventid}', [AjaxController::class, 'meetingLink'])->name('meetinglink');
 });

@@ -38,12 +38,12 @@ use App\Models\User;
                     You must provide a reason.
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col-md">
-                <button type="submit" class="btn btn-danger btn-block">Cancel slot</button>
+            <div class="row">
+                <div class="col-md d-grid mb-3 mb-md-0">
+                    <button type="submit" class="btn btn-danger">Cancel slot</button>
                 </div>
-                <div class="col-md">
-                <a class="btn btn-primary btn-block">Back to dashboard</a>
+                <div class="col-md d-grid">
+                    <a class="btn btn-primary" href="{{ route('dashboard') }}">Back to dashboard</a>
                 </div>
             </div>
         </form>
@@ -76,12 +76,12 @@ use App\Models\User;
                     You must provide a reason.
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col-md">
-                <button type="submit" class="btn btn-danger btn-block">Cancel slot</button>
+            <div class="row">
+                <div class="col-md d-grid mb-3 mb-md-0">
+                    <button type="submit" class="btn btn-danger">Cancel slot</button>
                 </div>
-                <div class="col-md">
-                <a class="btn btn-primary btn-block" href="{{ route('dashboard') }}">Back to dashboard</a>
+                <div class="col-md d-grid">
+                    <a class="btn btn-primary" href="{{ route('dashboard') }}">Back to dashboard</a>
                 </div>
             </div>
         </form>

@@ -30,7 +30,7 @@ $name = Route::currentRouteName();
 <body>
     <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand bg-secondary text-light px-2 border-clean" href="{{ url('/dashboard') }}">{{ config('app.name', 'tfa-calendar') }}</a>
+            <a class="navbar-brand style-brand text-dark shadow-sm px-2" href="{{ url('/dashboard') }}">{{ config('app.name', 'tfa-calendar') }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -42,7 +42,7 @@ $name = Route::currentRouteName();
                             <div class="input-group-prepend">
                                 <label class="input-group-text">Subjects</label>
                             </div>
-                            <select class="custom-select" id="calendarSubjects">
+                            <select class="form-select" id="calendarSubjects">
                                 <option value="0" selected>General</option>
                                 @foreach(Subject::get() as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -53,7 +53,7 @@ $name = Route::currentRouteName();
                         </div>
                     </div>
                     @elseif ($name == 'settings')
-                    <a class="btn btn-primary" href="{{ route('dashboard') }}"><i data-feather="chevron-left"></i><span class="align-middle">Back to dashboard</span></a>
+                    <a class="btn btn-primary" href="{{ route('dashboard') }}">Back to dashboard</a>
                     @endif
                 </ul>
                 <ul class="navbar-nav ms-auto my-2 my-md-0">
@@ -62,7 +62,7 @@ $name = Route::currentRouteName();
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ Auth::user()->name }}
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ route('settings') }}">
                                 {{ __('Settings') }}
                             </a>
@@ -97,7 +97,7 @@ $name = Route::currentRouteName();
     @yield('scripts')
 </body>
 <footer class="mt-4 pb-3">
-    <p class="text-center text-muted">© <span id="year"></span> Dennis Eum. Tutoring For All.</p>
+    <p class="text-center text-muted">© <span id="year"></span> Dennis Eum. Tutoring for All.</p>
 </footer>
 
 </html>
