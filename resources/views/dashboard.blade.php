@@ -35,7 +35,7 @@ use App\Models\Subject;
                     <div class="mb-3">
                         <input type="datetime-local" class="form-control" name="start" required>
                         <div class="invalid-feedback">
-                            Slot must be created at least 2 hours in advance.
+                            Slot must be created at least 6 hours in advance.
                         </div>
                     </div>
                     <div class="input-group mb-3" id="subjectClaim">
@@ -86,9 +86,12 @@ use App\Models\Subject;
                         <input type="text" class="form-control" name="subject" disabled>
                         <label>Subject</label>
                     </div>
-                    <div class="form-floating" id="infoDelete">
+                    <div class="form-floating mb-3" id="infoDelete">
                         <textarea class="form-control" maxlength="1000" name="info" disabled></textarea>
                         <label>Topic needs</label>
+                    </div>
+                    <div class="d-grid" id="meetinglinkDelete">
+                        <a class="btn btn-info" href="#" target="_blank"><i data-feather="video"></i>&nbsp;&nbsp;<span class="align-middle">Meeting link</span></a>
                     </div>
                     <div class="form-check" id="repeatDelete">
                         <input class="form-check-input" type="checkbox" name="repeat" id="repeatLabel">
@@ -198,7 +201,6 @@ use App\Models\Subject;
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.js" integrity="sha256-oenhI3DRqaPoTMAVBBzQUjOKPEdbdFFtTCNIosGwro0=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0/build/global/luxon.min.js" integrity="sha256-OVk2fwTRcXYlVFxr/ECXsakqelJbOg5WCj1dXSIb+nU=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery.redirect@1.1.4/jquery.redirect.min.js"></script>
 @if (User::find(Auth::user()->id)->role() == 'tutor')
 <script>

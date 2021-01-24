@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\ResetController;
 use App\Http\Controllers\Auth\SetupController;
@@ -30,6 +31,8 @@ Route::middleware(['auth', 'setup'])->group(function () {
     Route::post('/cancel', function() {
         return view('cancel');
     })->name('cancel');
+    Route::get('/ajax/report', [AjaxController::class, 'initReport']);
+    Route::post('/ajax/report', [AjaxController::class, 'report']);
 });
 
 Route::middleware(['auth', 'setup', 'tutor'])->group(function () {
@@ -44,7 +47,11 @@ Route::middleware(['auth', 'setup', 'student'])->group(function () {
 });
 
 Route::middleware(['auth', 'setup', 'admin'])->group(function () {
-    Route::get('/dashboard/users', [AdminController::class, 'claim'])->name('admin.users');
+    Route::get('/dashboard/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/dashboard/probations', [AdminController::class, 'probations'])->name('admin.probations');
+    Route::get('/dashboard/reports', [AdminController::class, 'reports'])->name('admin.reports');
+    Route::post('/ajax/report/confirm', [AjaxController::class, 'confirmReport']);
+    Route::post('/ajax/report/deny', [AjaxController::class, 'denyReport']);
 });
 
 Route::middleware('auth')->group(function () {

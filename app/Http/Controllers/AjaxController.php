@@ -3,19 +3,24 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Role;
 use App\Models\Slot;
 use App\Models\User;
 use App\Models\Tutor;
+use App\Models\Report;
 use App\Models\Subject;
+use App\Jobs\ProcessBug;
+use App\Models\Probation;
 use App\Jobs\ProcessShare;
+use App\Jobs\ProcessReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class AjaxController extends Controller
 {
     public function get($id)
     {
-        date_default_timezone_set('UTC');
         $datefilter = date('Y-m-d H:i:s', strtotime('-2 hours'));
         $datebefore = date('Y-m-d H:i:s', strtotime('+6 hours'));
         $id = intval($id);
@@ -35,6 +40,7 @@ class AjaxController extends Controller
                     $extended['studentname'] = $studentname;
                     $extended['studentemail'] = User::find($item->student_id)->email;
                     $extended['info'] = $item->info;
+                    $extended['meeting_link'] = url('/ml/') . '/' . $item->event_id;
                     $extended['claimed'] = true;
                 }
                 $temp['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start));
@@ -111,33 +117,37 @@ class AjaxController extends Controller
     protected function create(Request $request)
     {
         $request->validate([
-            'start' => 'required|date|after:+2 hours',
+            'start' => 'required|date|after:+6 hours',
             'subject' => 'required|integer'
         ]);
-        if (Slot::where('tutor_id', Auth::user()->id)->where('start', $request->start)->exists()) {
-            return json_encode(['error' => true, 'msg' => 'The slot already exists.']);
-        }
-        if ($request->repeat == 'true') {
-            for ($i = 0; $i < 20; $i++) {
-                $start = date("Y-m-d H:i:s", strtotime($request->start . "+$i weeks"));
-                if (!Slot::where('tutor_id', Auth::user()->id)->where('start', $start)->exists()) {
-                    Slot::create([
-                        'event_id' => uniqid(),
-                        'start' => $start,
-                        'subject' => $request->subject,
-                        'tutor_id' => Auth::user()->id
-                    ]);
-                }
+        if (!$this->underProbation()) {
+            if (Slot::where('tutor_id', Auth::user()->id)->where('start', $request->start)->exists()) {
+                return json_encode(['error' => true, 'msg' => 'The slot already exists.']);
             }
-            return json_encode(['error' => false]);
+            if ($request->repeat == 'true') {
+                for ($i = 0; $i < 20; $i++) {
+                    $start = date("Y-m-d H:i:s", strtotime($request->start . "+$i weeks"));
+                    if (!Slot::where('tutor_id', Auth::user()->id)->where('start', $start)->exists()) {
+                        Slot::create([
+                            'event_id' => uniqid(),
+                            'start' => $start,
+                            'subject' => $request->subject,
+                            'tutor_id' => Auth::user()->id
+                        ]);
+                    }
+                }
+                return json_encode(['error' => false]);
+            } else {
+                Slot::create([
+                    'event_id' => uniqid(),
+                    'start' => $request->start,
+                    'subject' => $request->subject,
+                    'tutor_id' => Auth::user()->id
+                ]);
+                return json_encode(['error' => false]);
+            }
         } else {
-            Slot::create([
-                'event_id' => uniqid(),
-                'start' => $request->start,
-                'subject' => $request->subject,
-                'tutor_id' => Auth::user()->id
-            ]);
-            return json_encode(['error' => false]);
+            return json_encode(['error' => true, 'msg' => 'You are under probation for canceling too often.']);
         }
     }
     protected function cancel(Request $request)
@@ -163,11 +173,18 @@ class AjaxController extends Controller
             $eventid = Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
             ProcessShare::dispatch('unclaim', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->reason);
             Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->update(['student_id' => NULL, 'info' => NULL]);
-            if (date('Y-m-d H:i:s', strtotime($request->start)) < date('Y-m-d H:i:s', strtotime('+2 hours'))) {
-                $date = date('Y-m-d H:i:s', strtotime($request->start));
+        }
+        if (date('Y-m-d H:i:s', strtotime($request->start)) < date("Y-m-d H:i:s", strtotime('+2 hours'))) {
+            DB::table(Role::find(Auth::user()->role_id)->name . 's')->where('user_id', Auth::user()->id)->increment('strikes');
+            if (DB::table(Role::find(Auth::user()->role_id)->name . 's')->where('user_id', Auth::user()->id)->first()->strikes == 3) {
+                if (Probation::where('user_id', Auth::user()->id)->exists) {
+                    Probation::find(Auth::user()->id)->increment('history', 1, ['end' => date('Y-m-d H:i:s', strtotime('+1 week'))]);
+                } else {
+                    Probation::create(['user_id' => Auth::user()->id, 'end' => date('Y-m-d H:i:s', strtotime('+1 week'))]);
+                }
+                DB::table(Role::find(Auth::user()->role_id)->name . 's')->where('user_id', Auth::user()->id)->update(['strikes' => 0]);
             }
         }
-
     }
     protected function plusSubject(Request $request)
     {
@@ -201,19 +218,23 @@ class AjaxController extends Controller
 
     protected function claim(Request $request)
     {
-        $tutorid = User::select('id')->where('name', $request->tutorname)->first()->id;
-        if (is_null(Slot::where('start', $request->start)->where('tutor_id', $tutorid)->first()->student_id)) {
-            Slot::where('start', $request->start)->where('tutor_id', $tutorid)->update(['student_id' => Auth::user()->id, 'info' => $request->info]);
-            $eventid = Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
-            ProcessShare::dispatch('claim', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->info);
-            $date = date('Y-m-d', strtotime($request->start));
-            $time = date('H:i:s', strtotime($request->start));
-            foreach (Slot::where('student_id', Auth::user()->id)->get() as $item) {
-                if (date('Y-m-d', strtotime($item->start)) == $date && date('H:i:s', strtotime($item->start)) != $time) {
-                    return json_encode(['error' => true, 'msg' => 'You have another slot the same day. Be mindful of the other students who also need tutoring.']);
+        if (!$this->underProbation()) {
+            $tutorid = User::select('id')->where('name', $request->tutorname)->first()->id;
+            if (is_null(Slot::where('start', $request->start)->where('tutor_id', $tutorid)->first()->student_id)) {
+                Slot::where('start', $request->start)->where('tutor_id', $tutorid)->update(['student_id' => Auth::user()->id, 'info' => $request->info]);
+                $eventid = Slot::where('student_id', Auth::user()->id)->where('start', $request->start)->first()->event_id;
+                ProcessShare::dispatch('claim', $eventid, ['tutor_id' => Slot::find($eventid)->tutor_id, 'student_id' => Slot::find($eventid)->student_id, 'start' => Slot::find($eventid)->start], $request->info);
+                $date = date('Y-m-d', strtotime($request->start));
+                $time = date('H:i:s', strtotime($request->start));
+                foreach (Slot::where('student_id', Auth::user()->id)->get() as $item) {
+                    if (date('Y-m-d', strtotime($item->start)) == $date && date('H:i:s', strtotime($item->start)) != $time) {
+                        return json_encode(['error' => true, 'msg' => 'You have another slot the same day. Be mindful of the other students who also need tutoring.']);
+                    }
                 }
+                return json_encode(['error' => false]);
             }
-            return json_encode(['error' => false]);
+        } else {
+            return json_encode(['error' => true, 'msg' => 'You are under probation for canceling too often.']);
         }
     }
 
@@ -233,5 +254,61 @@ class AjaxController extends Controller
         } else {
             abort(404);
         }
+    }
+
+    protected function underProbation()
+    {
+        $id = Auth::user()->id;
+        if (Probation::where('user_id', $id)->exists()) {
+            if (date('Y-m-d H:i:s', strtotime(Probation::find($id)->end)) > date('Y-m-d H:i:s')) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    protected function initReport()
+    {
+        if (User::find(Auth::user()->id)->role() != 'admin') {
+            $output = ['exists' => false];
+            if (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->exists()) {
+                $output['exists'] = true;
+                $output['starts'] = [];
+                foreach (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->get() as $item) {
+                    array_push($output['starts'], ['event_id' => $item->event_id, 'start' => $item->start]);
+                }
+            }
+            return json_encode($output);
+        }
+    }
+
+    protected function report(Request $request)
+    {
+        if ($request->type == 1) {
+            $request->validate(['message' => 'required|max:1000']);
+            ProcessBug::dispatch($request->message);
+        } else {
+            $reportedid = 0;
+            if (Slot::find($request->event_id)->tutor_id == Auth::user()->id) {
+                $reportedid = Slot::find($request->event_id)->student_id;
+            } else {
+                $reportedid = Slot::find($request->event_id)->tutor_id;
+            }
+            error_log($reportedid);
+            error_log($request->event_id);
+            Report::create(['reporter_id' => Auth::user()->id, 'reported_id' => $reportedid, 'event_id' => $request->event_id]);
+        }
+    }
+
+    protected function confirmReport(Request $request) {
+        $reportedid = Report::where('event_id', $request->event_id)->first()->reported_id;
+        Report::where('event_id', $request->event_id)->delete();
+        ProcessReport::dispatch($reportedid);
+    }
+
+    protected function denyReport(Request $request) {
+        Report::where('event_id', $request->event_id)->delete();
     }
 }

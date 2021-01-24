@@ -1,5 +1,3 @@
-var DateTime = luxon.DateTime;
-var now = DateTime.local();
 let toast = new bootstrap.Toast(document.getElementById('toast'));
 var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     headerToolbar: {
@@ -53,14 +51,15 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
             $('#claimedDelete').data('claimed', info.event.extendedProps.claimed);
             $('#subjectDelete input').val(info.event.extendedProps.subject);
             if (!info.event.extendedProps.studentname) {
-                $('#studentnameDelete, #studentemailDelete, #infoDelete').hide();
+                $('#studentnameDelete, #studentemailDelete, #infoDelete, #meetinglinkDelete a').hide();
                 $('#repeatDelete').show();
             } else {
                 $('#repeatDelete').hide();
-                $('#studentnameDelete, #studentemailDelete, #infoDelete').show();
+                $('#studentnameDelete, #studentemailDelete, #infoDelete, #meetinglinkDelete a').show();
                 $('#studentnameDelete input').val(info.event.extendedProps.studentname);
                 $('#studentemailDelete input').val(info.event.extendedProps.studentemail);
                 $('#infoDelete textarea').val(info.event.extendedProps.info);
+                $('#meetinglinkDelete a').prop('href', info.event.extendedProps.meeting_link);
             }
             deleteSlotModal.show();
         }
@@ -92,7 +91,7 @@ $(function () {
     });
     $('#createSlotForm').submit(function (event) {
         event.preventDefault();
-        if (DateTime.fromFormat($('#createSlotForm').find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm") < now.plus({ hours: 2 })) {
+        if (DateTime.fromFormat($('#createSlotForm').find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm") < now.plus({ hours: 6 })) {
             $('#createSlotForm').find('input[name="start"]')[0].setCustomValidity('invalid');
         } else {
             $('#createSlotForm').find('input[name="start"]')[0].setCustomValidity('');
@@ -155,6 +154,7 @@ function createSlot() {
         success: function (response) {
             calendar.refetchEvents();
             createSlotModal.hide();
+            initReport();
             form.trigger('reset').removeClass('was-validated');
             if (response.error) {
                 $('#toast .toast-body').text(response.msg);
@@ -195,6 +195,7 @@ function deleteSlot() {
             success: function () {
                 calendar.refetchEvents();
                 deleteSlotModal.hide();
+                initReport();
                 form.trigger('reset').removeClass('was-validated');
             }
         });
@@ -217,6 +218,7 @@ function claimSlot() {
         success: function (response) {
             calendar.refetchEvents();
             claimSlotModal.hide();
+            initReport();
             form.trigger('reset').removeClass('was-validated');
             if (response.error) {
                 $('#toast .toast-body').text(response.msg);

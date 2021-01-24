@@ -1,5 +1,4 @@
 $(function () {
-    var DateTime = luxon.DateTime;
     $('#cancelSlotForm').submit(function (event) {
         event.preventDefault();
         if (!this.checkValidity()) {

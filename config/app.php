@@ -230,4 +230,5 @@ return [
 
     ],
 
+    'adminpw' => env('ADMIN_PASSWORD'),
 ];

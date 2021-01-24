@@ -82,9 +82,3 @@ use App\Models\Subject;
     </div>
 </div>
 @endsection
-
-@section('scripts')
-<script>
-
-</script>
-@endsection
