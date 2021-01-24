@@ -20,7 +20,7 @@ class CheckIfSetup
     public function handle(Request $request, Closure $next)
     {
         $role = User::find(Auth::user()->id)->role();
-        if (!DB::table($role . 's')->where('user_id', Auth::user()->id)->exists()) {
+        if ($role != 'admin' && !DB::table($role . 's')->where('user_id', Auth::user()->id)->exists()) {
             return redirect()->route('setup');
         }
         return $next($request);

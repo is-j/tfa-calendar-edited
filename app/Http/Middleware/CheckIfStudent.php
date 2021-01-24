@@ -18,7 +18,7 @@ class CheckIfStudent
      */
     public function handle(Request $request, Closure $next)
     {
-        if (User::find(Auth::user()->id)->role() == 'tutor') {
+        if (User::find(Auth::user()->id)->role() != 'student') {
             return;
         }
         return $next($request);

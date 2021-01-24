@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CheckIfTutor
+class CheckIfAdmin
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class CheckIfTutor
      */
     public function handle(Request $request, Closure $next)
     {
-        if (User::find(Auth::user()->id)->role() != 'tutor') {
+        if (User::find(Auth::user()->id)->role() != 'admin') {
             return;
         }
         return $next($request);

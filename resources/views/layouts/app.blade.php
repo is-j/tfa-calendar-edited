@@ -54,6 +54,8 @@ $name = Route::currentRouteName();
                     </div>
                     @elseif ($name == 'settings')
                     <a class="btn btn-primary" href="{{ route('dashboard') }}">Back to dashboard</a>
+                    @elseif (User::find(Auth::user()->id)->role() == 'admin')
+                    
                     @endif
                 </ul>
                 <ul class="navbar-nav ms-auto my-2 my-md-0">

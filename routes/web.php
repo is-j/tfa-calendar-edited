@@ -43,6 +43,10 @@ Route::middleware(['auth', 'setup', 'student'])->group(function () {
     Route::post('/ajax/claim', [AjaxController::class, 'claim']);
 });
 
+Route::middleware(['auth', 'setup', 'admin'])->group(function () {
+    Route::get('/dashboard/users', [AdminController::class, 'claim'])->name('admin.users');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/setup', [SetupController::class, 'index'])->name('setup');
     Route::post('/setup', [SetupController::class, 'create']);

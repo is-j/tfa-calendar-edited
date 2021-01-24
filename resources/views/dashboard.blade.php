@@ -212,6 +212,10 @@ use App\Models\Subject;
     let claimSlotModal = new bootstrap.Modal(document.getElementById('claimSlotModal'));
     let unclaimSlotModal = new bootstrap.Modal(document.getElementById('unclaimSlotModal'));
 </script>
+@elseif (User::find(Auth::user()->id)->role() == 'admin')
+<script>
+    var accounttype = 'admin';
+</script>
 @endif
 <script src="{{ asset('js/dashboard.js') }}"></script>
 @endsection

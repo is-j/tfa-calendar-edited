@@ -16,7 +16,7 @@ class SetupController extends Controller
     public function index()
     {
         $role = User::find(Auth::user()->id)->role();
-        if (!DB::table($role . 's')->where('user_id', Auth::user()->id)->exists()) {
+        if ($role != 'admin' && !DB::table($role . 's')->where('user_id', Auth::user()->id)->exists()) {
             return view('auth.setup');
         } else {
             return redirect()->route('dashboard');

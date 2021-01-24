@@ -82,6 +82,30 @@ class AjaxController extends Controller
                 }
             };
             return json_encode($output);
+        } else if (User::find(Auth::user()->id)->role() == 'admin') {
+            $output = [];
+            foreach (Slot::get() as $item) {
+                $temp = [];
+                $extended = [];
+                $extended['subject'] = Subject::find($item->subject)->name;
+                $tutorname = User::find($item->tutor_id)->name;
+                if (is_null($item->student_id)) {
+                    $temp['title'] = "US: $tutorname";
+                    $temp['color'] = 'red';
+                    $extended['claimed'] = false;
+                } else {
+                    $studentname = User::find($item->student_id)->name;
+                    $temp['title'] = "CS: $tutorname w/ $studentname";
+                    $extended['studentname'] = $studentname;
+                    $extended['info'] = $item->info;
+                    $extended['claimed'] = true;
+                }
+                $temp['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start));
+                $temp['end'] = date("Y-m-d\\TH:i:s\\Z", strtotime($item->start . "+1 hours"));
+                $temp['extendedProps'] = $extended;
+                array_push($output, $temp);
+            };
+            return json_encode($output);
         }
     }
     protected function create(Request $request)
