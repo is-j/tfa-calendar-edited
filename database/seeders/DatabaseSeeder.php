@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'student', 'code' => '6VcVV', 'description' => 'student privileges']
         ]);
         DB::table('subjects')->insert([
-            ['name' => 'Biology'], ['name' => 'Chemistry'], ['name' => 'Physics Algebra'], ['name' => 'Physics Calculus'], ['name' => 'Algebra 1'], ['name' => 'Geometry'], ['name' => 'Algebra 2'], ['name' => 'Trigonometry'], ['name' => 'Precalculus'], ['name' => 'Calculus AB/BC'], ['name' => 'SAT Math 2'], ['name' => 'Macroeconomics'], ['name' => 'Microeconomics'], ['name' => 'Elementary English'], ['name' => 'SAT English']
+            ['name' => 'Biology'], ['name' => 'Chemistry'], ['name' => 'Physics Algebra'], ['name' => 'Physics Calculus'], ['name' => 'Algebra 1'], ['name' => 'Geometry'], ['name' => 'Algebra 2'], ['name' => 'Trigonometry'], ['name' => 'Precalculus'], ['name' => 'Calculus AB/BC'], ['name' => 'SAT Math 2'], ['name' => 'Macroeconomics'], ['name' => 'Microeconomics'], ['name' => 'Elementary English'], ['name' => 'SAT English'], ['name' => 'Computer Science']
         ]);
         DB::table('users')->insert([
             ['name'=>'Administrator', 'email'=>'scheduler@tutoringforall.org','role_id'=>1, 'timezone'=>0, 'password'=>Hash::make(config('app.adminpw'))]
