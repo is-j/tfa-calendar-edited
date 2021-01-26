@@ -76,13 +76,13 @@ use Illuminate\Support\Facades\Auth;
                     <form class="needs-validation" id="informationForm" novalidate>
                         <fieldset>
                             <div class="my-3">
-                                <input type="text" class="form-control" name="meeting_link" value="{{ Tutor::select('meeting_link')->find(Auth::user()->id)->first()->meeting_link }}" placeholder="Meeting link" required>
+                                <input type="text" class="form-control" name="meeting_link" value="{{ Tutor::select('meeting_link')->find(Auth::user()->id)->meeting_link }}" placeholder="Meeting link" required>
                                 <small class="form-text text-muted">
                                     E.g. Personal Zoom or Google Meet Links.
                                 </small>
                             </div>
                             <div>
-                                <textarea class="form-control" name="bio" placeholder="Introduce yourself to students" rows="3" maxlength="1000" required>{{ Tutor::select('bio')->find(Auth::user()->id)->first()->bio }}</textarea>
+                                <textarea class="form-control" name="bio" placeholder="Introduce yourself to students" rows="3" maxlength="1000" required>{{ Tutor::select('bio')->find(Auth::user()->id)->bio }}</textarea>
                                 <small class="form-text text-muted">
                                     Limit 1000 characters.
                                 </small>
