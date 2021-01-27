@@ -35,8 +35,7 @@ RUN chown -R www-data: /app
 RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
 
 RUN cd /app && \
-    /usr/local/bin/composer install --optimize-autoloader --no-dev && \
-    /usr/local/bin/composer remove --dev facade/ignition
+    /usr/local/bin/composer install --optimize-autoloader --no-dev
 
 RUN chown -R www-data: /app
 RUN php /app/artisan view:cache
