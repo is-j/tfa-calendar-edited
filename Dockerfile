@@ -1,6 +1,4 @@
 FROM php:7.4-fpm-alpine
-
-RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install -j "$(nproc)" opcache
 RUN set -ex; \
   { \
@@ -16,27 +14,21 @@ RUN set -ex; \
     echo "; Configure Opcache Memory (Application-specific)"; \
     echo "opcache.memory_consumption = 32"; \
   } > "$PHP_INI_DIR/conf.d/cloud-run.ini"
-
+RUN docker-php-ext-install pdo pdo_mysql
 WORKDIR /var/www/html
-COPY . ./
-
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN apk add --no-cache nginx supervisor wget
-
 RUN mkdir -p /run/nginx
-
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 RUN mkdir -p /app
 COPY . /app
-RUN chown -R www-data: /app
+RUN chmod +x /app/docker/webstart.sh
 
 RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
-
 RUN cd /app && \
-    /usr/local/bin/composer install --optimize-autoloader --no-dev && \
-    /usr/local/bin/composer remove --dev facade/ignition
+    /usr/local/bin/composer install --optimize-autoloader --no-dev
 
-RUN chmod +x /app/docker/webstart.sh
+RUN chown -R www-data: /app
 CMD sh /app/docker/startup.sh
