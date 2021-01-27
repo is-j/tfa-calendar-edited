@@ -38,7 +38,5 @@ RUN cd /app && \
     /usr/local/bin/composer install --optimize-autoloader --no-dev && \
     /usr/local/bin/composer remove --dev facade/ignition
 
-RUN chown -R www-data: /app
-RUN php /app/artisan view:cache
 RUN chmod +x /app/docker/webstart.sh
 CMD sh /app/docker/startup.sh
