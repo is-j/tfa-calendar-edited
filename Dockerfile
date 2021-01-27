@@ -30,7 +30,4 @@ RUN cd /app && \
   /usr/local/bin/composer install --optimize-autoloader --no-dev
 RUN chown -R www-data: /app
 RUN chmod +x /app/docker/controller.sh
-RUN cd /app && \
-  php artisan view:cache
-
 CMD sh /app/docker/startup.sh
