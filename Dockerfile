@@ -31,7 +31,6 @@ RUN cd /app && \
 RUN chown -R www-data: /app
 RUN chmod +x /app/docker/controller.sh
 RUN cd /app && \
-  php artisan route:cache && \
   php artisan view:cache
 
 CMD sh /app/docker/startup.sh
