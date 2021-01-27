@@ -30,9 +30,7 @@ RUN cd /app && \
   /usr/local/bin/composer install --optimize-autoloader --no-dev
 RUN chown -R www-data: /app
 RUN cd /app && \
-  php artisan view:clear && \
+  php artisan route:cache && \
   php artisan view:cache
 
-RUN sed -i "s,LISTEN_PORT,$PORT,g" /etc/nginx/nginx.conf
-RUN /usr/bin/supervisord -c /app/docker/supervisord.conf
 CMD sh /app/docker/startup.sh
