@@ -2,17 +2,17 @@ FROM php:7.4-fpm-alpine
 RUN docker-php-ext-install -j "$(nproc)" opcache
 RUN set -ex; \
   { \
-    echo "; Cloud Run enforces memory & timeouts"; \
-    echo "memory_limit = -1"; \
-    echo "max_execution_time = 0"; \
-    echo "; File upload at Cloud Run network limit"; \
-    echo "upload_max_filesize = 32M"; \
-    echo "post_max_size = 32M"; \
-    echo "; Configure Opcache for Containers"; \
-    echo "opcache.enable = On"; \
-    echo "opcache.validate_timestamps = Off"; \
-    echo "; Configure Opcache Memory (Application-specific)"; \
-    echo "opcache.memory_consumption = 32"; \
+  echo "; Cloud Run enforces memory & timeouts"; \
+  echo "memory_limit = -1"; \
+  echo "max_execution_time = 0"; \
+  echo "; File upload at Cloud Run network limit"; \
+  echo "upload_max_filesize = 32M"; \
+  echo "post_max_size = 32M"; \
+  echo "; Configure Opcache for Containers"; \
+  echo "opcache.enable = On"; \
+  echo "opcache.validate_timestamps = Off"; \
+  echo "; Configure Opcache Memory (Application-specific)"; \
+  echo "opcache.memory_consumption = 32"; \
   } > "$PHP_INI_DIR/conf.d/cloud-run.ini"
 RUN docker-php-ext-install pdo pdo_mysql
 WORKDIR /var/www/html
@@ -24,11 +24,15 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 RUN mkdir -p /app
 COPY . /app
-RUN chmod +x /app/docker/webstart.sh
 
 RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
 RUN cd /app && \
-    /usr/local/bin/composer install --optimize-autoloader --no-dev
-
+  /usr/local/bin/composer install --optimize-autoloader --no-dev
 RUN chown -R www-data: /app
+RUN cd /app && \
+  php artisan view:clear && \
+  php artisan view:cache
+
+RUN sed -i "s,LISTEN_PORT,$PORT,g" /etc/nginx/nginx.conf
+RUN /usr/bin/supervisord -c /app/docker/supervisord.conf
 CMD sh /app/docker/startup.sh
