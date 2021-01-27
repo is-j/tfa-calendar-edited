@@ -28,7 +28,11 @@ use Illuminate\Support\Facades\DB;
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->email }}</td>
                 <td>{{ ucfirst(Role::find($item->role_id)->name) }}</td>
+                @if (DB::table(Role::find($item->role_id)->name . 's')->where('user_id', $item->id)->exists())
                 <td>{{ DB::table(Role::find($item->role_id)->name . 's')->where('user_id', $item->id)->first()->strikes }}</td>
+                @else
+                <td>NULL</td>
+                @endif
             </tr>
             @endforeach
         </tbody>
