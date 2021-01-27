@@ -29,6 +29,7 @@ RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar 
 RUN cd /app && \
   /usr/local/bin/composer install --optimize-autoloader --no-dev
 RUN chown -R www-data: /app
+RUN chmod +x /app/docker/controller.sh
 RUN cd /app && \
   php artisan route:cache && \
   php artisan view:cache
