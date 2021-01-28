@@ -27,7 +27,8 @@ COPY . /app
 
 RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
 RUN cd /app && \
-  /usr/local/bin/composer install --optimize-autoloader --no-dev
+  /usr/local/bin/composer install --optimize-autoloader --no-dev && \
+  php artisan optimize:clear
 RUN chown -R www-data: /app
 RUN chmod +x /app/docker/controller.sh
 CMD sh /app/docker/startup.sh
