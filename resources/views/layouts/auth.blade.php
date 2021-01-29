@@ -39,7 +39,7 @@ $name = Route::currentRouteName();
 </body>
 @if ($name != 'cancel')
 <footer class="fixed-bottom pb-3">
-    <p class="text-center text-muted">© <span id="year"></span> Dennis Eum. Tutoring for All.</p>
+    <p class="text-center text-muted">© <span id="year"></span> Tutoring for All<br>Designed by Dennis Eum</p>
 </footer>
 @endif
 
