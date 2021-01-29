@@ -175,7 +175,7 @@ $name = Route::currentRouteName();
     @yield('scripts')
 </body>
 <footer class="mt-4 pb-3">
-    <p class="text-center text-muted">© <span id="year"></span> Tutoring for All.<br>Designed by Dennis Eum.</p>
+    <p class="text-center text-muted">© <span id="year"></span> Tutoring for All<br>Designed by Dennis Eum</p>
 </footer>
 
 </html>
