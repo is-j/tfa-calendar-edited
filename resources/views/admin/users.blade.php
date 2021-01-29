@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 @section('content')
 <div class="container-md">
-    <div class="input-group mb-3 shadow">
+    <div class="input-group mb-3 shadow-sm">
         <span class="input-group-text"><i data-feather="search"></i></span>
         <input type="text" class="form-control" name="search" placeholder="Search by #, name, email, or role">
     </div>
