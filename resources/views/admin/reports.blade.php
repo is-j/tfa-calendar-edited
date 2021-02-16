@@ -29,7 +29,7 @@ use App\Models\Report;
             <tr class="align-middle">
                 <td scope="row">{{ User::find($item->reporter_id)->name }}; {{ ucfirst(Role::find(User::find($item->reporter_id)->role_id)->name) }}</td>
                 <td>{{ User::find($item->reported_id)->name }}; {{ ucfirst(Role::find(User::find($item->reported_id)->role_id)->name) }}</td>
-                <td>{{ Slot::find($item->event_id)->start }}</td>
+                <td>{{ $item->event_date }}</td>
                 <td>{{ $item->created_at }}</td>
                 <td class="text-center"><button type="button" class="btn btn-success me-2" data-action="confirm" data-eventid="{{ $item->event_id }}"><i data-feather="check"></i></button><button type="button" class="btn btn-danger" data-action="deny" data-eventid="{{ $item->event_id }}"><i data-feather="x"></i></button></td>
             </tr>

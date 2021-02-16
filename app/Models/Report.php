@@ -13,5 +13,6 @@ class Report extends Model
         'reporter_id',
         'reported_id',
         'event_id',
+        'event_date'
     ];
 }
