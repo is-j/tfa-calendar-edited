@@ -296,9 +296,7 @@ class AjaxController extends Controller
             } else {
                 $reportedid = Slot::find($request->event_id)->tutor_id;
             }
-            error_log($reportedid);
-            error_log($request->event_id);
-            Report::create(['reporter_id' => Auth::user()->id, 'reported_id' => $reportedid, 'event_id' => $request->event_id]);
+            Report::create(['reporter_id' => Auth::user()->id, 'reported_id' => $reportedid, 'event_id' => $request->event_id, 'event_date' => Slot::find($request->event_id)->start]);
         }
     }
 
