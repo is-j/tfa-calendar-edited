@@ -287,13 +287,15 @@ class AjaxController extends Controller
     {
         if (User::find(Auth::user()->id)->role() != 'admin') {
             $output = ['exists' => false];
-            if (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->exists()) {
+            $interval = [date('Y-m-d 00:00:00', strtotime('-1 day')), date('Y-m-d 23:59:59', strtotime('+1 day'))];
+            if (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereBetween('start', $interval)->exists()) {
                 $output['exists'] = true;
                 $output['starts'] = [];
-                foreach (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->get() as $item) {
+                foreach (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereBetween('start', $interval)->get() as $item) {
                     array_push($output['starts'], ['event_id' => $item->event_id, 'start' => $item->start]);
                 }
             }
+            array_push($output, $interval);
             return json_encode($output);
         }
     }
@@ -319,10 +321,12 @@ class AjaxController extends Controller
         $reportedid = Report::where('event_id', $request->event_id)->first()->reported_id;
         Report::where('event_id', $request->event_id)->delete();
         ProcessReport::dispatch($reportedid);
+        return;
     }
 
     protected function denyReport(Request $request)
     {
         Report::where('event_id', $request->event_id)->delete();
+        return;
     }
 }

@@ -45,21 +45,18 @@ $(function () {
 
 if (layout) {
     function initReport() {
-        $.ajax({
-            type: 'GET',
-            url: '/ajax/report',
-            success: function (response) {
-                if (response.exists) {
-                    $('#typeReport select').prop('disabled', false);
-                    $('#startReport select').empty();
-                    for (item of response.starts) {
-                        $('#startReport select').append(`<option value="${item.event_id}">${DateTime.fromSQL(item.start, { zone: 'UTC' }).toLocal().toFormat('ff')}</option>`);
-                    }
-                } else {
-                    $('#typeReport select').prop('disabled', true);
+        fetch('/ajax/report', { method: 'GET' }).then(response => response.json()).then(data => {
+            console.log(data.starts);
+            if (data.exists) {
+                $('#typeReport select').prop('disabled', false);
+                $('#startReport select').empty();
+                for (item of data.starts) {
+                    console.log(item);
+                    $('#startReport select').append(`<option value="${item.event_id}">${DateTime.fromSQL(item.start, { zone: 'UTC' }).toLocal().toFormat('ff')}</option>`);
                 }
-            },
-            dataType: 'json'
+            } else {
+                $('#typeReport select').prop('disabled', true);
+            }
         });
     }
 
@@ -68,32 +65,35 @@ if (layout) {
         let type = form.find('select[name="type"] option:selected').val();
         if (type == 1) {
             let message = form.find('textarea[name="message"]').val();
-            $.ajax({
-                type: 'POST',
-                url: '/ajax/report',
-                data: {
-                    type: type,
-                    message: message
-                },
-                success: function () {
-                    reportModal.hide();
-                    form.trigger('reset').removeClass('was-validated');
-                }
+            postData('/ajax/report', {
+                type: type,
+                message: message
+            }).then(() => {
+                reportModal.hide();
+                form.trigger('reset').removeClass('was-validated');
             });
         } else {
             let event_id = form.find('select[name="start"] option:selected').val();
-            $.ajax({
-                type: 'POST',
-                url: '/ajax/report',
-                data: {
-                    type: type,
-                    event_id: event_id
-                },
-                success: function () {
-                    reportModal.hide();
-                    form.trigger('reset').removeClass('was-validated');
-                }
+            postData('/ajax/report', {
+                type: type,
+                event_id: event_id
+            }).then(() => {
+                reportModal.hide();
+                form.trigger('reset').removeClass('was-validated');
             });
         }
+    }
+
+    async function postData(url, data) {
+        const response = await fetch(url, {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').prop('content')
+            },
+            body: JSON.stringify(data)
+        });
+        return true;
     }
 }

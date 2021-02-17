@@ -130,11 +130,11 @@ $name = Route::currentRouteName();
                     <form class="needs-validation ajax" id="reportForm" novalidate>
                         <div class="input-group mb-3" id="typeReport">
                             <span class="input-group-text">Type</span>
-                            <select class="form-select" name="type" @if (User::find(Auth::user()->id)->role() == 'admin') disabled @elseif (!Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->exists()) disabled @endif>
+                            <select class="form-select" name="type">
                                 <option value="1">Technical problem/bug report</option>
-                                @if (User::find(Auth::user()->id)->role() == 'tutor' && Slot::where('tutor_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->exists())
+                                @if (User::find(Auth::user()->id)->role() == 'tutor' && Slot::where('tutor_id', Auth::user()->id)->whereBetween('start', [date('Y-m-d 00:00:00', strtotime('-1 day')), date('Y-m-d 23:59:59', strtotime('+1 day'))])->exists())
                                 <option value="2">Absent student report</option>
-                                @elseif (User::find(Auth::user()->id)->role() == 'student' && Slot::where('student_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->exists())
+                                @elseif (User::find(Auth::user()->id)->role() == 'student' && Slot::where('student_id', Auth::user()->id)->whereBetween('start', [date('Y-m-d 00:00:00', strtotime('-1 day')), date('Y-m-d 23:59:59', strtotime('+1 day'))])->exists())
                                 <option value="2">Absent tutor report</option>
                                 @endif
                             </select>
