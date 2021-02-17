@@ -37,6 +37,7 @@ Route::middleware(['auth', 'setup'])->group(function () {
 
 Route::middleware(['auth', 'setup', 'tutor'])->group(function () {
     Route::post('/ajax/create', [AjaxController::class, 'create']);
+    Route::get('/ajax/subject/get', [AjaxController::class, 'getSubject']);
     Route::post('/ajax/subject/plus', [AjaxController::class, 'plusSubject']);
     Route::post('/ajax/subject/minus', [AjaxController::class, 'minusSubject']);
     Route::post('/ajax/information/update', [AjaxController::class, 'updateInformation']);

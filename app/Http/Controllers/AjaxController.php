@@ -186,6 +186,20 @@ class AjaxController extends Controller
             }
         }
     }
+    protected function getSubject()
+    {
+        $yh = [];
+        $nh = [];
+        foreach (Tutor::find(Auth::user()->id)->subjects() as $item) {
+            array_push($yh, ['item' => $item, 'name' => Subject::find($item)->name]);
+        }
+        foreach (Subject::get() as $item) {
+            if (!in_array($item->id, Tutor::find(Auth::user()->id)->subjects())) {
+                array_push($nh, ['item' => $item->id, 'name' => $item->name]);
+            }
+        }
+        return json_encode([$yh, $nh]);
+    }
     protected function plusSubject(Request $request)
     {
         $subjects = Tutor::find(Auth::user()->id)->subjects();
@@ -300,13 +314,15 @@ class AjaxController extends Controller
         }
     }
 
-    protected function confirmReport(Request $request) {
+    protected function confirmReport(Request $request)
+    {
         $reportedid = Report::where('event_id', $request->event_id)->first()->reported_id;
         Report::where('event_id', $request->event_id)->delete();
         ProcessReport::dispatch($reportedid);
     }
 
-    protected function denyReport(Request $request) {
+    protected function denyReport(Request $request)
+    {
         Report::where('event_id', $request->event_id)->delete();
     }
 }

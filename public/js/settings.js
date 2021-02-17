@@ -1,6 +1,20 @@
 $(function () {
     $('#subjectError').hide();
-    $('[data-subject]').click(function () {
+    $.ajax({
+        type: 'GET',
+        url: '/ajax/subject/get',
+        success: function (response) {
+            for (item of response[0]) {
+                $('#mainContent').prepend(`<li class="list-group-item">${item.name}<span class="float-end toggle-true" data-subject="${item.item}" data-toggle="true"><i data-feather="minus"></i></span></li>`);
+            }
+            for (item of response[1]) {
+                $('#searchContent').append(`<li class="list-group-item">${item.name}<span class="float-end toggle-false" data-subject="${item.item}" data-toggle="false"><i data-feather="plus"></i></span></li>`);
+            }
+            feather.replace();
+        },
+        dataType: 'json'
+    });
+    $('#subjects').on('click', '[data-subject]', function () {
         let self = this;
         let subject = $(self).data('subject');
         if ($(self).data('toggle')) {
