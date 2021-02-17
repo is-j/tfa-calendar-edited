@@ -47,9 +47,6 @@ use Illuminate\Support\Facades\Auth;
                                 </li>
                             </ul>
                             <ul class="list-group mt-3 subjectContent" id="mainContent">
-                                @foreach(Tutor::find(Auth::user()->id)->subjects() as $item)
-                                <li class="list-group-item">{{ Subject::find($item)->name }}<span class="float-end toggle-true" data-subject="{{ $item }}" data-toggle="true"><i data-feather="minus"></i></span></li>
-                                @endforeach
                                 <div class="text-danger mt-2" id="subjectError">
                                     You must have at least one subject to tutor.
                                 </div>
@@ -63,11 +60,6 @@ use Illuminate\Support\Facades\Auth;
                                 </div>
                             </ul>
                             <ul class="list-group mt-3 subjectContent" id="searchContent">
-                                @foreach(Subject::get() as $item)
-                                @if (!in_array($item->id,Tutor::find(Auth::user()->id)->subjects()))
-                                <li class="list-group-item">{{ $item->name }}<span class="float-end toggle-false" data-subject="{{ $item->id }}" data-toggle="false"><i data-feather="plus"></i></span></li>
-                                @endif
-                                @endforeach
                             </ul>
                         </div>
                     </div>
