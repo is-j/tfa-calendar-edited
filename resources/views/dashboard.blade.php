@@ -6,6 +6,10 @@ use App\Models\Subject;
 
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.css" integrity="sha256-uq9PNlMzB+1h01Ij9cx7zeE2OR2pLAfRw3uUUOOPKdA=" crossorigin="anonymous">
+@endsection
+
 @section('content')
 <div aria-live="polite" aria-atomic="true" class="bg-dark position-relative bd-example-toasts">
     <div class="toast-container position-absolute pe-3 start-50 translate-middle-x" style="top:-10px;">
@@ -200,7 +204,7 @@ use App\Models\Subject;
 @endsection
 
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.js" integrity="sha256-oenhI3DRqaPoTMAVBBzQUjOKPEdbdFFtTCNIosGwro0=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.js" integrity="sha256-rPPF6R+AH/Gilj2aC00ZAuB2EKmnEjXlEWx5MkAp7bw=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery.redirect@1.1.4/jquery.redirect.min.js"></script>
 @if (User::find(Auth::user()->id)->role() == 'tutor')
 <script>
