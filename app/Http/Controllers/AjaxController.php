@@ -295,7 +295,6 @@ class AjaxController extends Controller
                     array_push($output['starts'], ['event_id' => $item->event_id, 'start' => $item->start]);
                 }
             }
-            array_push($output, $interval);
             return json_encode($output);
         }
     }

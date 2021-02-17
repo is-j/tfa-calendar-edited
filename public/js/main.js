@@ -46,12 +46,10 @@ $(function () {
 if (layout) {
     function initReport() {
         fetch('/ajax/report', { method: 'GET' }).then(response => response.json()).then(data => {
-            console.log(data.starts);
             if (data.exists) {
                 $('#typeReport select').prop('disabled', false);
                 $('#startReport select').empty();
                 for (item of data.starts) {
-                    console.log(item);
                     $('#startReport select').append(`<option value="${item.event_id}">${DateTime.fromSQL(item.start, { zone: 'UTC' }).toLocal().toFormat('ff')}</option>`);
                 }
             } else {
