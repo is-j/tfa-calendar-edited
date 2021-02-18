@@ -26,6 +26,14 @@ $name = Route::currentRouteName();
     @yield('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+    @if (in_array($name, ['admin.users', 'admin.probations', 'admin.reports']))
+    <style>
+        .container-table {
+            height: calc(100vh - 250px) !important;
+            overflow-y: scroll;
+        }
+    </style>
+    @endif
 </head>
 
 <body>

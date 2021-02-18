@@ -72,105 +72,103 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
 });
 calendar.render();
 
-$(function () {
+$(() => {
     checkView();
-    $(window).resize(function () {
+    $(window).resize(() => {
         checkView();
     });
-    $('#calendarSubjects').change(function () {
+    $('#calendarSubjects').change(() => {
         subjectID = $('#calendarSubjects option:selected').val();
         calendar.refetchEvents();
     });
-    $('#createSlotBtn').click(function () {
+    $('#createSlotBtn').click(() => {
         $('#createSlotForm').submit();
     });
-    $('#deleteSlotBtn').click(function () {
+    $('#deleteSlotBtn').click(() => {
         $('#deleteSlotForm').submit();
     });
-    $('#unclaimSlotBtn').click(function () {
+    $('#unclaimSlotBtn').click(() => {
         $('#unclaimSlotForm').submit();
     });
-    $('#claimSlotBtn').click(function () {
+    $('#claimSlotBtn').click(() => {
         $('#claimSlotForm').submit();
     });
-    $('#createSlotForm').submit(function (event) {
+    $('#createSlotForm').submit((event) => {
         event.preventDefault();
-        if (DateTime.fromFormat($('#createSlotForm').find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm") < now.plus({ hours: 6 })) {
-            $('#createSlotForm').find('input[name="start"]')[0].setCustomValidity('invalid');
+        const form = $('#createSlotForm');
+        if (DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm") < now.plus({ hours: 6 })) {
+            form.find('input[name="start"]')[0].setCustomValidity('invalid');
         } else {
-            $('#createSlotForm').find('input[name="start"]')[0].setCustomValidity('');
+            form.find('input[name="start"]')[0].setCustomValidity('');
         }
-        if (!this.checkValidity()) {
+        if (!form[0].checkValidity()) {
             event.stopPropagation();
         } else {
             createSlot();
         }
-        $(this).addClass('was-validated');
+        form.addClass('was-validated');
     });
-    $('#deleteSlotForm').submit(function (event) {
+    $('#deleteSlotForm').submit((event) => {
         event.preventDefault();
-        if (!this.checkValidity()) {
+        const form = $('#deleteSlotForm');
+        if (!form[0].checkValidity()) {
             event.stopPropagation();
         } else {
             deleteSlot();
         }
-        $(this).addClass('was-validated');
+        form.addClass('was-validated');
     });
-    $('#unclaimSlotForm').submit(function (event) {
+    $('#unclaimSlotForm').submit((event) => {
         event.preventDefault();
-        if (!this.checkValidity()) {
+        const form = $('#unclaimSlotForm');
+        if (!form[0].checkValidity()) {
             event.stopPropagation();
         } else {
             unclaimSlot();
         }
-        $(this).addClass('was-validated');
+        form.addClass('was-validated');
     });
-    $('#claimSlotForm').submit(function (event) {
+    $('#claimSlotForm').submit((event) => {
         event.preventDefault();
-        if (!this.checkValidity()) {
+        const form = $('#claimSlotForm');
+        if (!form[0].checkValidity()) {
             event.stopPropagation();
         } else {
             claimSlot();
         }
-        $(this).addClass('was-validated');
+        form.addClass('was-validated');
     });
 });
 
-function checkView() {
+checkView = () => {
     if (!$('.fc-timeGridDay-button').is(':visible')) {
         $('.fc-timeGridDay-button').trigger('click');
     }
 }
 
-function createSlot() {
+createSlot = () => {
     let form = $('#createSlotForm');
     let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
     let subject = form.find('select[name="subject"] option:selected').val();
     let repeat = form.find('input[name="repeat"]').is(':checked');
-    $.ajax({
-        type: 'POST',
-        url: '/ajax/create',
-        data: {
-            start: start,
-            subject: subject,
-            repeat: repeat
-        },
-        success: function (response) {
-            calendar.refetchEvents();
-            createSlotModal.hide();
-            initReport();
-            form.trigger('reset').removeClass('was-validated');
-            if (response.error) {
-                $('#toast .toast-body').text(response.msg);
-                toast.show();
-                $('html, body').animate({ scrollTop: 0 }, 'slow');
-            }
-        },
-        dataType: 'json'
-    });
+    postData('/ajax/create', {
+        start: start,
+        subject: subject,
+        repeat: repeat
+    }).then(response => {
+        calendar.refetchEvents();
+        createSlotModal.hide();
+        initReport();
+        form.trigger('reset').removeClass('was-validated');
+        if (response.error) {
+            $('#toast .toast-body').text(response.msg);
+            toast.show();
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        }
+    })
 }
 
-function deleteSlot() {
+deleteSlot = () => {
     let form = $('#deleteSlotForm');
     let start = form.find('input[name="start"]').val();
     if (form.find('div[data-claimed]').data('claimed')) {
@@ -189,52 +187,41 @@ function deleteSlot() {
     } else {
         start = DateTime.fromFormat(start, "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
         let repeat = form.find('input[name="repeat"]').is(':checked');
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/cancel',
-            data: {
-                start: start,
-                repeat: repeat
-            },
-            success: function () {
-                calendar.refetchEvents();
-                deleteSlotModal.hide();
-                initReport();
-                form.trigger('reset').removeClass('was-validated');
-            }
+        postData('/ajax/cancel', {
+            start: start,
+            repeat: repeat
+        }).then(() => {
+            calendar.refetchEvents();
+            deleteSlotModal.hide();
+            initReport();
+            form.trigger('reset').removeClass('was-validated');
         });
     }
 }
 
-function claimSlot() {
+claimSlot = () => {
     let form = $('#claimSlotForm');
     let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
     let tutorname = form.find('input[name="tutorname"]').val();
     let info = form.find('textarea[name="info"]').val();
-    $.ajax({
-        type: 'POST',
-        url: '/ajax/claim',
-        data: {
-            start: start,
-            tutorname: tutorname,
-            info: info
-        },
-        success: function (response) {
-            calendar.refetchEvents();
-            claimSlotModal.hide();
-            initReport();
-            form.trigger('reset').removeClass('was-validated');
-            if (response.error) {
-                $('#toast .toast-body').text(response.msg);
-                toast.show();
-                $('html, body').animate({ scrollTop: 0 }, 'slow');
-            }
-        },
-        dataType: 'json'
+    postData('/ajax/claim', {
+        start: start,
+        tutorname: tutorname,
+        info: info
+    }).then(response => {
+        calendar.refetchEvents();
+        claimSlotModal.hide();
+        initReport();
+        form.trigger('reset').removeClass('was-validated');
+        if (response.error) {
+            $('#toast .toast-body').text(response.msg);
+            toast.show();
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        }
     });
 }
 
-function unclaimSlot() {
+unclaimSlot = () => {
     let form = $('#unclaimSlotForm');
     let start = form.find('input[name="start"]').val();
     let tutorname = form.find('input[name="tutorname"]').val();

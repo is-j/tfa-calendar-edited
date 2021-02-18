@@ -188,6 +188,7 @@ class AjaxController extends Controller
                 DB::table(Role::find(Auth::user()->role_id)->name . 's')->where('user_id', Auth::user()->id)->update(['strikes' => 0]);
             }
         }
+        return json_encode(['success' => true]);
     }
     protected function getSubject()
     {
@@ -208,16 +209,17 @@ class AjaxController extends Controller
         $subjects = Tutor::find(Auth::user()->id)->subjects();
         array_push($subjects, intval($request->subject));
         Tutor::where('user_id', Auth::user()->id)->update(['subjects' => json_encode(['subjects' => $subjects])]);
+        return json_encode(['success' => true]);
     }
     protected function minusSubject(Request $request)
     {
         $subjects = Tutor::find(Auth::user()->id)->subjects();
         if (count($subjects) == 1) {
-            return false;
+            return json_encode(['success' => false]);
         } else {
             $subjects = array_values(array_diff($subjects, [intval($request->subject)]));
             Tutor::where('user_id', Auth::user()->id)->update(['subjects' => json_encode(['subjects' => $subjects])]);
-            return true;
+            return json_encode(['success' => true]);
         }
     }
     protected function updateInformation(Request $request)
@@ -231,6 +233,7 @@ class AjaxController extends Controller
             $meetinglink = 'https://' . $meetinglink;
         }
         Tutor::where('user_id', Auth::user()->id)->update(['meeting_link' => $meetinglink, 'bio' => $request->bio]);
+        return json_encode(['success' => true]);
     }
 
     protected function claim(Request $request)
@@ -300,6 +303,7 @@ class AjaxController extends Controller
             }
             return json_encode($output);
         }
+        return json_encode(['success' => false]);
     }
 
     protected function report(Request $request)
@@ -316,6 +320,7 @@ class AjaxController extends Controller
             }
             Report::create(['reporter_id' => Auth::user()->id, 'reported_id' => $reportedid, 'event_id' => $request->event_id, 'event_date' => Slot::find($request->event_id)->start]);
         }
+        return json_encode(['success' => true]);
     }
 
     protected function confirmReport(Request $request)
@@ -323,12 +328,12 @@ class AjaxController extends Controller
         $reportedid = Report::where('event_id', $request->event_id)->first()->reported_id;
         Report::where('event_id', $request->event_id)->delete();
         ProcessReport::dispatch($reportedid);
-        return;
+        return json_encode(['success' => true]);
     }
 
     protected function denyReport(Request $request)
     {
         Report::where('event_id', $request->event_id)->delete();
-        return;
+        return json_encode(['success' => true]);
     }
 }

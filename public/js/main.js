@@ -81,17 +81,17 @@ if (layout) {
             });
         }
     }
+}
 
-    async function postData(url, data) {
-        const response = await fetch(url, {
-            method: 'POST',
-            cache: 'no-cache',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').prop('content')
-            },
-            body: JSON.stringify(data)
-        });
-        return true;
-    }
+async function postData(url, data) {
+    const response = await fetch(url, {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').prop('content')
+        },
+        body: JSON.stringify(data)
+    });
+    return response.json();
 }

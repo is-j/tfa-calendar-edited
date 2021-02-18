@@ -1,4 +1,4 @@
-$(function () {
+$(() => {
     $('input[name="search"]').on("keyup", function () {
         var value = $(this).val().toLowerCase();
         $('.table tbody tr').filter(function () {
