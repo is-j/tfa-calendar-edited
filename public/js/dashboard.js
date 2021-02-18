@@ -7,24 +7,28 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     },
     timeZone: 'local',
     initialView: 'dayGridMonth',
-    events: '/ajax/get/0',
+    events: (info, successCallback) => {
+        fetch(`/ajax/get/0?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`, {
+            method: 'GET'
+        }).then(response => response.json()).then(data => { successCallback(data) });
+    },
     selectable: true,
     nowIndicator: true,
     lazyFetching: true,
-    loading: function (isLoading) {
+    loading: (isLoading) => {
         if (isLoading) {
             $('#spinnerArea').html('<div class="spinner-border" role="status"> <span class="visually-hidden">Loading...</span> </div>');
         } else {
             $('#spinnerArea .spinner-border').remove();
         }
     },
-    dateClick: function (info) {
+    dateClick: (info) => {
         if (accounttype == 'tutor') {
             $('#createSlotForm').find('input[name="start"]').val(DateTime.fromISO(info.dateStr).toFormat("yyyy-MM-dd'T'HH:mm"));
             createSlotModal.show();
         }
     },
-    eventClick: function (info) {
+    eventClick: (info) => {
         if (accounttype == 'student') {
             if (!info.event.extendedProps.claimed) {
                 $('#claimSlotModalLabel').text(`Slot: ${info.event.title}`);
