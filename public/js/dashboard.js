@@ -1,3 +1,4 @@
+let subjectID = '0';
 let toast = new bootstrap.Toast(document.getElementById('toast'));
 var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     headerToolbar: {
@@ -8,7 +9,7 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     timeZone: 'local',
     initialView: 'dayGridMonth',
     events: (info, successCallback) => {
-        fetch(`/ajax/get/0?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`, {
+        fetch(`/ajax/get/${subjectID}?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`, {
             method: 'GET'
         }).then(response => response.json()).then(data => { successCallback(data) });
     },
@@ -77,8 +78,7 @@ $(function () {
         checkView();
     });
     $('#calendarSubjects').change(function () {
-        calendar.getEventSources()[0].remove();
-        calendar.addEventSource(`/ajax/get/${$('#calendarSubjects option:selected').val()}`);
+        subjectID = $('#calendarSubjects option:selected').val();
         calendar.refetchEvents();
     });
     $('#createSlotBtn').click(function () {
