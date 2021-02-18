@@ -303,6 +303,7 @@ class AjaxController extends Controller
             }
             return json_encode($output);
         }
+        return json_encode(['success' => false]);
     }
 
     protected function report(Request $request)
