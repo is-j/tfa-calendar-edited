@@ -19,14 +19,15 @@ use Illuminate\Support\Facades\Auth;
 
 class AjaxController extends Controller
 {
-    public function get($id)
+    public function get(Request $request, $id)
     {
+        $interval = [date('Y-m-d H:i:s', strtotime($request['start'])), date('Y-m-d H:i:s', strtotime($request['end']))];
         $datefilter = date('Y-m-d H:i:s', strtotime('-2 hours'));
         $datebefore = date('Y-m-d H:i:s', strtotime('+6 hours'));
         $id = intval($id);
         if (User::find(Auth::user()->id)->role() == 'tutor') {
             $output = [];
-            foreach (Slot::where('tutor_id', Auth::user()->id)->get() as $item) {
+            foreach (Slot::whereBetween('start', $interval)->where('tutor_id', Auth::user()->id)->get() as $item) {
                 $temp = [];
                 $extended = [];
                 $extended['subject'] = Subject::find($item->subject)->name;
@@ -55,7 +56,9 @@ class AjaxController extends Controller
             foreach (Slot::where('student_id', Auth::user()->id)->get() as $item) {
                 array_push($taken, date('Y-m-d H:i:s', strtotime($item->start)));
             }
-            foreach (Slot::whereNull('student_id')->orWhere('student_id', Auth::user()->id)->get() as $item) {
+            foreach (Slot::whereBetween('start', $interval)->where(function ($query) {
+                $query->whereNull('student_id')->orWhere('student_id', Auth::user()->id);
+            })->get() as $item) {
                 if ($id == 0 || $id == $item->subject) {
                     $temp = [];
                     $extended = [];
@@ -287,10 +290,11 @@ class AjaxController extends Controller
     {
         if (User::find(Auth::user()->id)->role() != 'admin') {
             $output = ['exists' => false];
-            if (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->exists()) {
+            $interval = [date('Y-m-d 00:00:00', strtotime('-1 day')), date('Y-m-d 23:59:59', strtotime('+1 day'))];
+            if (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereBetween('start', $interval)->exists()) {
                 $output['exists'] = true;
                 $output['starts'] = [];
-                foreach (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereDate('start', date('Y-m-d'))->get() as $item) {
+                foreach (Slot::where(User::find(Auth::user()->id)->role() . '_id', Auth::user()->id)->whereBetween('start', $interval)->get() as $item) {
                     array_push($output['starts'], ['event_id' => $item->event_id, 'start' => $item->start]);
                 }
             }
@@ -319,10 +323,12 @@ class AjaxController extends Controller
         $reportedid = Report::where('event_id', $request->event_id)->first()->reported_id;
         Report::where('event_id', $request->event_id)->delete();
         ProcessReport::dispatch($reportedid);
+        return;
     }
 
     protected function denyReport(Request $request)
     {
         Report::where('event_id', $request->event_id)->delete();
+        return;
     }
 }

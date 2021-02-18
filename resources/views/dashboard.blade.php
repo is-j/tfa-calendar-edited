@@ -6,6 +6,10 @@ use App\Models\Subject;
 
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.css" integrity="sha256-uq9PNlMzB+1h01Ij9cx7zeE2OR2pLAfRw3uUUOOPKdA=" crossorigin="anonymous">
+@endsection
+
 @section('content')
 <div aria-live="polite" aria-atomic="true" class="bg-dark position-relative bd-example-toasts">
     <div class="toast-container position-absolute pe-3 start-50 translate-middle-x" style="top:-10px;">
@@ -87,7 +91,7 @@ use App\Models\Subject;
                         <label>Subject</label>
                     </div>
                     <div class="form-floating mb-3" id="infoDelete">
-                        <textarea class="form-control" maxlength="1000" name="info" disabled></textarea>
+                        <textarea class="form-control" name="info" disabled></textarea>
                         <label>Topic needs</label>
                     </div>
                     <div class="d-grid" id="meetinglinkDelete">
@@ -132,7 +136,7 @@ use App\Models\Subject;
                         <label>Tutor email</label>
                     </div>
                     <div class="form-floating mb-3" id="tutorbioUnclaim">
-                        <textarea class="form-control" maxlength="1000" name="tutorbio" disabled></textarea>
+                        <textarea class="form-control" name="tutorbio" disabled></textarea>
                         <label>Tutor bio</label>
                     </div>
                     <div class="form-floating mb-3" id="subjectUnclaim">
@@ -140,7 +144,7 @@ use App\Models\Subject;
                         <label>Subject</label>
                     </div>
                     <div class="form-floating mb-3" id="infoUnclaim">
-                        <textarea class="form-control" maxlength="1000" name="info" disabled required></textarea>
+                        <textarea class="form-control" name="info" disabled required></textarea>
                         <label>Topic needs</label>
                     </div>
                     <div class="d-grid" id="meetinglinkUnclaim">
@@ -173,7 +177,7 @@ use App\Models\Subject;
                         <label>Tutor name</label>
                     </div>
                     <div class="form-floating mb-3" id="tutorbioClaim">
-                        <textarea class="form-control" maxlength="1000" name="tutorbio" disabled></textarea>
+                        <textarea class="form-control" name="tutorbio" disabled></textarea>
                         <label>Tutor bio</label>
                     </div>
                     <div class="form-floating mb-3" id="subjectClaim">
@@ -181,7 +185,7 @@ use App\Models\Subject;
                         <label>Subject</label>
                     </div>
                     <div class="form-floating" id="infoClaim">
-                        <textarea class="form-control" maxlength="1000" name="info" required></textarea>
+                        <textarea class="form-control" name="info" required></textarea>
                         <label>Topic needs</label>
                         <small class="form-text text-muted">
                             Limit 1000 characters.
@@ -200,7 +204,7 @@ use App\Models\Subject;
 @endsection
 
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.js" integrity="sha256-oenhI3DRqaPoTMAVBBzQUjOKPEdbdFFtTCNIosGwro0=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.js" integrity="sha256-rPPF6R+AH/Gilj2aC00ZAuB2EKmnEjXlEWx5MkAp7bw=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery.redirect@1.1.4/jquery.redirect.min.js"></script>
 @if (User::find(Auth::user()->id)->role() == 'tutor')
 <script>
