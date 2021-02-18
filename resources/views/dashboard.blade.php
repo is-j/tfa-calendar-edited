@@ -91,7 +91,7 @@ use App\Models\Subject;
                         <label>Subject</label>
                     </div>
                     <div class="form-floating mb-3" id="infoDelete">
-                        <textarea class="form-control" maxlength="1000" name="info" disabled></textarea>
+                        <textarea class="form-control" name="info" disabled></textarea>
                         <label>Topic needs</label>
                     </div>
                     <div class="d-grid" id="meetinglinkDelete">
@@ -136,7 +136,7 @@ use App\Models\Subject;
                         <label>Tutor email</label>
                     </div>
                     <div class="form-floating mb-3" id="tutorbioUnclaim">
-                        <textarea class="form-control" maxlength="1000" name="tutorbio" disabled></textarea>
+                        <textarea class="form-control" name="tutorbio" disabled></textarea>
                         <label>Tutor bio</label>
                     </div>
                     <div class="form-floating mb-3" id="subjectUnclaim">
@@ -144,7 +144,7 @@ use App\Models\Subject;
                         <label>Subject</label>
                     </div>
                     <div class="form-floating mb-3" id="infoUnclaim">
-                        <textarea class="form-control" maxlength="1000" name="info" disabled required></textarea>
+                        <textarea class="form-control" name="info" disabled required></textarea>
                         <label>Topic needs</label>
                     </div>
                     <div class="d-grid" id="meetinglinkUnclaim">
@@ -177,7 +177,7 @@ use App\Models\Subject;
                         <label>Tutor name</label>
                     </div>
                     <div class="form-floating mb-3" id="tutorbioClaim">
-                        <textarea class="form-control" maxlength="1000" name="tutorbio" disabled></textarea>
+                        <textarea class="form-control" name="tutorbio" disabled></textarea>
                         <label>Tutor bio</label>
                     </div>
                     <div class="form-floating mb-3" id="subjectClaim">
@@ -185,7 +185,7 @@ use App\Models\Subject;
                         <label>Subject</label>
                     </div>
                     <div class="form-floating" id="infoClaim">
-                        <textarea class="form-control" maxlength="1000" name="info" required></textarea>
+                        <textarea class="form-control" name="info" required></textarea>
                         <label>Topic needs</label>
                         <small class="form-text text-muted">
                             Limit 1000 characters.

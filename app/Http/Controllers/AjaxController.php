@@ -19,14 +19,15 @@ use Illuminate\Support\Facades\Auth;
 
 class AjaxController extends Controller
 {
-    public function get($id)
+    public function get(Request $request, $id)
     {
+        $interval = [date('Y-m-d H:i:s', strtotime($request['start'])), date('Y-m-d H:i:s', strtotime($request['end']))];
         $datefilter = date('Y-m-d H:i:s', strtotime('-2 hours'));
         $datebefore = date('Y-m-d H:i:s', strtotime('+6 hours'));
         $id = intval($id);
         if (User::find(Auth::user()->id)->role() == 'tutor') {
             $output = [];
-            foreach (Slot::where('tutor_id', Auth::user()->id)->get() as $item) {
+            foreach (Slot::whereBetween('start', $interval)->where('tutor_id', Auth::user()->id)->get() as $item) {
                 $temp = [];
                 $extended = [];
                 $extended['subject'] = Subject::find($item->subject)->name;
@@ -55,7 +56,9 @@ class AjaxController extends Controller
             foreach (Slot::where('student_id', Auth::user()->id)->get() as $item) {
                 array_push($taken, date('Y-m-d H:i:s', strtotime($item->start)));
             }
-            foreach (Slot::whereNull('student_id')->orWhere('student_id', Auth::user()->id)->get() as $item) {
+            foreach (Slot::whereBetween('start', $interval)->where(function ($query) {
+                $query->whereNull('student_id')->orWhere('student_id', Auth::user()->id);
+            })->get() as $item) {
                 if ($id == 0 || $id == $item->subject) {
                     $temp = [];
                     $extended = [];

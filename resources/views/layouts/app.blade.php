@@ -140,7 +140,7 @@ $name = Route::currentRouteName();
                             </select>
                         </div>
                         <div class="form-floating" id="messageReport">
-                            <textarea class="form-control" maxlength="1000" name="message" required></textarea>
+                            <textarea class="form-control" name="message" required></textarea>
                             <label>Briefly describe the report</label>
                             <small class="form-text text-muted">
                                 Limit 1000 characters.

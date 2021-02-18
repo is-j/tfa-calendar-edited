@@ -28,11 +28,11 @@ use App\Models\User;
                 <label>Subject</label>
             </div>
             <div class="form-floating mb-3" id="infoCancel">
-                <textarea class="form-control" maxlength="1000" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
+                <textarea class="form-control" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
                 <label>Topic needs</label>
             </div>
             <div class="form-floating mb-3" id="reasonCancel">
-                <textarea class="form-control" maxlength="1000" rows="3" name="reason" required></textarea>
+                <textarea class="form-control" name="reason" required></textarea>
                 <label>Cancellation reason</label>
                 <div class="invalid-feedback text-left">
                     You must provide a reason.
@@ -66,11 +66,11 @@ use App\Models\User;
                 <label>Subject</label>
             </div>
             <div class="form-floating mb-3" id="infoCancel">
-                <textarea class="form-control" maxlength="1000" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
+                <textarea class="form-control" name="info" disabled required>{{ app('request')->input('info') }}</textarea>
                 <label>Topic needs</label>
             </div>
             <div class="form-floating mb-3" id="reasonCancel">
-                <textarea class="form-control" maxlength="1000" rows="3" name="reason" required></textarea>
+                <textarea class="form-control" name="reason" required></textarea>
                 <label>Cancellation reason</label>
                 <div class="invalid-feedback text-left">
                     You must provide a reason.
