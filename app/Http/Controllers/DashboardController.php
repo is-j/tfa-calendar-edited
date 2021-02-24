@@ -17,6 +17,6 @@ class DashboardController extends Controller
 
     public function redirect()
     {
-        return redirect()->route('dashboard');
+        return redirect('dashboard');
     }
 }

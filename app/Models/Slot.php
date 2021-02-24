@@ -11,13 +11,13 @@ class Slot extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'event_id';
+    protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
-        'event_id',
+        'id',
         'start',
-        'subject',
+        'subject_id',
         'tutor_id'
     ];
 }

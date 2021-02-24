@@ -1,106 +1,102 @@
 @php
 use App\Models\User;
-use App\Models\Tutor;
 use App\Models\Subject;
 use Illuminate\Support\Facades\Auth;
 @endphp
 @extends('layouts.app')
 
 @section('content')
-<div class="container-md">
-    <div class="card shadow">
-        <div class="card-header" style="font-size:18px;">{{ __('Settings') }}</div>
-        <div class="card-body">
-            <ul class="nav nav-pills mb-3" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="account-tab" data-bs-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true">Account</a>
-                </li>
-                @if (User::find(Auth::user()->id)->role() == 'tutor')
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="subjects-tab" data-bs-toggle="tab" href="#subjects" role="tab" aria-controls="subjects" aria-selected="false">Subjects</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="information-tab" data-bs-toggle="tab" href="#information" role="tab" aria-controls="information" aria-selected="false">Information</a>
-                </li>
-                @elseif (User::find(Auth::user()->id)->role() == 'student')
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="agreement-tab" data-bs-toggle="tab" href="#agreement" role="tab" aria-controls="agreement" aria-selected="false">Agreement</a>
-                </li>
-                @endif
+<div class="w-full" x-data="{tab: 'profile'}">
+    <div class="flex mb-0">
+        <button class="w-full mr-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'profile', 'btn-neutral': tab != 'profile'}" @click="tab='profile'">
+            Profile
+        </button>
+        @if (Auth::user()->role->name == 'tutor')
+        <button class="w-full mr-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'subjects', 'btn-neutral': tab != 'subjects'}" @click="tab='subjects'">
+            Subjects
+        </button>
+        <button class="w-full p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'information', 'btn-neutral': tab != 'information'}" @click="tab='information'">
+            Information
+        </button>
+        @elseif (Auth::user()->role->name== 'student')
+        <button class="w-full p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'terms', 'btn-neutral': tab != 'terms'}" @click="tab='terms'">
+            Terms
+        </button>
+        @endif
+    </div>
+    <div class="mt-4 shadow-lg bg-gray-100 rounded-md p-4">
+        <div class="w-full h-full" x-show="tab == 'profile'">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Name: {{ Auth::user()->name }}</li>
+                <li class="list-group-item">Email: {{ Auth::user()->email }}</li>
+                <li class="list-group-item">Role: {{ ucfirst(Auth::user()->role->name) }}</li>
+                <!--<li class="list-group-item"><a class="btn btn-danger" href="#">Reset password</a></li>-->
             </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="account" role="tabpanel" aria-labelledby="account-tab">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Name: {{ Auth::user()->name }}</li>
-                        <li class="list-group-item">Email: {{ Auth::user()->email }}</li>
-                        <li class="list-group-item">Role: {{ ucfirst(User::find(Auth::user()->id)->role()) }}</li>
-                        <li class="list-group-item"><a class="btn btn-danger" href="{{ route('reset') }}">Reset password</a></li>
+        </div>
+        @if (Auth::user()->role->name == 'tutor')
+        <div class="w-full h-full" x-show="tab == 'subjects'">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <div class="form-element mb-3">
+                        <h3 class="text-base"><b>My subjects</b></h3>
+                    </div>
+                    <ul class="list-group subject-content h-full md:h-96" id="mainContent">
+                        <div class="text-red-700 text-base ml-3 mt-3 opacity-0 hidden transition-all duration-500 ease-in-out" id="subjectError">
+                            <span>You must have at least one subject to tutor.</span>
+                        </div>
                     </ul>
                 </div>
-                @if (User::find(Auth::user()->id)->role() == 'tutor')
-                <div class="tab-pane" id="subjects" role="tabpanel" aria-labelledby="subjects-tab">
-                    <div class="row">
-                        <div class="col-md">
-                            <ul class="list-group mt-3" id="searchInput">
-                                <li class="list-group-item">
-                                    <b>My subjects</b>
-                                </li>
-                            </ul>
-                            <ul class="list-group mt-3 subjectContent" id="mainContent">
-                                <div class="text-danger mt-2" id="subjectError">
-                                    You must have at least one subject to tutor.
-                                </div>
-                            </ul>
-                        </div>
-                        <div class="col-md">
-                            <ul class="list-group mt-3" id="searchInput">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i data-feather="search"></i></span>
-                                    <input type="text" class="form-control list-group-item" placeholder="Add subjects...">
-                                </div>
-                            </ul>
-                            <ul class="list-group mt-3 subjectContent" id="searchContent">
-                            </ul>
-                        </div>
+                <div>
+                    <div class="relative flex w-full flex-wrap items-stretch mb-3">
+                        <span class="z-10 h-full leading-snug font-normal absolute text-center text-gray-400 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-3" style="padding-top:14px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                        <input type="text" class="form-element" id="searchInput" style="padding-left:2.7rem;" placeholder="Search subjects..." autocomplete="off">
                     </div>
+                    <ul class="list-group subject-content h-full md:h-96" id="searchContent">
+                    </ul>
                 </div>
-                <div class="tab-pane" id="information" role="tabpanel" aria-labelledby="information-tab">
-                    <form class="needs-validation" id="informationForm" novalidate>
-                        <fieldset>
-                            <div class="my-3">
-                                <input type="text" class="form-control" name="meeting_link" value="{{ Tutor::find(Auth::user()->id)->meeting_link }}" placeholder="Meeting link" required>
-                                <small class="form-text text-muted">
-                                    E.g. Personal Zoom or Google Meet Links.
-                                </small>
-                            </div>
-                            <div>
-                                <textarea class="form-control" name="bio" placeholder="Introduce yourself to students" rows="3" maxlength="1000" required>{{ Tutor::find(Auth::user()->id)->bio }}</textarea>
-                                <small class="form-text text-muted">
-                                    Limit 1000 characters.
-                                </small>
-                            </div>
-                        </fieldset>
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary align-middle">Update information</button>
-                        </div>
-                    </form>
-                </div>
-                @elseif (User::find(Auth::user()->id)->role() == 'student')
-                <div class="tab-pane" id="agreement" role="tabpanel" aria-labelledby="agreement-tab">
-                    <b>When you created this account, you automatically agreed to the following terms*:</b>
-                    <br>
-                    <br>
-                    I acknowledge that tutoring is a privilege, and I will try to show up at my session
-                    as much as possible. I acknowledge that a no show up for 2 times without
-                    cancellation 4 hours in advance will result in a 7 day withhold of my tutoring
-                    privilege.
-                    <br>
-                    <br>
-                    <i>*Note that these terms were presented to you on account setup.</i>
-                </div>
-                @endif
             </div>
         </div>
+        <div class="w-full h-full" x-show="tab == 'information'">
+            <form class="needs-validation" id="informationForm" novalidate>
+                <fieldset>
+                    <div class="form-floating my-3">
+                        <input type="text" class="form-element" name="meeting_link" value="{{ Auth::user()->tutor->meeting_link }}" placeholder="Meeting link" required>
+                        <label>Meeting link</label>
+                        <small class="text-help">
+                            E.g. Personal Zoom or Google Meet Links.
+                        </small>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-element" name="bio" placeholder="Introduce yourself to students" rows="3" maxlength="1000" required>{{ Auth::user()->tutor->bio }}</textarea>
+                        <label>Bio</label>
+                        <small class="text-help">
+                            Limit 1000 characters.
+                        </small>
+                    </div>
+                </fieldset>
+                <div class="text-right">
+                    <button type="submit" class="btn-positive p-3 inline-flex items-center">Update information</button>
+                </div>
+            </form>
+        </div>
+        @elseif (Auth::user()->role->name== 'student')
+        <div class="w-full h-full" x-show="tab == 'terms'">
+            <b>When you created this account, you automatically agreed to the following terms*:</b>
+            <br>
+            <br>
+            I acknowledge that tutoring is a privilege, and I will try to show up at my session
+            as much as possible. I acknowledge that a no show up for 2 times without
+            cancellation 4 hours in advance will result in a 7 day withhold of my tutoring
+            privilege.
+            <br>
+            <br>
+            <i>*Note that these terms were presented to you on account setup.</i>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

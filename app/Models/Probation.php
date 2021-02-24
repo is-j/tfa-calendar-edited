@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Probation extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'user_id';
-    public $incrementing = false;
     protected $fillable = [
         'user_id',
         'end'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

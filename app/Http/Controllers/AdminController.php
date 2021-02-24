@@ -10,10 +10,6 @@ class AdminController extends Controller
     {
         return view('admin.users');
     }
-    protected function strikes()
-    {
-        return view('admin.strikes');
-    }
     protected function probations()
     {
         return view('admin.probations');

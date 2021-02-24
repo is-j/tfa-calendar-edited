@@ -17,10 +17,13 @@ class Tutor extends Model
         'meeting_link'
     ];
 
-    protected $primaryKey = 'user_id';
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function subjects()
     {
-        return json_decode($this->subjects)->subjects;
+        return json_decode($this->subjects);
     }
 }

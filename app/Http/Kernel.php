@@ -15,7 +15,6 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
-        \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\TrustProxies::class,
         \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -63,9 +62,9 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'setup' => \App\Http\Middleware\CheckIfSetup::class,
-        'student' => \App\Http\Middleware\CheckIfStudent::class,
-        'tutor' => \App\Http\Middleware\CheckIfTutor::class,
-        'admin' => \App\Http\Middleware\CheckIfAdmin::class
+        'setup' => \App\Http\Middleware\RedirectIfNotSetup::class,
+        'tutor' => \App\Http\Middleware\RedirectIfNotTutor::class,
+        'student' => \App\Http\Middleware\RedirectIfNotStudent::class,
+        'admin' => \App\Http\Middleware\RedirectIfNotAdmin::class
     ];
 }

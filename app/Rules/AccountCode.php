@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Role;
 use Illuminate\Contracts\Validation\Rule;
 
 class AccountCode implements Rule
@@ -26,7 +26,7 @@ class AccountCode implements Rule
      */
     public function passes($attribute, $value)
     {
-        return DB::table('roles')->where('code', $value)->exists();
+        return Role::where('code', $value)->exists();
     }
 
     /**

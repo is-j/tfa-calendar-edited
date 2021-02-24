@@ -1,27 +1,32 @@
-$(() => {
-    $('#cancelSlotForm').submit((event) => {
-        event.preventDefault();
-        const form = $('#cancelSlotForm');
-        if (!form[0].checkValidity()) {
-            event.stopPropagation();
-        } else {
-            let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
-            let name = form.find('input[name="name"]').val();
-            let email = form.find('input[name="email"]').val();
-            let subject = form.find('input[name="subject"]').val();
-            let info = form.find('textarea[name="info"]').val();
-            let reason = form.find('textarea[name="reason"]').val();
-            postData('/ajax/cancel', {
-                start: start,
-                name: name,
-                email: email,
-                subject: subject,
-                info: info,
-                reason: reason
-            }).then(() => {
-                window.location.href = '/dashboard';
-            })
-        }
-        form.addClass('was-validated');
+document.getElementById('cancelSlotForm').addEventListener('submit', function (event) {
+    const form = this;
+    checkValidity(form, event, () => {
+        const id = form.querySelector('div[name="id"]').getAttribute('data-id');
+        const reason = form.querySelector('textarea[name="reason"]').value;
+        postData('/api/slot/cancel', {
+            id: id,
+            reason: reason
+        }).then(response => {
+            if (response.error) {
+                const temp = document.createElement('form');
+                const data = {
+                    _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    alert: response.message
+                };
+                document.body.appendChild(temp);
+                temp.method = 'POST';
+                temp.action = '/dashboard';
+                for (let name in data) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = name;
+                    input.value = data[name];
+                    temp.appendChild(input);
+                }
+                temp.submit();
+            } else {
+                location.href = '/dashboard';
+            }
+        });
     });
 });

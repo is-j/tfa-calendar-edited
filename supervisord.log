@@ -1,0 +1,28 @@
+2021-02-18 14:55:53,066 INFO Set uid to user 0 succeeded
+2021-02-18 14:55:53,105 INFO supervisord started with pid 16
+2021-02-18 14:55:54,115 INFO spawned: 'php' with pid 18
+2021-02-18 14:55:55,122 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-02-18 16:40:11,299 INFO Set uid to user 0 succeeded
+2021-02-18 16:40:11,340 INFO supervisord started with pid 16
+2021-02-18 16:40:12,350 INFO spawned: 'php' with pid 18
+2021-02-18 16:40:13,362 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-02-18 16:57:47,202 INFO Set uid to user 0 succeeded
+2021-02-18 16:57:47,235 INFO supervisord started with pid 16
+2021-02-18 16:57:48,247 INFO spawned: 'php' with pid 18
+2021-02-18 16:57:49,257 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-02-18 18:58:49,724 INFO Set uid to user 0 succeeded
+2021-02-18 18:58:49,747 INFO supervisord started with pid 16
+2021-02-18 18:58:50,764 INFO spawned: 'php' with pid 18
+2021-02-18 18:58:51,772 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-02-23 23:26:34,365 INFO Set uid to user 0 succeeded
+2021-02-23 23:26:34,388 INFO supervisord started with pid 16
+2021-02-23 23:26:35,399 INFO spawned: 'php' with pid 18
+2021-02-23 23:26:36,409 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-02-24 01:08:17,309 INFO Set uid to user 0 succeeded
+2021-02-24 01:08:17,339 INFO supervisord started with pid 17
+2021-02-24 01:08:18,323 INFO spawned: 'php' with pid 19
+2021-02-24 01:08:19,335 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2021-02-24 01:42:23,604 INFO Set uid to user 0 succeeded
+2021-02-24 01:42:23,624 INFO supervisord started with pid 17
+2021-02-24 01:42:24,638 INFO spawned: 'php' with pid 19
+2021-02-24 01:42:25,644 INFO success: php entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
