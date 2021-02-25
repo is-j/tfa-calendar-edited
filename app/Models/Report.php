@@ -12,7 +12,17 @@ class Report extends Model
     protected $fillable = [
         'reporter_id',
         'reported_id',
-        'event_id',
-        'event_date'
+        'slot_id',
+        'slot_start'
     ];
+
+    public function reporter()
+    {
+        return $this->belongsTo(User::class, 'reporter_id');
+    }
+
+    public function reported()
+    {
+        return $this->belongsTo(User::class, 'reported_id');
+    }
 }

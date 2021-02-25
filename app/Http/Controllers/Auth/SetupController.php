@@ -15,17 +15,17 @@ class SetupController extends Controller
 
     public function index()
     {
-        $role = User::find(Auth::user()->id)->role();
+        $role = Auth::user()->role->name;
         if ($role != 'admin' && !DB::table($role . 's')->where('user_id', Auth::user()->id)->exists()) {
             return view('auth.setup');
         } else {
-            return redirect()->route('dashboard');
+            return redirect('dashboard');
         }
     }
 
     protected function create(Request $request)
     {
-        if (User::find(Auth::user()->id)->role() == 'tutor') {
+        if (Auth::user()->role->name == 'tutor') {
             $request->validate([
                 'meeting_link' => 'required',
                 'bio' => 'required|max:1000',
@@ -39,9 +39,9 @@ class SetupController extends Controller
                 'user_id' => Auth::user()->id,
                 'meeting_link' => $meetinglink,
                 'bio' => $request->bio,
-                'subjects' => json_encode(['subjects' => [intval($request->subject)]])
+                'subjects' => json_encode([intval($request->subject)])
             ]);
-        } else if (User::find(Auth::user()->id)->role() == 'student') {
+        } else if (Auth::user()->role->name == 'student') {
             $request->validate([
                 'terms' => 'required|accepted'
             ]);
@@ -50,6 +50,6 @@ class SetupController extends Controller
                 'terms' => true
             ]);
         }
-        return redirect()->route('dashboard');
+        return redirect('dashboard');
     }
 }

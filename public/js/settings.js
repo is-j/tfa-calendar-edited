@@ -1,65 +1,70 @@
-$(() => {
-    $('#subjectError').hide();
-    fetch('/ajax/subject/get', { method: 'GET' }).then(response => response.json()).then(data => {
-        for (item of data[0]) {
-            $('#mainContent').prepend(`<li class="list-group-item">${item.name}<span class="float-end toggle-true" data-subject="${item.item}" data-toggle="true"><i data-feather="minus"></i></span></li>`);
+if (accountType == 'tutor') {
+    const minusHTML = '<svg class="h-6 w-6 text-red-600 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /> </svg>';
+    const plusHTML = '<svg class="h-6 w-6 text-green-600 pointer-events-none" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /> </svg>';
+    fetch('/api/subject/get', { method: 'GET' }).then(response => response.json()).then(data => {
+        for (subject of data[0]) {
+            document.getElementById('mainContent').insertAdjacentHTML('afterbegin', `<li class="list-group-item select-none bg-white">${subject.name}<span class="float-right cursor-pointer" data-subject="${subject.id}">${minusHTML}</span></li>`, document.getElementById('subjectError'));
         }
-        for (item of data[1]) {
-            $('#searchContent').append(`<li class="list-group-item">${item.name}<span class="float-end toggle-false" data-subject="${item.item}" data-toggle="false"><i data-feather="plus"></i></span></li>`);
+        for (subject of data[1]) {
+            document.getElementById('searchContent').insertAdjacentHTML('afterbegin', `<li class="list-group-item select-none bg-white">${subject.name}<span class="float-right cursor-pointer" data-subject="${subject.id}">${plusHTML}</span></li>`);
         }
-        feather.replace();
     });
-    $('#subjects').on('click', '[data-subject]', function () {
-        let self = this;
-        let subject = $(self).data('subject');
-        if ($(self).data('toggle')) {
-            postData('/ajax/subject/minus', {
-                subject: subject
-            }).then(response => {
+    document.getElementById('searchContent').addEventListener('click', (event) => {
+        if (event.target.getAttribute('data-subject') != null) {
+            const subjectId = event.target.getAttribute('data-subject');
+            postData('/api/subject/plus', {
+                subject_id: subjectId
+            }).then(() => {
+                event.target.innerHTML = minusHTML;
+                document.getElementById('mainContent').insertAdjacentElement('afterbegin', document.getElementById('searchContent').removeChild(event.target.parentElement));
+            });
+        }
+    });
+    document.getElementById('mainContent').addEventListener('click', (event) => {
+        if (event.target.getAttribute('data-subject') != null) {
+            const subjectId = event.target.getAttribute('data-subject');
+            postData('/api/subject/minus', {
+                subject_id: subjectId
+            }).then((response) => {
                 if (response.success) {
-                    $(self).parent().detach().appendTo('#searchContent');
-                    $(self).data('toggle', false).html('<i data-feather="plus"></i>').toggleClass('toggle-true toggle-false');
-                    feather.replace();
+                    event.target.innerHTML = plusHTML;
+                    document.getElementById('searchContent').insertAdjacentElement('afterbegin', document.getElementById('mainContent').removeChild(event.target.parentElement));
                 } else {
-                    $('#subjectError').show().delay(1250).fadeOut(500);
+                    const subjectError = document.getElementById('subjectError');
+                    subjectError.classList.remove('hidden', 'opacity-0');
+                    setTimeout(() => {
+                        subjectError.classList.add('opacity-0');
+                        setTimeout(() => subjectError.classList.add('hidden'), 400);
+                    }, 1250);
                 }
             });
-        } else {
-            postData('/ajax/subject/plus', {
-                subject: subject
-            }).then(() => {
-                $(self).parent().detach().insertBefore('#subjectError');
-                $(self).data('toggle', true).html('<i data-feather="minus"></i>').toggleClass('toggle-true toggle-false');
-                feather.replace();
-            });
         }
     });
-    $('#searchInput div input').on("keyup", () => {
-        var value = $('#searchInput div input').val().toLowerCase();
-        $('#searchContent li').filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    document.getElementById('searchInput').addEventListener('keyup', () => {
+        const value = document.getElementById('searchInput').value.toLowerCase();
+        Array.prototype.filter.call(document.getElementById('searchContent').querySelectorAll('li'), (element) => {
+            if (element.innerText.toLowerCase().indexOf(value) > -1) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
         });
     });
-    $('#informationForm').submit((event) => {
-        event.preventDefault();
-        const form = $('#informationForm');
-        if (!form[0].checkValidity()) {
-            event.stopPropagation();
-        } else {
-            $('fieldset').prop('disabled', true);
-            form.find('button').prop('disabled', true);
-            form.find('button').html('Updating&nbsp;&nbsp;<div class="spinner-border spinner-border-sm" role="status"> <span class="visually-hidden">Loading...</span> </div>');
-            let meeting_link = $('input[name="meeting_link"]').val();
-            let bio = $('textarea[name="bio"]').val();
-            postData('/ajax/information/update', {
-                meeting_link: meeting_link,
+    document.getElementById('informationForm').addEventListener('submit', function (event) {
+        checkValidity(this, event, () => {
+            const meetingLink = this.querySelector('input[name="meeting_link"]').value;
+            const bio = this.querySelector('textarea[name="bio"]').value;
+            this.querySelector('fieldset').setAttribute('disabled', true);
+            this.querySelector('button').setAttribute('disabled', true);
+            this.querySelector('button').innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"> <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle> <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path> </svg> Updating...';
+            postData('/api/information/update', {
+                meeting_link: meetingLink,
                 bio: bio
             }).then(() => setTimeout(() => {
-                $('fieldset').prop('disabled', false);
-                $('#informationForm').find('button').prop('disabled', false).html('Update information');
-                $('#informationForm').find('button');
+                this.querySelector('fieldset').removeAttribute('disabled');
+                this.querySelector('button').removeAttribute('disabled')
+                this.querySelector('button').innerHTML = 'Update information';
             }, 1000));
-        }
-        form.addClass('was-validated');
+        });
     });
-});
+}

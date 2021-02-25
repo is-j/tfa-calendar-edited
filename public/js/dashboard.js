@@ -1,6 +1,6 @@
-let subjectID = '0';
-let toast = new bootstrap.Toast(document.getElementById('toast'));
-var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+let subjectId = '0';
+let prevWidth;
+const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     headerToolbar: {
         left: 'prev,next today',
         center: 'title',
@@ -9,229 +9,278 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     timeZone: 'local',
     initialView: 'dayGridMonth',
     events: (info, successCallback) => {
-        fetch(`/ajax/get/${subjectID}?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`, {
+        fetch(`/api/slot/get/${subjectId}?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`, {
             method: 'GET'
         }).then(response => response.json()).then(data => { successCallback(data) });
     },
     selectable: true,
     nowIndicator: true,
     lazyFetching: true,
-    loading: (isLoading) => {
-        if (isLoading) {
-            $('#spinnerArea').html('<div class="spinner-border" role="status"> <span class="visually-hidden">Loading...</span> </div>');
-        } else {
-            $('#spinnerArea .spinner-border').remove();
+    loading: isLoading => processingStatus(isLoading),
+    dateClick: info => {
+        if (accountType == 'tutor') {
+            document.getElementById('createSlotForm').querySelector('input[name="start"]').value = DateTime.fromISO(info.dateStr).toFormat("yyyy-MM-dd'T'HH:mm");
+            toggleModal('createSlot');
         }
     },
-    dateClick: (info) => {
-        if (accounttype == 'tutor') {
-            $('#createSlotForm').find('input[name="start"]').val(DateTime.fromISO(info.dateStr).toFormat("yyyy-MM-dd'T'HH:mm"));
-            createSlotModal.show();
-        }
-    },
-    eventClick: (info) => {
-        if (accounttype == 'student') {
-            if (!info.event.extendedProps.claimed) {
-                $('#claimSlotModalLabel').text(`Slot: ${info.event.title}`);
-                $('#startClaim input').val(DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm"));
-                $('#tutornameClaim input').val(info.event.extendedProps.tutorname);
-                $('#tutorbioClaim textarea').val(info.event.extendedProps.tutorbio);
-                $('#infoClaim textarea').val('');
-                $('#subjectClaim input').val(info.event.extendedProps.subject);
-                claimSlotModal.show();
+    eventClick: info => {
+        if (accountType == 'student') {
+            if (info.event.extendedProps.claimed) {
+                const unclaimSlotForm = document.getElementById('unclaimSlotForm');
+                document.getElementById('unclaimSlotLabel').innerText = `Slot: ${info.event.title}`;
+                unclaimSlotForm.querySelector('input[name="start"]').value = DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm");
+                matchValue(unclaimSlotForm, info.event.extendedProps, ['input[name="tutor_name"]', 'input[name="tutor_email"]', 'textarea[name="tutor_bio"]', 'input[name="subject_name"]', 'textarea[name="info"]']);
+                unclaimSlotForm.querySelector('div[name="id"]').setAttribute('data-id', info.event.id);
+                unclaimSlotForm.querySelector('div[name="claimed"]').setAttribute('data-claimed', info.event.extendedProps.claimed);
+                unclaimSlotForm.querySelector('a[name="meeting_link"]').setAttribute('href', info.event.extendedProps.meeting_link);
+                toggleModal('unclaimSlot');
             } else {
-                $('#unclaimSlotModalLabel').text(`Slot: ${info.event.title}`);
-                $('#startUnclaim input').val(DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm"));
-                $('#tutornameUnclaim input').val(info.event.extendedProps.tutorname);
-                $('#meetinglinkUnclaim a').prop('href', info.event.extendedProps.meeting_link);
-                $('#tutoremailUnclaim input').val(info.event.extendedProps.tutoremail);
-                $('#tutorbioUnclaim textarea').val(info.event.extendedProps.tutorbio);
-                $('#infoUnclaim textarea').val(info.event.extendedProps.info);
-                $('#subjectUnclaim input').val(info.event.extendedProps.subject);
-                unclaimSlotModal.show();
+                const claimSlotForm = document.getElementById('claimSlotForm');
+                document.getElementById('claimSlotLabel').innerText = `Slot: ${info.event.title}`;
+                claimSlotForm.querySelector('input[name="start"]').value = DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm");
+                matchValue(claimSlotForm, info.event.extendedProps, ['input[name="tutor_name"]', 'textarea[name="tutor_bio"]', 'input[name="subject_name"]']);
+                claimSlotForm.querySelector('div[name="id"]').setAttribute('data-id', info.event.id);
+                claimSlotForm.querySelector('div[name="claimed"]').setAttribute('data-claimed', info.event.extendedProps.claimed);
+                toggleModal('claimSlot');
             }
-        } else if (accounttype == 'tutor') {
-            $('#deleteSlotModalLabel').text(`Slot: ${info.event.title}`);
-            $('#startDelete input').val(DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm"));
-            $('#claimedDelete').data('claimed', info.event.extendedProps.claimed);
-            $('#subjectDelete input').val(info.event.extendedProps.subject);
-            if (!info.event.extendedProps.studentname) {
-                $('#studentnameDelete, #studentemailDelete, #infoDelete, #meetinglinkDelete a').hide();
-                $('#repeatDelete').show();
+        } else if (accountType == 'tutor') {
+            const deleteSlotForm = document.getElementById('deleteSlotForm');
+            deleteSlotForm.querySelector('input[name="start"]').value = DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm");
+            deleteSlotForm.querySelector('input[name="subject_name"]').value = info.event.extendedProps.subject_name;
+            deleteSlotForm.querySelector('div[name="id"]').setAttribute('data-id', info.event.id);
+            deleteSlotForm.querySelector('div[name="claimed"]').setAttribute('data-claimed', info.event.extendedProps.claimed);
+            if (info.event.extendedProps.claimed) {
+                document.getElementById('deleteSlotLabel').innerText = `Student: ${info.event.title}`;
+                toggleDisplay(deleteSlotForm, ['input[name="repeat"]'], ['input[name="student_name"]', 'input[name="student_email"]', 'textarea[name="info"]', 'a[name="meeting_link"]']);
+                matchValue(deleteSlotForm, info.event.extendedProps, ['input[name="student_name"]', 'input[name="student_email"]', 'textarea[name="info"]']);
+                deleteSlotForm.querySelector('a[name="meeting_link"]').setAttribute('href', info.event.extendedProps.meeting_link);
             } else {
-                $('#repeatDelete').hide();
-                $('#studentnameDelete, #studentemailDelete, #infoDelete, #meetinglinkDelete a').show();
-                $('#studentnameDelete input').val(info.event.extendedProps.studentname);
-                $('#studentemailDelete input').val(info.event.extendedProps.studentemail);
-                $('#infoDelete textarea').val(info.event.extendedProps.info);
-                $('#meetinglinkDelete a').prop('href', info.event.extendedProps.meeting_link);
+                document.getElementById('deleteSlotLabel').innerText = info.event.title;
+                toggleDisplay(deleteSlotForm, ['input[name="student_name"]', 'input[name="student_email"]', 'textarea[name="info"]', 'a[name="meeting_link"]'], ['input[name="repeat"]']);
             }
-            deleteSlotModal.show();
+            toggleModal('deleteSlot');
         }
     }
 });
 calendar.render();
 
-$(() => {
-    checkView();
-    $(window).resize(() => {
-        checkView();
-    });
-    $('#calendarSubjects').change(() => {
-        subjectID = $('#calendarSubjects option:selected').val();
-        calendar.refetchEvents();
-    });
-    $('#createSlotBtn').click(() => {
-        $('#createSlotForm').submit();
-    });
-    $('#deleteSlotBtn').click(() => {
-        $('#deleteSlotForm').submit();
-    });
-    $('#unclaimSlotBtn').click(() => {
-        $('#unclaimSlotForm').submit();
-    });
-    $('#claimSlotBtn').click(() => {
-        $('#claimSlotForm').submit();
-    });
-    $('#createSlotForm').submit((event) => {
-        event.preventDefault();
-        const form = $('#createSlotForm');
-        if (DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm") < now.plus({ hours: 6 })) {
-            form.find('input[name="start"]')[0].setCustomValidity('invalid');
-        } else {
-            form.find('input[name="start"]')[0].setCustomValidity('');
-        }
-        if (!form[0].checkValidity()) {
-            event.stopPropagation();
-        } else {
-            createSlot();
-        }
-        form.addClass('was-validated');
-    });
-    $('#deleteSlotForm').submit((event) => {
-        event.preventDefault();
-        const form = $('#deleteSlotForm');
-        if (!form[0].checkValidity()) {
-            event.stopPropagation();
-        } else {
-            deleteSlot();
-        }
-        form.addClass('was-validated');
-    });
-    $('#unclaimSlotForm').submit((event) => {
-        event.preventDefault();
-        const form = $('#unclaimSlotForm');
-        if (!form[0].checkValidity()) {
-            event.stopPropagation();
-        } else {
-            unclaimSlot();
-        }
-        form.addClass('was-validated');
-    });
-    $('#claimSlotForm').submit((event) => {
-        event.preventDefault();
-        const form = $('#claimSlotForm');
-        if (!form[0].checkValidity()) {
-            event.stopPropagation();
-        } else {
-            claimSlot();
-        }
-        form.addClass('was-validated');
-    });
-});
+checkView();
+window.addEventListener('resize', () => checkView());
 
-checkView = () => {
-    if (!$('.fc-timeGridDay-button').is(':visible')) {
-        $('.fc-timeGridDay-button').trigger('click');
-    }
-}
-
-createSlot = () => {
-    let form = $('#createSlotForm');
-    let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
-    let subject = form.find('select[name="subject"] option:selected').val();
-    let repeat = form.find('input[name="repeat"]').is(':checked');
-    postData('/ajax/create', {
-        start: start,
-        subject: subject,
-        repeat: repeat
-    }).then(response => {
-        calendar.refetchEvents();
-        createSlotModal.hide();
-        initReport();
-        form.trigger('reset').removeClass('was-validated');
-        if (response.error) {
-            $('#toast .toast-body').text(response.msg);
-            toast.show();
-            $('html, body').animate({ scrollTop: 0 }, 'slow');
-        }
-    })
-}
-
-deleteSlot = () => {
-    let form = $('#deleteSlotForm');
-    let start = form.find('input[name="start"]').val();
-    if (form.find('div[data-claimed]').data('claimed')) {
-        let studentname = form.find('input[name="studentname"]').val();
-        let studentemail = form.find('input[name="studentemail"]').val();
-        let subject = form.find('input[name="subject"]').val();
-        let info = form.find('textarea[name="info"]').val();
-        $.redirect('/cancel', {
-            _token: $('meta[name="csrf-token"]').prop('content'),
-            start: start,
-            studentname: studentname,
-            studentemail: studentemail,
-            subject: subject,
-            info: info
+if (accountType == 'tutor') {
+    document.getElementById('createSlotForm').addEventListener('submit', function (event) {
+        const form = this;
+        checkValidity(form, event, () => {
+            const start = DateTime.fromFormat(form.querySelector('input[name="start"]').value, "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
+            const subjectId = form.querySelector('select[name="subject_id"]').value;
+            const repeat = form.querySelector('input[name="repeat"]').checked;
+            postData('/api/slot/create', {
+                start: start,
+                subject_id: subjectId,
+                repeat: repeat
+            }).then(response => {
+                toggleModal('createSlot');
+                toggleAlert(response);
+                calendar.refetchEvents();
+                reportInit();
+            });
+        }, () => {
+            if (DateTime.fromFormat(form.querySelector('input[name="start"]').value, "yyyy-MM-dd'T'HH:mm") < now.plus({ hours: 6 })) {
+                form.querySelector('input[name="start"]').setCustomValidity('invalid');
+            } else {
+                form.querySelector('input[name="start"]').setCustomValidity('');
+            }
         });
+    });
+    document.getElementById('deleteSlotForm').addEventListener('submit', function (event) {
+        const form = this;
+        checkValidity(form, event, () => {
+            const id = form.querySelector('div[name="id"]').getAttribute('data-id');
+            if (form.querySelector('div[name="claimed"]').getAttribute('data-claimed') == 'true') {
+                const start = form.querySelector('input[name="start"]').value;
+                const temp = document.createElement('form');
+                const data = {
+                    _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    id: id,
+                    start: start
+                };
+                document.body.appendChild(temp);
+                temp.method = 'POST';
+                temp.action = '/cancel';
+                for (let name in data) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = name;
+                    input.value = data[name];
+                    temp.appendChild(input);
+                }
+                temp.submit();
+            } else {
+                const repeat = form.querySelector('input[name="repeat"]').checked;
+                postData('/api/slot/cancel', {
+                    id: id,
+                    repeat: repeat
+                }).then(response => {
+                    toggleModal('deleteSlot');
+                    toggleAlert(response);
+                    calendar.refetchEvents();
+                    reportInit();
+                });
+            }
+        });
+    });
+} else if (accountType == 'student') {
+    window.Components = {
+        customSelect(options) {
+            return {
+                init() {
+                    this.$refs.listbox.focus()
+                    this.optionCount = this.$refs.listbox.children.length
+                    this.$watch('selected', value => {
+                        if (!this.open) return
+
+                        if (this.selected === null) {
+                            this.activeDescendant = ''
+                            return
+                        }
+
+                        this.activeDescendant = this.$refs.listbox.children[this.selected - 1].id
+                    })
+                },
+                activeDescendant: null,
+                optionCount: null,
+                open: false,
+                selected: null,
+                value: 1,
+                choose(option) {
+                    this.value = option
+                    this.open = false
+                    subjectId = this.value - 1
+                    calendar.refetchEvents()
+                },
+                onButtonClick() {
+                    if (this.open) return
+                    this.selected = this.value
+                    this.open = true
+                    this.$nextTick(() => {
+                        this.$refs.listbox.focus()
+                        this.$refs.listbox.children[this.selected - 1].scrollIntoView({ block: 'nearest' })
+                    })
+                },
+                onOptionSelect() {
+                    if (this.selected !== null) {
+                        this.value = this.selected
+                    }
+                    this.open = false
+                    this.$refs.button.focus()
+                },
+                onEscape() {
+                    this.open = false
+                    this.$refs.button.focus()
+                },
+                onArrowUp() {
+                    this.selected = this.selected - 1 < 1 ? this.optionCount : this.selected - 1
+                    this.$refs.listbox.children[this.selected - 1].scrollIntoView({ block: 'nearest' })
+                },
+                onArrowDown() {
+                    this.selected = this.selected + 1 > this.optionCount ? 1 : this.selected + 1
+                    this.$refs.listbox.children[this.selected - 1].scrollIntoView({ block: 'nearest' })
+                },
+                ...options,
+            }
+        },
+    }
+    document.getElementById('claimSlotForm').addEventListener('submit', function (event) {
+        const form = this;
+        checkValidity(form, event, () => {
+            const id = form.querySelector('div[name="id"]').getAttribute('data-id');
+            const info = form.querySelector('textarea[name="info"]').value;
+            postData('/api/slot/claim', {
+                id: id,
+                info: info
+            }).then(response => {
+                toggleModal('claimSlot');
+                toggleAlert(response);
+                calendar.refetchEvents();
+                reportInit();
+            });
+        });
+    });
+    document.getElementById('unclaimSlotForm').addEventListener('submit', function (event) {
+        const form = this;
+        checkValidity(form, event, () => {
+            const id = form.querySelector('div[name="id"]').getAttribute('data-id');
+            const start = form.querySelector('input[name="start"]').value;
+            const temp = document.createElement('form');
+            const data = {
+                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                id: id,
+                start: start
+            };
+            document.body.appendChild(temp);
+            temp.method = 'POST';
+            temp.action = '/cancel';
+            for (let name in data) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = data[name];
+                temp.appendChild(input);
+            }
+            temp.submit();
+        });
+    });
+}
+
+function checkView() {
+    const currentWidth = window.innerWidth;
+    if (currentWidth <= 768 && prevWidth >= 768) {
+        document.querySelector('.fc-timeGridDay-button').click();
+    } else if (currentWidth >= 768 && prevWidth <= 768) {
+        document.querySelector('.fc-dayGridMonth-button').click();
+    }
+    prevWidth = window.innerWidth;
+}
+
+function processingStatus(isLoading) {
+    const processingStatus = document.getElementById('processingStatus');
+    if (isLoading) {
+        processingStatus.querySelector('svg[name="done"]').style.display = 'none';
+        processingStatus.querySelector('svg[name="load"]').style.display = 'block';
     } else {
-        start = DateTime.fromFormat(start, "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
-        let repeat = form.find('input[name="repeat"]').is(':checked');
-        postData('/ajax/cancel', {
-            start: start,
-            repeat: repeat
-        }).then(() => {
-            calendar.refetchEvents();
-            deleteSlotModal.hide();
-            initReport();
-            form.trigger('reset').removeClass('was-validated');
-        });
+        processingStatus.querySelector('svg[name="done"]').style.display = 'block';
+        processingStatus.querySelector('svg[name="load"]').style.display = 'none';
     }
 }
 
-claimSlot = () => {
-    let form = $('#claimSlotForm');
-    let start = DateTime.fromFormat(form.find('input[name="start"]').val(), "yyyy-MM-dd'T'HH:mm").toUTC().toFormat('yyyy-MM-dd HH:mm');
-    let tutorname = form.find('input[name="tutorname"]').val();
-    let info = form.find('textarea[name="info"]').val();
-    postData('/ajax/claim', {
-        start: start,
-        tutorname: tutorname,
-        info: info
-    }).then(response => {
-        calendar.refetchEvents();
-        claimSlotModal.hide();
-        initReport();
-        form.trigger('reset').removeClass('was-validated');
-        if (response.error) {
-            $('#toast .toast-body').text(response.msg);
-            toast.show();
-            $('html, body').animate({ scrollTop: 0 }, 'slow');
+function toggleModal(id) {
+    const modalContainer = document.getElementById('modalContainer');
+    if (modalContainer.__x.$data.open == false) {
+        modalContainer.classList.remove('hidden');
+        modalContainer.__x.$data.open = true;
+        modalContainer.__x.$data[id + 'Modal'] = true;
+    } else {
+        modalContainer.__x.$data.open = false;
+        modalContainer.__x.$data[id + 'Modal'] = false;
+        setTimeout(() => {
+            modalContainer.classList.add('hidden');
+            document.getElementById(id + 'Form').reset();
+            document.getElementById(id + 'Form').classList.remove('was-validated');
+        }, 400);
+    }
+}
+
+function toggleDisplay(form, hide, show) {
+    hide.map(query => form.querySelector(query).parentElement.style.display = 'none');
+    show.map(query => {
+        if (form.querySelector(query).type == 'checkbox') {
+            form.querySelector(query).parentElement.style.display = 'flex';
+        } else {
+            form.querySelector(query).parentElement.style.display = 'block';
         }
     });
 }
 
-unclaimSlot = () => {
-    let form = $('#unclaimSlotForm');
-    let start = form.find('input[name="start"]').val();
-    let tutorname = form.find('input[name="tutorname"]').val();
-    let tutoremail = form.find('input[name="tutoremail"]').val();
-    let info = form.find('textarea[name="info"]').val();
-    $.redirect('/cancel', {
-        _token: $('meta[name="csrf-token"]').prop('content'),
-        start: start,
-        tutorname: tutorname,
-        tutoremail: tutoremail,
-        info: info
-    });
+function matchValue(form, props, elements) {
+    elements.map(element => form.querySelector(element).value = props[element.split('"')[1]]);
 }

@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Subject;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -15,17 +17,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        DB::table('roles')->insert([
-            ['name' => 'admin', 'code' => '9GdYRx-F*#', 'description' => 'administrator privileges'],
-            ['name' => 'tutor', 'code' => 'K9fWw', 'description' => 'tutor privileges'],
-            ['name' => 'student', 'code' => '6VcVV', 'description' => 'student privileges']
+        Role::insert([
+            ['name' => 'admin', 'code' => '9GdYRx-F*#'],
+            ['name' => 'tutor', 'code' => 'K9fWw'],
+            ['name' => 'student', 'code' => '6VcVV']
         ]);
-        DB::table('subjects')->insert([
+        Subject::insert([
             ['name' => 'Biology'], ['name' => 'Chemistry'], ['name' => 'Physics Algebra'], ['name' => 'Physics Calculus'], ['name' => 'Algebra 1'], ['name' => 'Geometry'], ['name' => 'Algebra 2'], ['name' => 'Trigonometry'], ['name' => 'Precalculus'], ['name' => 'Calculus AB/BC'], ['name' => 'SAT Math 2'], ['name' => 'Macroeconomics'], ['name' => 'Microeconomics'], ['name' => 'Elementary English'], ['name' => 'SAT English'], ['name' => 'Computer Science']
         ]);
-        DB::table('users')->insert([
-            ['name'=>'Administrator', 'email'=>'scheduler@tutoringforall.org','role_id'=>1, 'timezone'=>0, 'password'=>Hash::make(config('app.adminpw'))]
+        User::insert([
+            ['name' => 'Administrator', 'email' => 'scheduler@tutoringforall.org', 'role_id' => 1, 'offset' => 0, 'password' => Hash::make(config('app.adminpw'))]
         ]);
     }
 }

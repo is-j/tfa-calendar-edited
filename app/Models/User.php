@@ -21,7 +21,7 @@ class User extends Authenticatable
         'email',
         'role_id',
         'password',
-        'timezone'
+        'offset'
     ];
 
     /**
@@ -31,20 +31,25 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token'
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime'
+        'remember_token',
     ];
 
     public function role()
     {
-        return $this->belongsTo(Role::class)->first()->name;
+        return $this->belongsTo(Role::class);
+    }
+
+    public function tutor()
+    {
+        return $this->hasOne(Tutor::class);
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+    public function probation()
+    {
+        return $this->hasOne(Probation::class);
     }
 }
