@@ -15,4 +15,5 @@ RUN chmod 777 -R /var/www/html/storage/
 RUN echo "Listen 443" >> /etc/apache2/ports.conf
 RUN chown -R www-data:www-data /var/www/html/
 RUN a2enmod rewrite
+CMD sh /var/www/html/docker/startup.sh
 
