@@ -17,6 +17,6 @@ RUN chown -R www-data:www-data /var/www/html/
 RUN a2enmod rewrite
 
 RUN apt-get update && apt-get install -y supervisor
-COPY /var/www/html/docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD ["/usr/bin/supervisord"]
 
