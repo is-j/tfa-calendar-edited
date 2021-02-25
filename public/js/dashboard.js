@@ -1,5 +1,5 @@
 let subjectId = '0';
-let prevWidth;
+let prevWidth = null;
 const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     headerToolbar: {
         left: 'prev,next today',
@@ -234,7 +234,7 @@ if (accountType == 'tutor') {
 
 function checkView() {
     const currentWidth = window.innerWidth;
-    if (currentWidth <= 768 && prevWidth >= 768) {
+    if ((currentWidth <= 768 && prevWidth >= 768) || (currentWidth <= 768 && prevWidth == null)) {
         document.querySelector('.fc-timeGridDay-button').click();
     } else if (currentWidth >= 768 && prevWidth <= 768) {
         document.querySelector('.fc-dayGridMonth-button').click();
