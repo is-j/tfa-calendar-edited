@@ -3,7 +3,7 @@ FROM php:8.0-fpm-alpine
 RUN docker-php-ext-install pdo pdo_mysql
 WORKDIR /var/www/html
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY docker/www.conf "/usr/local/etc/php-fpm.d/www.conf"
+RUN sed -i "s|pm.max_children = 5|pm.max_children = 20|g" /usr/local/etc/php-fpm.d/www.conf
 
 RUN apk add --no-cache nginx supervisor wget
 RUN mkdir -p /run/nginx
