@@ -8,10 +8,11 @@ RUN docker-php-ext-install pdo pdo_mysql
 
 EXPOSE 8080
 COPY --from=build /app /var/www/html/
-RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY .env.prod /var/www/html/.env
 RUN chmod 777 -R /var/www/html/storage/
+RUN echo "Listen 8080" >> /etc/apache2/ports.conf
 RUN chown -R www-data:www-data /var/www/html/
 RUN a2enmod rewrite
 
