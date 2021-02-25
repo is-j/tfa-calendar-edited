@@ -15,5 +15,8 @@ RUN chmod 777 -R /var/www/html/storage/
 RUN echo "Listen 443" >> /etc/apache2/ports.conf
 RUN chown -R www-data:www-data /var/www/html/
 RUN a2enmod rewrite
-CMD sh /var/www/html/docker/startup.sh
+
+RUN apt-get update && apt-get install -y supervisor
+COPY /var/www/html/docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+CMD ["/usr/bin/supervisord"]
 
