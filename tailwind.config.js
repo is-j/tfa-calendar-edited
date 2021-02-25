@@ -3,8 +3,9 @@ module.exports = {
     './storage/framework/views/*.php',
     './resources/**/*.blade.php',
     './resources/**/*.js',
+    './public/**/*.js'
   ],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: false,
   theme: {
     extend: {},
   },
