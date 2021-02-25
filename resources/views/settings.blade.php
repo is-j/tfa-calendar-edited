@@ -102,5 +102,5 @@ use Illuminate\Support\Facades\Auth;
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/settings.js') }}"></script>
+<script src="{{ mix('js/settings.js') }}"></script>
 @endsection

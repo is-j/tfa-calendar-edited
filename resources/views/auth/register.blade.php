@@ -54,5 +54,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/auth/register.js') }}"></script>
+<script src="{{ mix('js/auth/register.js') }}"></script>
 @endsection

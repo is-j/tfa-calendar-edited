@@ -84,5 +84,5 @@ use App\Models\Subject;
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/cancel.js') }}"></script>
+<script src="{{ mix('js/cancel.js') }}"></script>
 @endsection
