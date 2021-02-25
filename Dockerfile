@@ -1,22 +1,17 @@
-FROM php:8.0-fpm-alpine
-
-RUN docker-php-ext-install pdo pdo_mysql
-WORKDIR /var/www/html
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-RUN sed -i "s|pm.max_children = 5|pm.max_children = 20|g" /usr/local/etc/php-fpm.d/www.conf
-
-RUN apk add --no-cache nginx supervisor wget
-RUN mkdir -p /run/nginx
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-
-RUN mkdir -p /app
+FROM composer:latest as build
+WORKDIR /app
 COPY . /app
-RUN chown -R www-data: /app
+RUN composer install --optimize-autoloader --no-dev
 
-RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
-RUN cd /app && \
-  /usr/local/bin/composer install --optimize-autoloader --no-dev && \
-  php artisan optimize:clear
+FROM php:8-apache
+RUN docker-php-ext-install pdo pdo_mysql
 
-RUN chmod +x /app/docker/controller.sh
-CMD sh /app/docker/startup.sh
+EXPOSE 8080
+COPY --from=build /app /var/www/html/
+RUN sed -i 's/80/${PORT}/g' /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY .env.prod /var/www/html/.env
+RUN chmod 777 -R /var/www/html/storage/
+RUN chown -R www-data:www-data /var/www/html/
+RUN a2enmod rewrite
+
