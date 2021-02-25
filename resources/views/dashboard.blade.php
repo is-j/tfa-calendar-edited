@@ -239,5 +239,5 @@ use App\Models\Subject;
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.js" integrity="sha256-rPPF6R+AH/Gilj2aC00ZAuB2EKmnEjXlEWx5MkAp7bw=" crossorigin="anonymous"></script>
-<script src="{{ asset('js/dashboard.js') }}"></script>
+<script src="{{ mix('js/dashboard.js') }}"></script>
 @endsection

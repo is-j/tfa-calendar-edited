@@ -33,7 +33,7 @@
         const reportEnabled = false;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@1.26.0/build/global/luxon.min.js" integrity="sha256-4sbTzmCCW9LGrIh5OsN8V5Pfdad1F1MwhLAOyXKnsE0=" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/config.js') }}"></script>
+    <script src="{{ mix('js/config.js') }}"></script>
     <script src="{{ mix('js/app.js') }}"></script>
     @yield('scripts')
 </body>

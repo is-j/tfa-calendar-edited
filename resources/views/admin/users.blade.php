@@ -41,6 +41,6 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/admin/config.js') }}"></script>
-<script src="{{ asset('js/admin/users.js') }}"></script>
+<script src="{{ mix('js/admin/config.js') }}"></script>
+<script src="{{ mix('js/admin/users.js') }}"></script>
 @endsection
