@@ -16,6 +16,7 @@ RUN echo "Listen 443" >> /etc/apache2/ports.conf
 RUN chown -R www-data:www-data /var/www/html/
 RUN a2enmod rewrite
 RUN a2enmod deflate
+RUN a2enmod headers
 
 RUN apt-get update && apt-get install -y supervisor
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
