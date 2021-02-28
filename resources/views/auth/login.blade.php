@@ -15,13 +15,16 @@
         </span>
         @enderror
     </div>
-    <div class="mb-5">
+    <div class="">
         <input class="form-element @error('password') is-invalid @enderror" name="password" type="password" placeholder="Password" required autocomplete="current-password" />
         @error('password')
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>
         </span>
         @enderror
+    </div>
+    <div class="text-right mb-4 pr-1">
+        <a class="link-custom text-sm" href="{{ route('password.request') }}">Forgot password?</a>
     </div>
     <button class="btn-positive text-base tracking-wide w-full h-12" type="submit">Login</button>
 </form>

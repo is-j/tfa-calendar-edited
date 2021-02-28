@@ -8,18 +8,18 @@ use Illuminate\Support\Facades\Auth;
 @section('content')
 <div class="w-full" x-data="{tab: 'profile'}">
     <div class="flex mb-0">
-        <button class="w-full mr-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'profile', 'btn-neutral': tab != 'profile'}" @click="tab='profile'">
+        <button class="w-full p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'profile', 'btn-neutral': tab != 'profile'}" @click="tab='profile'">
             Profile
         </button>
         @if (Auth::user()->role->name == 'tutor')
-        <button class="w-full mr-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'subjects', 'btn-neutral': tab != 'subjects'}" @click="tab='subjects'">
+        <button class="w-full ml-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'subjects', 'btn-neutral': tab != 'subjects'}" @click="tab='subjects'">
             Subjects
         </button>
-        <button class="w-full p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'information', 'btn-neutral': tab != 'information'}" @click="tab='information'">
+        <button class="w-full ml-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'information', 'btn-neutral': tab != 'information'}" @click="tab='information'">
             Information
         </button>
         @elseif (Auth::user()->role->name== 'student')
-        <button class="w-full p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'terms', 'btn-neutral': tab != 'terms'}" @click="tab='terms'">
+        <button class="w-full ml-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'terms', 'btn-neutral': tab != 'terms'}" @click="tab='terms'">
             Terms
         </button>
         @endif
@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Auth;
                 <li class="list-group-item">Name: {{ Auth::user()->name }}</li>
                 <li class="list-group-item">Email: {{ Auth::user()->email }}</li>
                 <li class="list-group-item">Role: {{ ucfirst(Auth::user()->role->name) }}</li>
-                <!--<li class="list-group-item"><a class="btn btn-danger" href="#">Reset password</a></li>-->
+                <li class="list-group-item mt-4"><a class="btn-positive h-12 p-3" href="{{ route('update-password') }}">Update password</a></li>
             </ul>
         </div>
         @if (Auth::user()->role->name == 'tutor')

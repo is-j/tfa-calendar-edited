@@ -1,5 +1,7 @@
 let subjectId = '0';
 let prevWidth = null;
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     headerToolbar: {
         left: 'prev,next today',
@@ -143,7 +145,6 @@ if (accountType == 'tutor') {
                             this.activeDescendant = ''
                             return
                         }
-
                         this.activeDescendant = this.$refs.listbox.children[this.selected - 1].id
                     })
                 },

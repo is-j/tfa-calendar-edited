@@ -29,6 +29,7 @@ class ApiController extends Controller
         $dtafter = date('Y-m-d H:i:s', strtotime('+6 hours'));
         if (Auth::user()->role->name == 'tutor') {
             $slots = [];
+            $dtinterval[0] = date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60) . ' minutes'));
             foreach (Slot::whereBetween('start', $dtinterval)->where('tutor_id', Auth::user()->id)->get() as $slot) {
                 $main = [];
                 $extended = [];
@@ -281,9 +282,15 @@ class ApiController extends Controller
         if (Auth::user()->role->name != 'admin') {
             $output = ['exists' => false];
             $dtinterval = [date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60) . ' minutes')), date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60 + 1440) . ' minutes'))];
-            if (Slot::where(Auth::user()->role->name . '_id', Auth::user()->id)->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->exists()) {
+            $roles = [];
+            if (Auth::user()->role->name == 'tutor') {
+                $roles = ['tutor_id', 'student_id'];
+            } else if (Auth::user()->role->name == 'student') {
+                $roles = ['student_id', 'tutor_id'];
+            }
+            if (Slot::where($roles[0], Auth::user()->id)->whereNotNull($roles[1])->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->exists()) {
                 $output['slots'] = [];
-                foreach (Slot::where(Auth::user()->role->name . '_id', Auth::user()->id)->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->get() as $slot) {
+                foreach (Slot::where($roles[0], Auth::user()->id)->whereNotNull($roles[1])->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->get() as $slot) {
                     if (!Report::where('slot_id', $slot->id)->exists()) {
                         array_push($output['slots'], ['id' => $slot->id, 'start' => $slot->start]);
                     }
