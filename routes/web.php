@@ -49,8 +49,11 @@ Route::middleware(['auth', 'setup', 'student'])->group(function () {
 Route::middleware(['auth', 'setup', 'admin'])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
+    Route::get('/admin/subjects', [AdminController::class, 'subjects'])->name('admin.subjects');
     Route::get('/api/admin/users', [ApiController::class, 'getUser']);
     Route::get('/api/admin/reports', [ApiController::class, 'getReport']);
+    Route::get('/api/admin/subjects', [ApiController::class, 'getSubjectAll']);
+    Route::post('/api/subject/create', [ApiController::class, 'createSubject']);
     Route::post('/api/report/confirm', [ApiController::class, 'confirmReport']);
     Route::post('/api/report/deny', [ApiController::class, 'denyReport']);
 });

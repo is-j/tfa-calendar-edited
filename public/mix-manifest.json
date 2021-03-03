@@ -1,6 +1,6 @@
 {
-    "/js/app.js": "/js/app.js?id=b2840150a0bd9fd7e212",
-    "/css/app.css": "/css/app.css?id=fd8f92536667d6835968",
+    "/js/app.js": "/js/app.js?id=8831c2650c50e9b3ee6c",
+    "/css/app.css": "/css/app.css?id=db22121df6516a1f3d2f",
     "/js/dashboard.js": "/js/dashboard.js?id=964578ea52d63e7d810f",
     "/js/settings.js": "/js/settings.js?id=b8eb0c33094ff027d221",
     "/js/config.js": "/js/config.js?id=0b3173ac4e6099e06dc6",
@@ -8,5 +8,6 @@
     "/js/auth/register.js": "/js/auth/register.js?id=269aeb690b011e7197a2",
     "/js/admin/config.js": "/js/admin/config.js?id=372378c934791ddd39d7",
     "/js/admin/users.js": "/js/admin/users.js?id=699ccb73e28a78d554c3",
-    "/js/admin/reports.js": "/js/admin/reports.js?id=b7b569122661d3cb77b5"
+    "/js/admin/reports.js": "/js/admin/reports.js?id=b7b569122661d3cb77b5",
+    "/js/admin/subjects.js": "/js/admin/subjects.js?id=25884200ed20d702188d"
 }

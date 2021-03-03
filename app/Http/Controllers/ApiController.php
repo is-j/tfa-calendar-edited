@@ -227,6 +227,20 @@ class ApiController extends Controller
         }
     }
 
+    protected function getSubjectAll()
+    {
+        return json_encode(Subject::get());
+    }
+
+    protected function createSubject(Request $request)
+    {
+        if (!Subject::where('name', $request->subject_name)->exists()) {
+            Subject::create(['name' => $request->subject_name]);
+            return json_encode(['success' => true]);
+        }
+        return json_encode(['success' => false]);
+    }
+
     protected function getSubject()
     {
         $subjects = json_decode(Auth::user()->tutor->subjects);

@@ -36,6 +36,7 @@ $name = Route::currentRouteName();
                             @if (Auth::user()->role->name == 'admin')
                             <a href="{{ route('admin.users') }}" class="nav-link @if ($name == 'admin.users') active @else inactive @endif">Users</a>
                             <a href="{{ route('admin.reports') }}" class="nav-link @if ($name == 'admin.reports') active @else inactive @endif">Reports</a>
+                            <a href="{{ route('admin.subjects') }}" class="nav-link @if ($name == 'admin.subjects') active @else inactive @endif">Subjects</a>
                             @endif
                         </div>
                     </div>
@@ -90,7 +91,7 @@ $name = Route::currentRouteName();
                             </div>
                         </div>
                         @endif
-                        @if (in_array($name, ['dashboard', 'admin.users', 'admin.probations', 'admin.reports']))
+                        @if (in_array($name, ['dashboard', 'admin.users', 'admin.probations', 'admin.reports', 'admin.subjects']))
                         <div class="bg-gray-700 text-white px-3 py-2 rounded-md text-base font-medium mr-3" id="processingStatus">
                             <svg class="h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" name="done" x-cloak>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -138,6 +139,7 @@ $name = Route::currentRouteName();
                 @if (Auth::user()->role->name == 'admin')
                 <a href="{{ route('admin.users') }}" class="nav-link block @if ($name == 'admin.users') active @else inactive @endif">Users</a>
                 <a href="{{ route('admin.reports') }}" class="nav-link block @if ($name == 'admin.reports') active @else inactive @endif">Reports</a>
+                <a href="{{ route('admin.subjects') }}" class="nav-link block @if ($name == 'admin.subjects') active @else inactive @endif">Subjects</a>
                 @endif
             </div>
             <div class="pt-4 pb-3 border-t border-gray-700">

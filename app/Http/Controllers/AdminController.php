@@ -18,4 +18,8 @@ class AdminController extends Controller
     {
         return view('admin.reports');
     }
+    protected function subjects()
+    {
+        return view('admin.subjects');
+    }
 }
