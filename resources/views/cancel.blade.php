@@ -41,7 +41,7 @@ use App\Models\Subject;
                             </div>
                             <div class="form-floating mb-3">
                                 <textarea class="form-element" name="info" disabled>{{ Slot::find(app('request')->input('id'))->info }}</textarea>
-                                <label>Topic needs</label>
+                                <label>What do they need help with?</label>
                             </div>
                             @elseif (Auth::user()->role->name == 'student')
                             <div class="form-floating mb-3">

@@ -95,7 +95,7 @@ use App\Models\Subject;
                                 </div>
                                 <div class="form-floating mb-3">
                                     <textarea class="form-element" name="info" disabled></textarea>
-                                    <label>Topic needs</label>
+                                    <label>What do they need help with?</label>
                                 </div>
                                 <div>
                                     <a class="btn-positive flex justify-center text-base tracking-wide w-full h-12" href="#" target="_blank" name="meeting_link"><svg class="my-auto h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -158,7 +158,7 @@ use App\Models\Subject;
                                 </div>
                                 <div class="form-floating">
                                     <textarea class="form-element" name="info" required></textarea>
-                                    <label>Topic needs</label>
+                                    <label>What do you need help with?</label>
                                 </div>
                                 <div class="hidden" name="id"></div>
                                 <div class="hidden" name="claimed"></div>
@@ -215,7 +215,7 @@ use App\Models\Subject;
                                 </div>
                                 <div class="form-floating mb-3">
                                     <textarea class="form-element" name="info" disabled></textarea>
-                                    <label>Topic needs</label>
+                                    <label>What do you need help with?</label>
                                 </div>
                                 <div>
                                     <a class="btn-positive flex justify-center text-base tracking-wide w-full h-12" href="#" target="_blank" name="meeting_link"><svg class="my-auto h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

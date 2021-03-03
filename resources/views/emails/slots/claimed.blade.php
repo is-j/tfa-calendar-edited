@@ -26,7 +26,7 @@ Meeting link
 @endcomponent
 
 @component('mail::panel')
-## Topic needs
+## What does student need help with?
 {{ $slot['info'] }}
 @endcomponent
 @endcomponent
