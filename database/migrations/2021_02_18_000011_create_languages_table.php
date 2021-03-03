@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTutorsTable extends Migration
+class CreateLanguagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateTutorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tutors', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained();
-            $table->string('meeting_link');
-            $table->string('bio', 1000);
-            $table->json('subjects');
-            $table->json('languages');
+        Schema::create('languages', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateTutorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tutors');
+        Schema::dropIfExists('languages');
     }
 }

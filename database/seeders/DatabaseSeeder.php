@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Subject;
+use App\Models\Language;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -27,6 +28,9 @@ class DatabaseSeeder extends Seeder
         ]);
         User::insert([
             ['name' => 'Administrator', 'email' => 'scheduler@tutoringforall.org', 'role_id' => 1, 'offset' => 0, 'password' => Hash::make(config('app.adminpw'))]
+        ]);
+        Language::insert([
+            ['name' => 'English'], ['name' => 'Spanish'], ['name' => 'Mandarin Chinese'], ['name' => 'Portuguese'], ['name' => 'Hindi'], ['name' => 'French']
         ]);
     }
 }

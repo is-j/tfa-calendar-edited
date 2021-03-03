@@ -1,6 +1,7 @@
 @php
 use App\Models\User;
 use App\Models\Subject;
+use App\Models\Language;
 use Illuminate\Support\Facades\Auth;
 @endphp
 @extends('layouts.app')
@@ -63,6 +64,15 @@ use Illuminate\Support\Facades\Auth;
         <div class="w-full h-full" x-show="tab == 'information'">
             <form class="needs-validation" id="informationForm" novalidate>
                 <fieldset>
+                    <label>Languages</label>
+                    <div class="flex flex-wrap">
+                        @foreach (Language::get() as $language)
+                        <div class="flex pl-5 mb-2">
+                            <input class="form-check mt-1 @error('terms') is-invalid @enderror" type="checkbox" data-lang="{{ $language->id }}" id="lang{{ $language->id }}" @if (in_array($language->id,json_decode(Auth::user()->tutor->languages))) checked @endif>
+                            <label class="text-gray-700 ml-2" for="lang{{ $language->id }}">{{ $language->name }}</label>
+                        </div>
+                        @endforeach
+                    </div>
                     <div class="form-floating my-3">
                         <input type="text" class="form-element" name="meeting_link" value="{{ Auth::user()->tutor->meeting_link }}" placeholder="Meeting link" required>
                         <label>Meeting link</label>

@@ -281,13 +281,14 @@ class ApiController extends Controller
     {
         $request->validate([
             'meeting_link' => 'required',
-            'bio' => 'required|max:1000'
+            'bio' => 'required|max:1000',
+            'languages' => 'required'
         ]);
         $meetingLink = $request->meeting_link;
         if (!(strpos($meetingLink, 'http://') !== false || strpos($meetingLink, 'https://') !== false)) {
             $meetingLink = 'https://' . $meetingLink;
         }
-        Tutor::where('user_id', Auth::user()->id)->update(['meeting_link' => $meetingLink, 'bio' => $request->bio]);
+        Tutor::where('user_id', Auth::user()->id)->update(['meeting_link' => $meetingLink, 'bio' => $request->bio, 'languages' => json_encode($request->languages)]);
         return json_encode(['success' => true]);
     }
 
