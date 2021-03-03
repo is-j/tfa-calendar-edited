@@ -141,11 +141,14 @@ use App\Models\Subject;
                                     <input type="datetime-local" class="form-element" name="start" disabled>
                                     <label>Date/Time</label>
                                 </div>
-                                <div class="form-floating mb-3">
+                                <div class="form-floating">
                                     <input type="text" class="form-element" name="tutor_name" disabled>
                                     <label>Tutor name</label>
                                 </div>
-                                <div class="form-floating mb-3">
+                                <div class="text-sm mt-2 text-gray-700 rounded border border-gray-400 outline-none w-full py-1 px-3" style="background-color:#e9ecef;">
+                                    <div>Tutor speaks <span name="tutor_languages"></span></div>
+                                </div>
+                                <div class="form-floating mt-2 mb-3">
                                     <textarea class="form-element" name="tutor_bio" disabled></textarea>
                                     <label>Tutor bio</label>
                                 </div>
@@ -191,11 +194,14 @@ use App\Models\Subject;
                                     <input type="datetime-local" class="form-element" name="start" disabled>
                                     <label>Date/Time</label>
                                 </div>
-                                <div class="form-floating mb-3">
+                                <div class="form-floating">
                                     <input type="text" class="form-element" name="tutor_name" disabled>
                                     <label>Tutor name</label>
                                 </div>
-                                <div class="form-floating mb-3">
+                                <div class="text-sm mt-2 text-gray-700 rounded border border-gray-400 outline-none w-full py-1 px-3" style="background-color:#e9ecef;">
+                                    <div>Tutor speaks <span name="tutor_languages"></span></div>
+                                </div>
+                                <div class="form-floating mt-2 mb-3">
                                     <input type="text" class="form-element" name="tutor_email" disabled>
                                     <label>Tutor email</label>
                                 </div>

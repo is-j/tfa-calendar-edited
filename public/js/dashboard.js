@@ -1,7 +1,5 @@
 let subjectId = '0';
 let prevWidth = null;
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     headerToolbar: {
         left: 'prev,next today',
@@ -32,6 +30,19 @@ const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), 
                 document.getElementById('unclaimSlotLabel').innerText = `Slot: ${info.event.title}`;
                 unclaimSlotForm.querySelector('input[name="start"]').value = DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm");
                 matchValue(unclaimSlotForm, info.event.extendedProps, ['input[name="tutor_name"]', 'input[name="tutor_email"]', 'textarea[name="tutor_bio"]', 'input[name="subject_name"]', 'textarea[name="info"]']);
+                let temp = '';
+                if (info.event.extendedProps.tutor_languages.length > 1) {
+                    for (languageName of info.event.extendedProps.tutor_languages) {
+                        if (languageName == info.event.extendedProps.tutor_languages[info.event.extendedProps.tutor_languages.length - 1]) {
+                            temp += `and ${languageName}.`;
+                        } else {
+                            temp += `${languageName}, `;
+                        }
+                    }
+                } else {
+                    temp = `${info.event.extendedProps.tutor_languages[0]}.`;
+                }
+                unclaimSlotForm.querySelector('span[name="tutor_languages"]').innerText = temp;
                 unclaimSlotForm.querySelector('div[name="id"]').setAttribute('data-id', info.event.id);
                 unclaimSlotForm.querySelector('div[name="claimed"]').setAttribute('data-claimed', info.event.extendedProps.claimed);
                 unclaimSlotForm.querySelector('a[name="meeting_link"]').setAttribute('href', info.event.extendedProps.meeting_link);
@@ -41,6 +52,19 @@ const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), 
                 document.getElementById('claimSlotLabel').innerText = `Slot: ${info.event.title}`;
                 claimSlotForm.querySelector('input[name="start"]').value = DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm");
                 matchValue(claimSlotForm, info.event.extendedProps, ['input[name="tutor_name"]', 'textarea[name="tutor_bio"]', 'input[name="subject_name"]']);
+                let temp = '';
+                if (info.event.extendedProps.tutor_languages.length > 1) {
+                    for (languageName of info.event.extendedProps.tutor_languages) {
+                        if (languageName == info.event.extendedProps.tutor_languages[info.event.extendedProps.tutor_languages.length - 1]) {
+                            temp += `and ${languageName}.`;
+                        } else {
+                            temp += `${languageName}, `;
+                        }
+                    }
+                } else {
+                    temp = `${info.event.extendedProps.tutor_languages[0]}.`;
+                }
+                claimSlotForm.querySelector('span[name="tutor_languages"]').innerText = temp;
                 claimSlotForm.querySelector('div[name="id"]').setAttribute('data-id', info.event.id);
                 claimSlotForm.querySelector('div[name="claimed"]').setAttribute('data-claimed', info.event.extendedProps.claimed);
                 toggleModal('claimSlot');

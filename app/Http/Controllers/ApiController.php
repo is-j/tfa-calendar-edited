@@ -9,10 +9,11 @@ use App\Models\Tutor;
 use App\Models\Report;
 use App\Mail\ReportBug;
 use App\Models\Subject;
+use App\Models\Language;
 use App\Jobs\ProcessSlot;
-use App\Mail\ReportPerson;
 use App\Mail\SlotClaimed;
 use App\Models\Probation;
+use App\Mail\ReportPerson;
 use App\Mail\SlotCanceled;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -73,6 +74,10 @@ class ApiController extends Controller
                         $extended['claimed'] = false;
                         $extended['tutor_name'] = $tutorname;
                         $extended['tutor_bio'] = User::find($slot->tutor_id)->tutor->bio;
+                        $extended['tutor_languages'] = [];
+                        foreach (json_decode(User::find($slot->tutor_id)->tutor->languages) as $languageid) {
+                            array_push($extended['tutor_languages'], Language::find($languageid)->name);
+                        }
                         $extended['subject_name'] = Subject::find($slot->subject_id)->name;
                         $main['id'] = $slot->id;
                         $main['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($slot->start));
@@ -84,6 +89,10 @@ class ApiController extends Controller
                         $extended['tutor_name'] = $tutorname;
                         $extended['tutor_bio'] = User::find($slot->tutor_id)->tutor->bio;
                         $extended['tutor_email'] = User::find($slot->tutor_id)->email;
+                        $extended['tutor_languages'] = [];
+                        foreach (json_decode(User::find($slot->tutor_id)->tutor->languages) as $languageid) {
+                            array_push($extended['tutor_languages'], Language::find($languageid)->name);
+                        }
                         $extended['info'] = $slot->info;
                         $extended['meeting_link'] = url('/ml/') . '/' . $slot->id;
                         $extended['subject_name'] = Subject::find($slot->subject_id)->name;
