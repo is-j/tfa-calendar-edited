@@ -98,10 +98,7 @@ use Illuminate\Support\Facades\Auth;
             <b>When you created this account, you automatically agreed to the following terms*:</b>
             <br>
             <br>
-            I acknowledge that tutoring is a privilege, and I will try to show up at my session
-            as much as possible. I acknowledge that a no show up for 2 times without
-            cancellation 4 hours in advance will result in a 7 day withhold of my tutoring
-            privilege.
+            I understand that I miss 3 appointments without 2 hour notice in advance, I will be put under a probation period of 7 days from signing up. I can negotiate with my tutor to schedule for a long term tutoring service, which constitutes of 6 sessions maximum.
             <br>
             <br>
             <i>*Note that these terms were presented to you on account setup.</i>
