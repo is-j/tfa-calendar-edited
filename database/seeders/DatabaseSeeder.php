@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Biology'], ['name' => 'Chemistry'], ['name' => 'Physics Algebra'], ['name' => 'Physics Calculus'], ['name' => 'Algebra 1'], ['name' => 'Geometry'], ['name' => 'Algebra 2'], ['name' => 'Trigonometry'], ['name' => 'Precalculus'], ['name' => 'Calculus AB/BC'], ['name' => 'SAT Math 2'], ['name' => 'Macroeconomics'], ['name' => 'Microeconomics'], ['name' => 'Elementary English'], ['name' => 'SAT English'], ['name' => 'Computer Science']
         ]);
         User::insert([
-            ['name' => 'Administrator', 'email' => 'scheduler@tutoringforall.org', 'role_id' => 1, 'offset' => 0, 'password' => Hash::make(config('app.adminpw'))]
+            ['name' => 'Administrator', 'email' => 'scheduler@tutoringforall.org', 'role_id' => 1, 'timezone' => 'America/Chicago', 'password' => Hash::make(config('app.adminpw'))]
         ]);
         Language::insert([
             ['name' => 'English'], ['name' => 'Spanish'], ['name' => 'Mandarin Chinese'], ['name' => 'Portuguese'], ['name' => 'Hindi'], ['name' => 'French']

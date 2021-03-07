@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateTimeZone;
 use App\Models\Role;
 use App\Models\Slot;
 use App\Models\User;
@@ -30,7 +32,7 @@ class ApiController extends Controller
         $dtafter = date('Y-m-d H:i:s', strtotime('+6 hours'));
         if (Auth::user()->role->name == 'tutor') {
             $slots = [];
-            $dtinterval[0] = date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60) . ' minutes'));
+            $dtinterval[0] = (new DateTime(date('Y-m-d')))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s');
             foreach (Slot::whereBetween('start', $dtinterval)->where('tutor_id', Auth::user()->id)->get() as $slot) {
                 $main = [];
                 $extended = [];
@@ -228,7 +230,7 @@ class ApiController extends Controller
             ProcessSlot::dispatch('claim', $slot);
             Mail::to(User::find($slot['tutor_id']))->queue(new SlotClaimed($slot, 'tutor'));
             Mail::to(User::find($slot['student_id']))->queue(new SlotClaimed($slot, 'student'));
-            $dtinterval = [date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(Slot::find($request->id)->start . sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60) . ' minutes')), date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(Slot::find($request->id)->start . sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60 + 1440) . ' minutes'))];
+            $dtinterval = [(new DateTime(date('Y-m-d', strtotime(Slot::find($request->id)->start))))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s'), (new DateTime(date('Y-m-d', strtotime(Slot::find($request->id)->start . '+1 day'))))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s')];
             if (Slot::where('student_id', Auth::user()->id)->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->count() > 1) {
                 return json_encode(['success' => true, 'error' => true, 'message' => 'You have another session the same day. Be mindful of the other students who also need tutoring.']);
             }
@@ -305,7 +307,7 @@ class ApiController extends Controller
     {
         if (Auth::user()->role->name != 'admin') {
             $output = ['exists' => false];
-            $dtinterval = [date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60) . ' minutes')), date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60 + 1440) . ' minutes'))];
+            $dtinterval = [(new DateTime(date('Y-m-d')))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s'), (new DateTime(date('Y-m-d', strtotime('+1 day'))))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s')];
             $roles = [];
             if (Auth::user()->role->name == 'tutor') {
                 $roles = ['tutor_id', 'student_id'];
@@ -444,7 +446,7 @@ class ApiController extends Controller
     protected function catchProbation()
     {
         if ($this->isSuspended(Auth::user()->id)) {
-            $end = date('D M j, Y g:i A', strtotime(Probation::where('user_id', Auth::user()->id)->first()->end . sprintf("%+d", Auth::user()->offset * 60) . ' minutes'));
+            $end = (new DateTime(Probation::where('user_id', Auth::user()->id)->first()->end))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('D M j, Y g:i A');
             return ['probation' => true, 'content' => ['success' => false, 'error' => true, 'message' => "Your account is suspended for too many strikes and cannot do the requested action. Your probation ends $end."]];
         }
         return ['probation' => false];

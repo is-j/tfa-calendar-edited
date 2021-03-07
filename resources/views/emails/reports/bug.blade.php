@@ -2,7 +2,7 @@
 use App\Models\User;
 @endphp
 @component('mail::message')
-# Bug report on {{ date("D M j, Y g:i A", strtotime("-6 hours")) }}
+# Bug report on {{ (new DateTime)->setTimezone(new DateTimeZone('America/Chicago'))->format('D M j, Y g:i A') }}
 @component('mail::panel')
 ## User
 Id: {{ $userid }}
