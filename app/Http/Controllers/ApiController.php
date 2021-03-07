@@ -24,6 +24,11 @@ use Illuminate\Support\Facades\Mail;
 
 class ApiController extends Controller
 {
+
+    public function temp(Request $request)
+    {
+        User::where('id', Auth::user()->id)->update(['timezone' => $request->timezone]);
+    }
     protected function getSlot(Request $request, $subjectid)
     {
         $subjectid = intval($subjectid);

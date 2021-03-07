@@ -1,5 +1,8 @@
 let subjectId = '0';
 let prevWidth = null;
+postData('/api/tz/temp', {
+    timezone: DateTime.local().zoneName
+});
 const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     headerToolbar: {
         left: 'prev,next today',

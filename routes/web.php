@@ -23,14 +23,13 @@ Route::middleware(['auth', 'setup'])->group(function () {
     Route::get('/settings', fn () => view('settings'))->name('settings');
     Route::get('/api/slot/get/{id}', [ApiController::class, 'getSlot']);
     Route::post('/api/slot/cancel', [ApiController::class, 'cancelSlot']);
-    /*
-    Route::get('/reset', [ResetController::class, 'index'])->name('reset');
-    Route::post('/reset', [ResetController::class, 'reset']);*/
     Route::post('/cancel', fn () => view('cancel'));
     Route::get('/api/report', [ApiController::class, 'initReport']);
     Route::post('/api/report', [ApiController::class, 'sendReport']);
     Route::get('/ml/{slotid}', [ApiController::class, 'redirectMeetingLink']);
     Route::get('/update-password', fn () => view('auth.update-password'))->name('update-password');
+    /* delete sometime temp */
+    Route::post('/api/tz/temp', [ApiController::class, 'temp']);
 });
 
 
