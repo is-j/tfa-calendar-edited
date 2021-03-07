@@ -1,6 +1,4 @@
 @php
-use DateTime;
-use DateTimeZone;
 use App\Models\User;
 @endphp
 @component('mail::message')
