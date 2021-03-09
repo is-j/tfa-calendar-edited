@@ -26,41 +26,44 @@ use App\Models\Subject;
                             Cancel this session
                         </h3>
                         <div class="mt-2">
-                            <div class="form-floating mb-3">
-                                <input type="datetime-local" class="form-element" name="start" value="{{ app('request')->input('start') }}" disabled>
-                                <label>Date/Time</label>
+                            <div class="mb-3">
+                                <input type="datetime-local" class="bg-white outline-none font-bold text-xl" name="start" value="{{ app('request')->input('start') }}" disabled>
                             </div>
                             @if (Auth::user()->role->name == 'tutor')
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-element" name="student_name" value="{{ User::find(Slot::find(app('request')->input('id'))->student_id)->name }}" disabled>
-                                <label>Student name</label>
+                            <div class="flex items-center mb-2">
+                                <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span name="student_name">{{ User::find(Slot::find(app('request')->input('id'))->student_id)->name }}</span><span>&nbsp;is learning&nbsp;</span><span name="subject_name">{{ Subject::find(Slot::find(app('request')->input('id'))->subject_id)->name }}</span>
+                            </div>
+                            <div class="flex items-center mb-3">
+                                <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                </svg>
+                                <span name="student_email">{{ User::find(Slot::find(app('request')->input('id'))->student_id)->email }}</span>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-element" name="student_email" value="{{ User::find(Slot::find(app('request')->input('id'))->student_id)->email }}" disabled>
-                                <label>Student email</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <textarea class="form-element" name="info" disabled>{{ Slot::find(app('request')->input('id'))->info }}</textarea>
+                                <textarea class="form-flat" name="info" disabled>{{ Slot::find(app('request')->input('id'))->info }}</textarea>
                                 <label>What do they need help with?</label>
                             </div>
                             @elseif (Auth::user()->role->name == 'student')
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-element" name="tutor_name" value="{{ User::find(Slot::find(app('request')->input('id'))->tutor_id)->name }}" disabled>
-                                <label>Tutor name</label>
+                            <div class="flex items-center mb-2">
+                                <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span name="tutor_name">{{ User::find(Slot::find(app('request')->input('id'))->tutor_id)->name }}</span><span>&nbsp;is tutoring&nbsp;</span><span name="subject_name">{{ Subject::find(Slot::find(app('request')->input('id'))->subject_id)->name }}</span>
+                            </div>
+                            <div class="flex items-center mb-3">
+                                <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                </svg>
+                                <span name="tutor_email">{{ User::find(Slot::find(app('request')->input('id'))->tutor_id)->email }}</span>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-element" name="tutor_email" value="{{ User::find(Slot::find(app('request')->input('id'))->tutor_id)->email }}" disabled>
-                                <label>Tutor email</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <textarea class="form-element" name="tutor_bio" disabled>{{ User::find(Slot::find(app('request')->input('id'))->tutor_id)->tutor->bio }}</textarea>
+                                <textarea class="form-flat" name="tutor_bio" disabled>{{ User::find(Slot::find(app('request')->input('id'))->tutor_id)->tutor->bio }}</textarea>
                                 <label>Tutor bio</label>
                             </div>
                             @endif
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-element" name="subject_name" value="{{ Subject::find(Slot::find(app('request')->input('id'))->subject_id)->name }}" disabled>
-                                <label>Subject</label>
-                            </div>
                             <div class="form-floating">
                                 <textarea class="form-element" name="reason" required></textarea>
                                 <label>Cancellation reason</label>

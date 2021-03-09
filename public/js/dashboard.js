@@ -30,20 +30,21 @@ const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), 
         if (accountType == 'student') {
             if (info.event.extendedProps.claimed) {
                 const unclaimSlotForm = document.getElementById('unclaimSlotForm');
-                document.getElementById('unclaimSlotLabel').innerText = `Slot: ${info.event.title}`;
                 unclaimSlotForm.querySelector('input[name="start"]').value = DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm");
-                matchValue(unclaimSlotForm, info.event.extendedProps, ['input[name="tutor_name"]', 'input[name="tutor_email"]', 'textarea[name="tutor_bio"]', 'input[name="subject_name"]', 'textarea[name="info"]']);
+                matchValue(unclaimSlotForm, info.event.extendedProps, ['span[name="tutor_name"]', 'span[name="tutor_email"]', 'textarea[name="tutor_bio"]', 'span[name="subject_name"]', 'textarea[name="info"]']);
                 let temp = '';
-                if (info.event.extendedProps.tutor_languages.length > 1) {
+                if (info.event.extendedProps.tutor_languages.length == 2) {
+                    temp = `${info.event.extendedProps.tutor_languages[0]} and ${info.event.extendedProps.tutor_languages[0]}`;
+                } else if (info.event.extendedProps.tutor_languages.length > 1) {
                     for (languageName of info.event.extendedProps.tutor_languages) {
                         if (languageName == info.event.extendedProps.tutor_languages[info.event.extendedProps.tutor_languages.length - 1]) {
-                            temp += `and ${languageName}.`;
+                            temp += `and ${languageName}`;
                         } else {
                             temp += `${languageName}, `;
                         }
                     }
                 } else {
-                    temp = `${info.event.extendedProps.tutor_languages[0]}.`;
+                    temp = `${info.event.extendedProps.tutor_languages[0]}`;
                 }
                 unclaimSlotForm.querySelector('span[name="tutor_languages"]').innerText = temp;
                 unclaimSlotForm.querySelector('div[name="id"]').setAttribute('data-id', info.event.id);
@@ -52,20 +53,21 @@ const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), 
                 toggleModal('unclaimSlot');
             } else {
                 const claimSlotForm = document.getElementById('claimSlotForm');
-                document.getElementById('claimSlotLabel').innerText = `Slot: ${info.event.title}`;
                 claimSlotForm.querySelector('input[name="start"]').value = DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm");
-                matchValue(claimSlotForm, info.event.extendedProps, ['input[name="tutor_name"]', 'textarea[name="tutor_bio"]', 'input[name="subject_name"]']);
+                matchValue(claimSlotForm, info.event.extendedProps, ['span[name="tutor_name"]', 'textarea[name="tutor_bio"]', 'span[name="subject_name"]']);
                 let temp = '';
-                if (info.event.extendedProps.tutor_languages.length > 1) {
+                if (info.event.extendedProps.tutor_languages.length == 2) {
+                    temp = `${info.event.extendedProps.tutor_languages[0]} and ${info.event.extendedProps.tutor_languages[0]}`;
+                } else if (info.event.extendedProps.tutor_languages.length > 1) {
                     for (languageName of info.event.extendedProps.tutor_languages) {
                         if (languageName == info.event.extendedProps.tutor_languages[info.event.extendedProps.tutor_languages.length - 1]) {
-                            temp += `and ${languageName}.`;
+                            temp += `and ${languageName}`;
                         } else {
                             temp += `${languageName}, `;
                         }
                     }
                 } else {
-                    temp = `${info.event.extendedProps.tutor_languages[0]}.`;
+                    temp = `${info.event.extendedProps.tutor_languages[0]}`;
                 }
                 claimSlotForm.querySelector('span[name="tutor_languages"]').innerText = temp;
                 claimSlotForm.querySelector('div[name="id"]').setAttribute('data-id', info.event.id);
@@ -75,17 +77,15 @@ const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), 
         } else if (accountType == 'tutor') {
             const deleteSlotForm = document.getElementById('deleteSlotForm');
             deleteSlotForm.querySelector('input[name="start"]').value = DateTime.fromISO(info.event.startStr).toFormat("yyyy-MM-dd'T'HH:mm");
-            deleteSlotForm.querySelector('input[name="subject_name"]').value = info.event.extendedProps.subject_name;
+            deleteSlotForm.querySelector('span[name="subject_name"]').innerText = info.event.extendedProps.subject_name;
             deleteSlotForm.querySelector('div[name="id"]').setAttribute('data-id', info.event.id);
             deleteSlotForm.querySelector('div[name="claimed"]').setAttribute('data-claimed', info.event.extendedProps.claimed);
             if (info.event.extendedProps.claimed) {
-                document.getElementById('deleteSlotLabel').innerText = `Student: ${info.event.title}`;
-                toggleDisplay(deleteSlotForm, ['input[name="repeat"]'], ['input[name="student_name"]', 'input[name="student_email"]', 'textarea[name="info"]', 'a[name="meeting_link"]']);
-                matchValue(deleteSlotForm, info.event.extendedProps, ['input[name="student_name"]', 'input[name="student_email"]', 'textarea[name="info"]']);
+                toggleDisplay(deleteSlotForm, ['input[name="repeat"]'], ['span[name="student_name"]', 'span[name="student_email"]', 'textarea[name="info"]', 'a[name="meeting_link"]']);
+                matchValue(deleteSlotForm, info.event.extendedProps, ['span[name="student_name"]', 'span[name="student_email"]', 'textarea[name="info"]']);
                 deleteSlotForm.querySelector('a[name="meeting_link"]').setAttribute('href', info.event.extendedProps.meeting_link);
             } else {
-                document.getElementById('deleteSlotLabel').innerText = info.event.title;
-                toggleDisplay(deleteSlotForm, ['input[name="student_name"]', 'input[name="student_email"]', 'textarea[name="info"]', 'a[name="meeting_link"]'], ['input[name="repeat"]']);
+                toggleDisplay(deleteSlotForm, ['span[name="student_name"]', 'span[name="student_email"]', 'textarea[name="info"]', 'a[name="meeting_link"]'], ['input[name="repeat"]']);
             }
             toggleModal('deleteSlot');
         }
@@ -301,7 +301,7 @@ function toggleModal(id) {
 function toggleDisplay(form, hide, show) {
     hide.map(query => form.querySelector(query).parentElement.style.display = 'none');
     show.map(query => {
-        if (form.querySelector(query).type == 'checkbox') {
+        if (form.querySelector(query).parentElement.classList.contains('flex')) {
             form.querySelector(query).parentElement.style.display = 'flex';
         } else {
             form.querySelector(query).parentElement.style.display = 'block';
@@ -310,5 +310,5 @@ function toggleDisplay(form, hide, show) {
 }
 
 function matchValue(form, props, elements) {
-    elements.map(element => form.querySelector(element).value = props[element.split('"')[1]]);
+    elements.map(element => form.querySelector(element).innerText = props[element.split('"')[1]]);
 }

@@ -74,27 +74,24 @@ use App\Models\Subject;
                             </svg>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="deleteSlotLabel">
-                            </h3>
                             <div class="mt-2">
-                                <div class="form-floating mb-3">
-                                    <input type="datetime-local" class="form-element" name="start" disabled>
-                                    <label>Date/Time</label>
+                                <div class="mb-3">
+                                    <input type="datetime-local" class="bg-white outline-none font-bold text-xl" name="start" disabled>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <div><span name="student_name"></span><span>&nbsp;is learning&nbsp;</span></div><span name="subject_name"></span>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                    </svg>
+                                    <span name="student_email"></span>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-element" name="student_name" disabled>
-                                    <label>Student name</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-element" name="student_email" disabled>
-                                    <label>Student email</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-element" name="subject_name" disabled>
-                                    <label>Subject</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <textarea class="form-element" name="info" disabled></textarea>
+                                    <textarea class="form-flat" name="info" disabled></textarea>
                                     <label>What do they need help with?</label>
                                 </div>
                                 <div>
@@ -102,10 +99,10 @@ use App\Models\Subject;
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                                         </svg><span class="my-auto ml-2">Meeting link</span></a>
                                 </div>
-                                <div class="flex">
+                                <div class="flex ml-2 pt-2">
                                     <input class="form-check mt-1" type="checkbox" name="repeat" id="repeatDelete">
-                                    <label class="text-gray-700 ml-2" for="repeatDelete">Delete all repeating slots on this day
-                                        of the week at this time after this slot.</label>
+                                    <label class="text-gray-700 ml-3" for="repeatDelete">Delete all repeating slots on this day
+                                        of the week at this time after this slot</label>
                                 </div>
                                 <div class="hidden" name="id"></div>
                                 <div class="hidden" name="claimed"></div>
@@ -134,27 +131,26 @@ use App\Models\Subject;
                             </svg>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="claimSlotLabel">
-                            </h3>
                             <div class="mt-2">
+                                <div class="mb-3">
+                                    <input type="datetime-local" class="bg-white outline-none font-bold text-xl" name="start" disabled>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span name="tutor_name"></span><span>&nbsp;is tutoring&nbsp;</span><span name="subject_name"></span>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>Speaks&nbsp;</span>
+                                    <span name="tutor_languages"></span>
+                                </div>
                                 <div class="form-floating mb-3">
-                                    <input type="datetime-local" class="form-element" name="start" disabled>
-                                    <label>Date/Time</label>
-                                </div>
-                                <div class="form-floating">
-                                    <input type="text" class="form-element" name="tutor_name" disabled>
-                                    <label>Tutor name</label>
-                                </div>
-                                <div class="text-sm mt-2 text-gray-700 rounded border border-gray-400 outline-none w-full py-1 px-3" style="background-color:#e9ecef;">
-                                    <div>Tutor speaks <span name="tutor_languages"></span></div>
-                                </div>
-                                <div class="form-floating mt-2 mb-3">
-                                    <textarea class="form-element" name="tutor_bio" disabled></textarea>
+                                    <textarea class="form-flat" name="tutor_bio" disabled></textarea>
                                     <label>Tutor bio</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-element" name="subject_name" disabled>
-                                    <label>Subject</label>
                                 </div>
                                 <div class="form-floating">
                                     <textarea class="form-element" name="info" required></textarea>
@@ -187,34 +183,35 @@ use App\Models\Subject;
                             </svg>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="unclaimSlotLabel">
-                            </h3>
                             <div class="mt-2">
+                                <div class="mb-3">
+                                    <input type="datetime-local" class="bg-white outline-none font-bold text-xl" name="start" disabled>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span name="tutor_name"></span><span>&nbsp;is tutoring&nbsp;</span><span name="subject_name"></span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>Speaks&nbsp;</span>
+                                    <span name="tutor_languages"></span>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <svg class="h-7 w-7 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                    </svg>
+                                    <span name="tutor_email"></span>
+                                </div>
                                 <div class="form-floating mb-3">
-                                    <input type="datetime-local" class="form-element" name="start" disabled>
-                                    <label>Date/Time</label>
-                                </div>
-                                <div class="form-floating">
-                                    <input type="text" class="form-element" name="tutor_name" disabled>
-                                    <label>Tutor name</label>
-                                </div>
-                                <div class="text-sm mt-2 text-gray-700 rounded border border-gray-400 outline-none w-full py-1 px-3" style="background-color:#e9ecef;">
-                                    <div>Tutor speaks <span name="tutor_languages"></span></div>
-                                </div>
-                                <div class="form-floating mt-2 mb-3">
-                                    <input type="text" class="form-element" name="tutor_email" disabled>
-                                    <label>Tutor email</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <textarea class="form-element" name="tutor_bio" disabled></textarea>
+                                    <textarea class="form-flat" name="tutor_bio" disabled></textarea>
                                     <label>Tutor bio</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-element" name="subject_name" disabled>
-                                    <label>Subject</label>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <textarea class="form-element" name="info" disabled></textarea>
+                                    <textarea class="form-flat" name="info" disabled></textarea>
                                     <label>What do you need help with?</label>
                                 </div>
                                 <div>
