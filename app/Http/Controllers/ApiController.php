@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use DateTime;
+use DateInterval;
 use DateTimeZone;
 use App\Models\Role;
 use App\Models\Slot;
 use App\Models\User;
 use App\Models\Tutor;
 use App\Models\Report;
+use DateTimeImmutable;
 use App\Mail\ReportBug;
 use App\Models\Subject;
 use App\Models\Language;
@@ -155,12 +157,13 @@ class ApiController extends Controller
             return json_encode(['success' => false, 'error' => true, 'message' => 'The slot already exists.']);
         }
         if ($request->repeat == true) {
+            $start = (new DateTimeImmutable($request->start))->setTimezone(new DateTimeZone(Auth::user()->timezone));
             for ($i = 0; $i < 20; $i++) {
-                $start = date("Y-m-d H:i:s", strtotime($request->start . "+$i weeks"));
-                if (!Slot::where('tutor_id', Auth::user()->id)->where('start', $start)->exists()) {
+                $calcstart = $start->add(new DateInterval('P' . $i . 'W'))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s');
+                if (!Slot::where('tutor_id', Auth::user()->id)->where('start', $calcstart)->exists()) {
                     Slot::create([
                         'id' => uniqid(),
-                        'start' => $start,
+                        'start' => $calcstart,
                         'subject_id' => intval($request->subject_id),
                         'tutor_id' => Auth::user()->id
                     ]);
@@ -188,12 +191,12 @@ class ApiController extends Controller
         if (Auth::user()->role->name == 'tutor') {
             if (is_null(Slot::find($request->id)->student_id)) {
                 if ($request->repeat) {
-                    $start = Slot::find($request->id)->start;
+                    $start = (new DateTimeImmutable(Slot::find($request->id)->start))->setTimezone(new DateTimeZone(Auth::user()->timezone));
                     for ($i = 0; $i < 20; $i++) {
-                        if (Slot::where('tutor_id', Auth::user()->id)->where('start', $start)->whereNull('student_id')->exists()) {
-                            Slot::where('tutor_id', Auth::user()->id)->where('start', $start)->delete();
+                        $calcstart = $start->add(new DateInterval('P' . $i . 'W'))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s');
+                        if (Slot::where('tutor_id', Auth::user()->id)->where('start', $calcstart)->whereNull('student_id')->exists()) {
+                            Slot::where('tutor_id', Auth::user()->id)->where('start', $calcstart)->delete();
                         }
-                        $start = date("Y-m-d H:i:s", strtotime($start . '+1 week'));
                     }
                 } else {
                     Slot::where('id', $request->id)->delete();
