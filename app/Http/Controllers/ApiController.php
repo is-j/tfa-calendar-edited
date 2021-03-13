@@ -187,6 +187,7 @@ class ApiController extends Controller
         if ($catchProbation['probation']) {
             return json_encode($catchProbation['content']);
         }
+        $claimed = !is_null(Slot::find($request->id)->student_id);
         $storedstart = Slot::find($request->id)->start;
         if (Auth::user()->role->name == 'tutor') {
             if (is_null(Slot::find($request->id)->student_id)) {
@@ -215,7 +216,7 @@ class ApiController extends Controller
             Mail::to(User::find($slot['student_id']))->queue(new SlotCanceled($slot, 'student', 'unclaim', $request->reason));
             Slot::where('id', $request->id)->update(['student_id' => NULL, 'info' => NULL]);
         }
-        if (date('Y-m-d H:i:s', strtotime($storedstart)) < date("Y-m-d H:i:s", strtotime('+2 hours'))) {
+        if ($claimed && date('Y-m-d H:i:s', strtotime($storedstart)) < date("Y-m-d H:i:s", strtotime('+2 hours'))) {
             $this->addStrike(Auth::user()->id);
             return json_encode(['success' => true, 'error' => true, 'message' => "You've received a strike for canceling near the start of the session. 3 strikes result in a probation of 1 week."]);
         }
