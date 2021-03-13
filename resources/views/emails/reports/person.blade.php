@@ -12,7 +12,7 @@ You've been reported late (by more than 10 minutes) or absent to one of your tut
 
 @component('mail::panel')
 # Think this was a mistake?
-Please respond to this email within 3 days with an explanation of what happened.
+Within 3 days, please forward this email with an explanation of what happened to info@tutoringforall.org.
 @endcomponent
 
 @endcomponent
