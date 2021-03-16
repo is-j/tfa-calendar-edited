@@ -47,7 +47,7 @@
         </span>
         @enderror
     </div>
-    <input class="hidden" name="offset" id="offset" type="number">
+    <input class="hidden" name="timezone" id="timezone" type="text">
     <button class="btn-positive text-base tracking-wide w-full h-12" type="submit">Register</button>
 </form>
 <p class="mt-3 mb-0">Already have an account? <a class="link-custom" href="{{ route('login') }}">Login here.</a></p>

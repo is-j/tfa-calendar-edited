@@ -10,6 +10,10 @@ class Tutor extends Model
 {
     use HasFactory;
 
+    protected $attributes = [
+        'languages' => '[1]'
+    ];
+
     protected $fillable = [
         'user_id',
         'bio',

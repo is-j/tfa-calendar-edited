@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateInterval;
+use DateTimeZone;
 use App\Models\Role;
 use App\Models\Slot;
 use App\Models\User;
 use App\Models\Tutor;
 use App\Models\Report;
+use DateTimeImmutable;
 use App\Mail\ReportBug;
 use App\Models\Subject;
+use App\Models\Language;
 use App\Jobs\ProcessSlot;
-use App\Mail\ReportPerson;
 use App\Mail\SlotClaimed;
 use App\Models\Probation;
+use App\Mail\ReportPerson;
 use App\Mail\SlotCanceled;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +26,11 @@ use Illuminate\Support\Facades\Mail;
 
 class ApiController extends Controller
 {
+
+    public function temp(Request $request)
+    {
+        User::where('id', Auth::user()->id)->update(['timezone' => $request->timezone]);
+    }
     protected function getSlot(Request $request, $subjectid)
     {
         $subjectid = intval($subjectid);
@@ -29,6 +39,7 @@ class ApiController extends Controller
         $dtafter = date('Y-m-d H:i:s', strtotime('+6 hours'));
         if (Auth::user()->role->name == 'tutor') {
             $slots = [];
+            $dtinterval[0] = (new DateTime(date('Y-m-d')))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s');
             foreach (Slot::whereBetween('start', $dtinterval)->where('tutor_id', Auth::user()->id)->get() as $slot) {
                 $main = [];
                 $extended = [];
@@ -72,6 +83,10 @@ class ApiController extends Controller
                         $extended['claimed'] = false;
                         $extended['tutor_name'] = $tutorname;
                         $extended['tutor_bio'] = User::find($slot->tutor_id)->tutor->bio;
+                        $extended['tutor_languages'] = [];
+                        foreach (json_decode(User::find($slot->tutor_id)->tutor->languages) as $languageid) {
+                            array_push($extended['tutor_languages'], Language::find($languageid)->name);
+                        }
                         $extended['subject_name'] = Subject::find($slot->subject_id)->name;
                         $main['id'] = $slot->id;
                         $main['start'] = date("Y-m-d\\TH:i:s\\Z", strtotime($slot->start));
@@ -83,6 +98,10 @@ class ApiController extends Controller
                         $extended['tutor_name'] = $tutorname;
                         $extended['tutor_bio'] = User::find($slot->tutor_id)->tutor->bio;
                         $extended['tutor_email'] = User::find($slot->tutor_id)->email;
+                        $extended['tutor_languages'] = [];
+                        foreach (json_decode(User::find($slot->tutor_id)->tutor->languages) as $languageid) {
+                            array_push($extended['tutor_languages'], Language::find($languageid)->name);
+                        }
                         $extended['info'] = $slot->info;
                         $extended['meeting_link'] = url('/ml/') . '/' . $slot->id;
                         $extended['subject_name'] = Subject::find($slot->subject_id)->name;
@@ -138,12 +157,13 @@ class ApiController extends Controller
             return json_encode(['success' => false, 'error' => true, 'message' => 'The slot already exists.']);
         }
         if ($request->repeat == true) {
+            $start = (new DateTimeImmutable($request->start))->setTimezone(new DateTimeZone(Auth::user()->timezone));
             for ($i = 0; $i < 20; $i++) {
-                $start = date("Y-m-d H:i:s", strtotime($request->start . "+$i weeks"));
-                if (!Slot::where('tutor_id', Auth::user()->id)->where('start', $start)->exists()) {
+                $calcstart = $start->add(new DateInterval('P' . $i . 'W'))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s');
+                if (!Slot::where('tutor_id', Auth::user()->id)->where('start', $calcstart)->exists()) {
                     Slot::create([
                         'id' => uniqid(),
-                        'start' => $start,
+                        'start' => $calcstart,
                         'subject_id' => intval($request->subject_id),
                         'tutor_id' => Auth::user()->id
                     ]);
@@ -167,16 +187,17 @@ class ApiController extends Controller
         if ($catchProbation['probation']) {
             return json_encode($catchProbation['content']);
         }
+        $claimed = !is_null(Slot::find($request->id)->student_id);
         $storedstart = Slot::find($request->id)->start;
         if (Auth::user()->role->name == 'tutor') {
             if (is_null(Slot::find($request->id)->student_id)) {
                 if ($request->repeat) {
-                    $start = Slot::find($request->id)->start;
+                    $start = (new DateTimeImmutable(Slot::find($request->id)->start))->setTimezone(new DateTimeZone(Auth::user()->timezone));
                     for ($i = 0; $i < 20; $i++) {
-                        if (Slot::where('tutor_id', Auth::user()->id)->where('start', $start)->whereNull('student_id')->exists()) {
-                            Slot::where('tutor_id', Auth::user()->id)->where('start', $start)->delete();
+                        $calcstart = $start->add(new DateInterval('P' . $i . 'W'))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s');
+                        if (Slot::where('tutor_id', Auth::user()->id)->where('start', $calcstart)->whereNull('student_id')->exists()) {
+                            Slot::where('tutor_id', Auth::user()->id)->where('start', $calcstart)->delete();
                         }
-                        $start = date("Y-m-d H:i:s", strtotime($start . '+1 week'));
                     }
                 } else {
                     Slot::where('id', $request->id)->delete();
@@ -195,7 +216,7 @@ class ApiController extends Controller
             Mail::to(User::find($slot['student_id']))->queue(new SlotCanceled($slot, 'student', 'unclaim', $request->reason));
             Slot::where('id', $request->id)->update(['student_id' => NULL, 'info' => NULL]);
         }
-        if (date('Y-m-d H:i:s', strtotime($storedstart)) < date("Y-m-d H:i:s", strtotime('+2 hours'))) {
+        if ($claimed && date('Y-m-d H:i:s', strtotime($storedstart)) < date("Y-m-d H:i:s", strtotime('+2 hours'))) {
             $this->addStrike(Auth::user()->id);
             return json_encode(['success' => true, 'error' => true, 'message' => "You've received a strike for canceling near the start of the session. 3 strikes result in a probation of 1 week."]);
         }
@@ -218,12 +239,26 @@ class ApiController extends Controller
             ProcessSlot::dispatch('claim', $slot);
             Mail::to(User::find($slot['tutor_id']))->queue(new SlotClaimed($slot, 'tutor'));
             Mail::to(User::find($slot['student_id']))->queue(new SlotClaimed($slot, 'student'));
-            $dtinterval = [date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(Slot::find($request->id)->start . sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60) . ' minutes')), date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(Slot::find($request->id)->start . sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60 + 1440) . ' minutes'))];
+            $dtinterval = [(new DateTime(date('Y-m-d', strtotime(Slot::find($request->id)->start))))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s'), (new DateTime(date('Y-m-d', strtotime(Slot::find($request->id)->start . '+1 day'))))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s')];
             if (Slot::where('student_id', Auth::user()->id)->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->count() > 1) {
                 return json_encode(['success' => true, 'error' => true, 'message' => 'You have another session the same day. Be mindful of the other students who also need tutoring.']);
             }
             return json_encode(['success' => true, 'error' => false]);
         }
+    }
+
+    protected function getSubjectAll()
+    {
+        return json_encode(Subject::get());
+    }
+
+    protected function createSubject(Request $request)
+    {
+        if (!Subject::where('name', $request->subject_name)->exists()) {
+            Subject::create(['name' => $request->subject_name]);
+            return json_encode(['success' => true]);
+        }
+        return json_encode(['success' => false]);
     }
 
     protected function getSubject()
@@ -266,13 +301,14 @@ class ApiController extends Controller
     {
         $request->validate([
             'meeting_link' => 'required',
-            'bio' => 'required|max:1000'
+            'bio' => 'required|max:1000',
+            'languages' => 'required'
         ]);
         $meetingLink = $request->meeting_link;
         if (!(strpos($meetingLink, 'http://') !== false || strpos($meetingLink, 'https://') !== false)) {
             $meetingLink = 'https://' . $meetingLink;
         }
-        Tutor::where('user_id', Auth::user()->id)->update(['meeting_link' => $meetingLink, 'bio' => $request->bio]);
+        Tutor::where('user_id', Auth::user()->id)->update(['meeting_link' => $meetingLink, 'bio' => $request->bio, 'languages' => json_encode($request->languages)]);
         return json_encode(['success' => true]);
     }
 
@@ -280,10 +316,16 @@ class ApiController extends Controller
     {
         if (Auth::user()->role->name != 'admin') {
             $output = ['exists' => false];
-            $dtinterval = [date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60) . ' minutes')), date('Y-m-d H:i:s', strtotime(date('Y-m-d', strtotime(sprintf("%+d", Auth::user()->offset * 60) . ' minutes')) . sprintf("%+d", -1 * Auth::user()->offset * 60 + 1440) . ' minutes'))];
-            if (Slot::where(Auth::user()->role->name . '_id', Auth::user()->id)->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->exists()) {
+            $dtinterval = [(new DateTime(date('Y-m-d')))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s'), (new DateTime(date('Y-m-d', strtotime('+1 day'))))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s')];
+            $roles = [];
+            if (Auth::user()->role->name == 'tutor') {
+                $roles = ['tutor_id', 'student_id'];
+            } else if (Auth::user()->role->name == 'student') {
+                $roles = ['student_id', 'tutor_id'];
+            }
+            if (Slot::where($roles[0], Auth::user()->id)->whereNotNull($roles[1])->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->exists()) {
                 $output['slots'] = [];
-                foreach (Slot::where(Auth::user()->role->name . '_id', Auth::user()->id)->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->get() as $slot) {
+                foreach (Slot::where($roles[0], Auth::user()->id)->whereNotNull($roles[1])->where('start', '>=', $dtinterval[0])->where('start', '<', $dtinterval[1])->get() as $slot) {
                     if (!Report::where('slot_id', $slot->id)->exists()) {
                         array_push($output['slots'], ['id' => $slot->id, 'start' => $slot->start]);
                     }
@@ -413,7 +455,7 @@ class ApiController extends Controller
     protected function catchProbation()
     {
         if ($this->isSuspended(Auth::user()->id)) {
-            $end = date('D M j, Y g:i A', strtotime(Probation::where('user_id', Auth::user()->id)->first()->end . sprintf("%+d", Auth::user()->offset * 60) . ' minutes'));
+            $end = (new DateTime(Probation::where('user_id', Auth::user()->id)->first()->end))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('D M j, Y g:i A');
             return ['probation' => true, 'content' => ['success' => false, 'error' => true, 'message' => "Your account is suspended for too many strikes and cannot do the requested action. Your probation ends $end."]];
         }
         return ['probation' => false];

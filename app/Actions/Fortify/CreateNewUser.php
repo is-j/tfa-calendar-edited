@@ -28,14 +28,14 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'code' => ['required', 'string', 'max:5', new AccountCode],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'offset' => ['required', 'numeric']
+            'timezone' => ['required', 'string']
         ])->validate();
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'role_id' => Role::where('code', $input['code'])->first()->id,
             'password' => Hash::make($input['password']),
-            'offset' => intval($input['offset'])
+            'timezone' => $input['timezone']
         ]);
     }
 }

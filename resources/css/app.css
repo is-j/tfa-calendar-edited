@@ -1,10 +1,49 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+@layer base {
+    @font-face {
+        font-family: Roboto;
+        font-weight: 400;
+        font-style: normal;
+        src: url(../fonts/Roboto-Regular.woff) format("woff");
+    }
+    @font-face {
+        font-family: Roboto;
+        font-weight: 400;
+        font-style: italic;
+        src: url(../fonts/Roboto-Italic.woff) format("woff");
+    }
+    @font-face {
+        font-family: Roboto;
+        font-weight: 700;
+        font-style: normal;
+        src: url(../fonts/Roboto-Bold.woff) format("woff");
+    }
+    @font-face {
+        font-family: Roboto;
+        font-weight: 700;
+        font-style: italic;
+        src: url(../fonts/Roboto-BoldItalic.woff) format("woff");
+    }
+    @font-face {
+        font-family: Roboto;
+        font-weight: 300;
+        font-style: normal;
+        src: url(../fonts/Roboto-Light.woff) format("woff");
+    }
+    @font-face {
+        font-family: Roboto;
+        font-weight: 300;
+        font-style: italic;
+        src: url(../fonts/Roboto-LightItalic.woff) format("woff");
+    }
+}
 
 html {
     font-family: "Roboto", sans-serif;
+    @apply appearance-none;
 }
 
 [x-cloak] {
@@ -73,13 +112,32 @@ html {
 }
 
 .form-element {
-    @apply px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-base border border-gray-400 outline-none w-full h-12;
+    @apply p-3 placeholder-gray-400 text-gray-700 bg-white rounded-md text-base border border-gray-400 outline-none w-full h-12;
+}
+
+.form-flat {
+    min-height: 100px !important;
+    @apply p-3 placeholder-gray-400 bg-gray-200 text-black bg-white rounded-md text-base border-0 outline-none w-full h-12;
 }
 
 .form-element:disabled,
 .form-element[readonly] {
     background-color: #e9ecef;
     opacity: 1;
+}
+
+.form-custom {
+    @apply px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-base border border-gray-400 outline-none w-full h-12;
+}
+
+.form-custom:disabled,
+.form-custom[readonly] {
+    @apply px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-base border border-gray-400 outline-none w-full h-12;
+}
+
+.form-custom:focus {
+    border-color: #4b5563;
+    box-shadow: 0 0 0 0.25rem rgba(75, 85, 99, 0.25);
 }
 
 button.disabled,
@@ -115,6 +173,13 @@ textarea.form-element {
     appearance: none;
     @apply px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-base border border-gray-400 outline-none w-full h-12;
 }
+
+.form-select:disabled,
+.form-select[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
+}
+
 .form-select:focus {
     border-color: #4b5563;
     box-shadow: 0 0 0 0.25rem rgba(75, 85, 99, 0.25);
@@ -198,6 +263,7 @@ textarea.form-element {
     position: relative;
 }
 .form-floating > .form-element,
+.form-floating > .form-flat,
 .form-floating > .form-select {
     height: calc(3.5rem + 2px);
     padding: 1rem 0.75rem;
@@ -218,25 +284,32 @@ textarea.form-element {
         transition: none;
     }
 }
-.form-floating > .form-element::-webkit-input-placeholder {
+.form-floating > .form-element::-webkit-input-placeholder,
+.form-floating > .form-flat::-webkit-input-placeholder {
     color: transparent;
 }
-.form-floating > .form-element::-moz-placeholder {
+.form-floating > .form-element::-moz-placeholder,
+.form-floating > .form-flat::-moz-placeholder {
     color: transparent;
 }
-.form-floating > .form-element::placeholder {
+.form-floating > .form-element::placeholder,
+.form-floating > .form-flat::placeholder {
     color: transparent;
 }
-.form-floating > .form-element:not(:-moz-placeholder-shown) {
+.form-floating > .form-element:not(:-moz-placeholder-shown),
+.form-floating > .form-flat:not(:-moz-placeholder-shown) {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
 }
 .form-floating > .form-element:focus,
-.form-floating > .form-element:not(:placeholder-shown) {
+.form-floating > .form-flat:focus,
+.form-floating > .form-element:not(:placeholder-shown),
+.form-floating > .form-flat:not(:placeholder-shown) {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
 }
-.form-floating > .form-element:-webkit-autofill {
+.form-floating > .form-element:-webkit-autofill,
+.form-floating > .form-flat:-webkit-autofill {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
 }
@@ -244,17 +317,21 @@ textarea.form-element {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
 }
-.form-floating > .form-element:not(:-moz-placeholder-shown) ~ label {
+.form-floating > .form-element:not(:-moz-placeholder-shown) ~ label,
+.form-floating > .form-flat:not(:-moz-placeholder-shown) ~ label {
     opacity: 0.65;
     transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
 .form-floating > .form-element:focus ~ label,
 .form-floating > .form-element:not(:placeholder-shown) ~ label,
+.form-floating > .form-flat:focus ~ label,
+.form-floating > .form-flat:not(:placeholder-shown) ~ label,
 .form-floating > .form-select ~ label {
     opacity: 0.65;
     transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
-.form-floating > .form-element:-webkit-autofill ~ label {
+.form-floating > .form-element:-webkit-autofill ~ label,
+.form-floating > .form-flat:-webkit-autofill ~ label {
     opacity: 0.65;
     transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }

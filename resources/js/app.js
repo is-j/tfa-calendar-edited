@@ -23,10 +23,11 @@ if (reportEnabled) {
     document.getElementById('reportPersonForm').addEventListener('submit', function (event) {
         const form = this;
         checkValidity(form, event, () => {
-            const slot_id = form.querySelector('select[name="start"]').value;
+            const slotId = form.querySelector('select[name="start"]').value;
+            console.log(slotId);
             postData('/api/report', {
                 type: 2,
-                slot_id: slot_id
+                slot_id: slotId
             }).then(response => {
                 document.getElementById('reportContainer').__x.$data.open = false;
                 toggleAlert(response);

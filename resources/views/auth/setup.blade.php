@@ -14,10 +14,7 @@ use App\Models\Subject;
     @if(Auth::user()->role->name == 'student')
     <div class="my-5">
         <p>
-            By creating this account, I acknowledge that tutoring is a privilege, and I will try to show up at my session
-            as much as possible. I acknowledge that a no show up for 2 times without
-            cancellation 4 hours in advance will result in a 7 day withhold of my tutoring
-            privilege.
+            By creating this account, I understand that I miss 3 appointments without 2 hour notice in advance, I will be put under a probation period of 7 days from signing up. I can negotiate with my tutor to schedule for a long term tutoring service, which constitutes of 6 sessions maximum.
         </p>
     </div>
     <div class="flex pl-5 mb-5">

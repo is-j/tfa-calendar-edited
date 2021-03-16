@@ -56,7 +56,7 @@ class ProcessSlot implements ShouldQueue
         if ($type == 'claim') {
             $event = new \Google_Service_Calendar_Event(array(
                 'summary' => "Tutoring session with " . User::find($slot['tutor_id'])->name . " and " . User::find($slot['student_id'])->name,
-                'description' => "Meeting link:\n" . url('/ml/') . '/' . $slot['id'] . "\n\nSession topic needs:\n" . $slot['info'],
+                'description' => "Meeting link:\n" . url('/ml/') . '/' . $slot['id'] . "\n\nWhat does student need help with?:\n" . $slot['info'],
                 'start' => array(
                     'dateTime' => date("Y-m-d\\TH:i:s", strtotime($slot['start'])),
                     'timeZone' => 'UTC'

@@ -19,18 +19,17 @@ use App\Http\Controllers\Auth\SetupController;
 
 Route::middleware(['auth', 'setup'])->group(function () {
     Route::get('/', [DashboardController::class, 'redirect']);
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::post('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::any('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/settings', fn () => view('settings'))->name('settings');
     Route::get('/api/slot/get/{id}', [ApiController::class, 'getSlot']);
     Route::post('/api/slot/cancel', [ApiController::class, 'cancelSlot']);
-    /*
-    Route::get('/reset', [ResetController::class, 'index'])->name('reset');
-    Route::post('/reset', [ResetController::class, 'reset']);*/
     Route::post('/cancel', fn () => view('cancel'));
     Route::get('/api/report', [ApiController::class, 'initReport']);
     Route::post('/api/report', [ApiController::class, 'sendReport']);
     Route::get('/ml/{slotid}', [ApiController::class, 'redirectMeetingLink']);
+    Route::get('/update-password', fn () => view('auth.update-password'))->name('update-password');
+    /* delete sometime temp */
+    Route::post('/api/tz/temp', [ApiController::class, 'temp']);
 });
 
 
@@ -49,8 +48,11 @@ Route::middleware(['auth', 'setup', 'student'])->group(function () {
 Route::middleware(['auth', 'setup', 'admin'])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
+    Route::get('/admin/subjects', [AdminController::class, 'subjects'])->name('admin.subjects');
     Route::get('/api/admin/users', [ApiController::class, 'getUser']);
     Route::get('/api/admin/reports', [ApiController::class, 'getReport']);
+    Route::get('/api/admin/subjects', [ApiController::class, 'getSubjectAll']);
+    Route::post('/api/subject/create', [ApiController::class, 'createSubject']);
     Route::post('/api/report/confirm', [ApiController::class, 'confirmReport']);
     Route::post('/api/report/deny', [ApiController::class, 'denyReport']);
 });

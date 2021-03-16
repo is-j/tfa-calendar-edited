@@ -1,6 +1,7 @@
 @php
 use App\Models\User;
 use App\Models\Subject;
+use App\Models\Language;
 use Illuminate\Support\Facades\Auth;
 @endphp
 @extends('layouts.app')
@@ -8,18 +9,18 @@ use Illuminate\Support\Facades\Auth;
 @section('content')
 <div class="w-full" x-data="{tab: 'profile'}">
     <div class="flex mb-0">
-        <button class="w-full mr-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'profile', 'btn-neutral': tab != 'profile'}" @click="tab='profile'">
+        <button class="w-full p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'profile', 'btn-neutral': tab != 'profile'}" @click="tab='profile'">
             Profile
         </button>
         @if (Auth::user()->role->name == 'tutor')
-        <button class="w-full mr-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'subjects', 'btn-neutral': tab != 'subjects'}" @click="tab='subjects'">
+        <button class="w-full ml-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'subjects', 'btn-neutral': tab != 'subjects'}" @click="tab='subjects'">
             Subjects
         </button>
-        <button class="w-full p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'information', 'btn-neutral': tab != 'information'}" @click="tab='information'">
+        <button class="w-full ml-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'information', 'btn-neutral': tab != 'information'}" @click="tab='information'">
             Information
         </button>
         @elseif (Auth::user()->role->name== 'student')
-        <button class="w-full p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'terms', 'btn-neutral': tab != 'terms'}" @click="tab='terms'">
+        <button class="w-full ml-3 p-3 text-lg" type="button" x-bind:class="{'btn-positive': tab == 'terms', 'btn-neutral': tab != 'terms'}" @click="tab='terms'">
             Terms
         </button>
         @endif
@@ -30,7 +31,7 @@ use Illuminate\Support\Facades\Auth;
                 <li class="list-group-item">Name: {{ Auth::user()->name }}</li>
                 <li class="list-group-item">Email: {{ Auth::user()->email }}</li>
                 <li class="list-group-item">Role: {{ ucfirst(Auth::user()->role->name) }}</li>
-                <!--<li class="list-group-item"><a class="btn btn-danger" href="#">Reset password</a></li>-->
+                <li class="list-group-item mt-4"><a class="btn-positive h-12 p-3" href="{{ route('update-password') }}">Update password</a></li>
             </ul>
         </div>
         @if (Auth::user()->role->name == 'tutor')
@@ -63,6 +64,15 @@ use Illuminate\Support\Facades\Auth;
         <div class="w-full h-full" x-show="tab == 'information'">
             <form class="needs-validation" id="informationForm" novalidate>
                 <fieldset>
+                    <label>Languages</label>
+                    <div class="flex flex-wrap">
+                        @foreach (Language::get() as $language)
+                        <div class="flex pl-5 mb-2">
+                            <input class="form-check mt-1 @error('terms') is-invalid @enderror" type="checkbox" data-lang="{{ $language->id }}" id="lang{{ $language->id }}" @if (in_array($language->id,json_decode(Auth::user()->tutor->languages))) checked @endif>
+                            <label class="text-gray-700 ml-2" for="lang{{ $language->id }}">{{ $language->name }}</label>
+                        </div>
+                        @endforeach
+                    </div>
                     <div class="form-floating my-3">
                         <input type="text" class="form-element" name="meeting_link" value="{{ Auth::user()->tutor->meeting_link }}" placeholder="Meeting link" required>
                         <label>Meeting link</label>
@@ -88,10 +98,7 @@ use Illuminate\Support\Facades\Auth;
             <b>When you created this account, you automatically agreed to the following terms*:</b>
             <br>
             <br>
-            I acknowledge that tutoring is a privilege, and I will try to show up at my session
-            as much as possible. I acknowledge that a no show up for 2 times without
-            cancellation 4 hours in advance will result in a 7 day withhold of my tutoring
-            privilege.
+            I understand that I miss 3 appointments without 2 hour notice in advance, I will be put under a probation period of 7 days from signing up. I can negotiate with my tutor to schedule for a long term tutoring service, which constitutes of 6 sessions maximum.
             <br>
             <br>
             <i>*Note that these terms were presented to you on account setup.</i>
