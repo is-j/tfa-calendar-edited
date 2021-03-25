@@ -1,1 +1,0 @@
-document.getElementById('timezone').value = DateTime.local().zoneName;

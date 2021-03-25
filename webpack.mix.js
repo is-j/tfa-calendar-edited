@@ -11,8 +11,8 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js').react()
     .postCss('resources/css/app.css', 'public/css', [
-        require('tailwindcss'),
+        require("tailwindcss"),
     ]);
-mix.version(['public/js/dashboard.js','public/js/settings.js','public/js/config.js','public/js/cancel.js','public/js/auth/register.js','public/js/admin/config.js','public/js/admin/users.js','public/js/admin/reports.js', 'public/js/admin/subjects.js']);
+mix.version();
