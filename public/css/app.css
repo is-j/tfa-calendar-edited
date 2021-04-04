@@ -1,4 +1,4 @@
-/*! tailwindcss v2.0.3 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v2.0.4 | MIT License | https://tailwindcss.com */
 
 /*! modern-normalize v1.0.0 | MIT License | https://github.com/sindresorhus/modern-normalize */
 
@@ -31356,6 +31356,29 @@ html {
           user-select: none;
 }
 
+.btn-modal {
+  display: inline-flex;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .btn-modal {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    width: auto;
+  }
+}
+
 /* forms */
 
 .form-field {
@@ -31616,6 +31639,58 @@ html {
 .link-inline:hover {
   --tw-text-opacity: 1;
   color: rgba(107, 114, 128, var(--tw-text-opacity));
+}
+
+/* transitions */
+
+.transition-opacity-enter {
+  opacity: 0;
+}
+
+.transition-opacity-enter-active {
+  opacity: 1;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-duration: 300ms;
+}
+
+.transition-opacity-exit {
+  opacity: 1;
+}
+
+.transition-opacity-exit-active {
+  opacity: 0;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-duration: 300ms;
+}
+
+.transition-all-enter {
+  opacity: 0;
+}
+
+.transition-all-enter-active {
+  opacity: 1;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.transition-all-exit {
+  opacity: 1;
+}
+
+.transition-all-exit-active {
+  opacity: 0;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
 
 @media (min-width: 640px) {

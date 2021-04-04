@@ -19,7 +19,7 @@ class SetupController extends Controller
     {
         $role = Auth::user()->role->name;
         if ($role != 'admin' && !DB::table($role . 's')->where('user_id', Auth::user()->id)->exists()) {
-            return Inertia::render('Auth/Setup', ['subjects' => Subject::get()]);
+            return Inertia::render('Auth/Setup', ['subjects' => Subject::select('id', 'name')->get()]);
         }
         return redirect('dashboard');
     }

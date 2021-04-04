@@ -68,6 +68,10 @@ html {
     @apply border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 rounded-md focus:outline-none select-none;
 }
 
+.btn-modal {
+    @apply w-full inline-flex justify-center font-medium shadow-sm px-4 py-2 text-base sm:w-auto sm:text-sm;
+}
+
 /* forms */
 .form-field {
     @apply p-3 placeholder-gray-400 text-gray-700 bg-white rounded-md text-base border border-gray-400 outline-none focus:ring-2 focus:ring-gray-700 focus:border-gray-700 w-full h-12;
@@ -185,4 +189,30 @@ html {
 
 .link-inline {
     @apply text-gray-700 hover:text-gray-500 border-b border-gray-600 hover:border-gray-400;
+}
+
+/* transitions */
+.transition-opacity-enter {
+    @apply opacity-0;
+}
+.transition-opacity-enter-active {
+    @apply opacity-100 transition-opacity duration-300;
+}
+.transition-opacity-exit {
+    @apply opacity-100;
+}
+.transition-opacity-exit-active {
+    @apply opacity-0 transition-opacity duration-300;
+}
+.transition-all-enter {
+    @apply opacity-0;
+}
+.transition-all-enter-active {
+    @apply opacity-100 transition-all ease-in-out duration-300;
+}
+.transition-all-exit {
+    @apply opacity-100;
+}
+.transition-all-exit-active {
+    @apply opacity-0 transition-all ease-in-out duration-300;
 }

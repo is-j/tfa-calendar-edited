@@ -1,6 +1,7 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
 import React, { useEffect, useRef, useState } from 'react'
 import AppLayout from '../Layouts/AppLayout'
 import ModalContainer from '../Components/ModalContainer'
@@ -19,6 +20,7 @@ const Calendar = () => {
     const calendarRef = useRef(null)
     const [toolbarState, setToolbarState] = useState(window.innerWidth > 768 ? desktopToolbarState : mobileToolbarState)
     const [modalName, setModalName] = useState('')
+    const [calendarInfo, setCalendarInfo] = useState({})
     useEffect(() => {
         let prevWidth
         const checkWidth = () => {
@@ -40,18 +42,20 @@ const Calendar = () => {
     return (
         <AppLayout>
             <div className='max-w-7xl mx-auto pb-6 px-3 sm:px-6 lg:px-8 h-adjust md:h-full'>
-                <ModalContainer currentModalName={modalName}>
-                    <ModalItem name='testModal' />
-                </ModalContainer>
+                <ModalContainer currentModalName={modalName} onClose={() => setModalName('')} info={calendarInfo} />
                 <FullCalendar
                     ref={calendarRef}
-                    plugins={[dayGridPlugin, timeGridPlugin]}
+                    plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                     initialView={window.innerWidth > 768 ? 'dayGridMonth' : 'timeGridDay'}
                     headerToolbar={toolbarState}
                     timeZone='local'
                     selectable={true}
                     nowIndicator={true}
                     lazyFetching={true}
+                    dateClick={info => {
+                        setCalendarInfo(info)
+                        setModalName('createSlotModal')
+                    }}
                     events={[
                         { title: 'event 1', date: '2019-04-01' },
                         { title: 'event 2', date: '2019-04-02' }

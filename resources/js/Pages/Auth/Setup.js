@@ -1,29 +1,21 @@
-import { Inertia } from '@inertiajs/inertia'
-import { InertiaLink, usePage } from '@inertiajs/inertia-react'
-import React, { useState } from 'react'
+import { usePage } from '@inertiajs/inertia-react'
+import React from 'react'
 import Logo from '../../Components/Logo'
 import AuthLayout from '../../Layouts/AuthLayout'
 
 const Setup = () => {
-    const { errors, user, subjects } = usePage().props
-    const [values, setValues] = useState(user.role_name === 'tutor' ? {
+    const { user, subjects } = usePage().props
+    const { data, setData, post, processing, errors } = useForm(user.role_name === 'tutor' ? {
         meeting_link: '',
         bio: '',
         subject_id: '1'
     } : {
         terms: false
     })
-    const handleChange = (e) => {
-        const key = e.target.name
-        const value = e.target.value
-        setValues(values => ({
-            ...values,
-            [key]: value,
-        }));
-    }
-    const handleSubmit = (e) => {
+    const handleChange = e => setData(e.target.name, e.target.value)
+    const handleSubmit = e => {
         e.preventDefault()
-        Inertia.post(route('setup'), values)
+        post(route('setup'))
     }
     return (
         <AuthLayout>
@@ -35,19 +27,19 @@ const Setup = () => {
                 {user.role_name === 'tutor' ?
                     <>
                         <div className='mb-3 form-floating'>
-                            <input className='form-field' name='meeting_link' type='text' placeholder='Meeting link' value={values.meeting_link} onChange={handleChange}></input>
+                            <input className='form-field' name='meeting_link' type='text' placeholder='Meeting link' value={data.meeting_link} onChange={handleChange}></input>
                             <label>Meeting link</label>
                             <div className='form-help'>E.g. Zoom or Google Meet</div>
                             {errors.meeting_link && <div className='form-error'>{errors.meeting_link}</div>}
                         </div>
                         <div className='mb-3 form-floating'>
-                            <textarea className='form-field form-textarea' name='bio' value={values.bio} onChange={handleChange} placeholder='Introduce yourself'></textarea>
+                            <textarea className='form-field form-textarea' name='bio' value={data.bio} onChange={handleChange} placeholder='Introduce yourself'></textarea>
                             <label>Introduce yourself</label>
                             <div className='form-help'>Max 1000 characters</div>
                             {errors.bio && <div className='form-error'>{errors.bio}</div>}
                         </div>
                         <div className='mb-6 form-floating'>
-                            <select className='form-field form-select' value={values.subject_id} onChange={handleChange}>
+                            <select className='form-field form-select' name='subject_id' value={data.subject_id} onChange={handleChange}>
                                 {subjects.map(subject => <option key={subject.id} value={subject.id}>{subject.name}</option>)}
                             </select>
                             <label>Subject</label>
@@ -62,14 +54,14 @@ const Setup = () => {
                         </div>
                         <div className='mb-6 pl-5'>
                             <div className='form-check'>
-                                <input name='terms' id='terms' type='checkbox' checked={values.terms} onChange={handleChange}></input>
+                                <input name='terms' id='terms' type='checkbox' checked={data.terms} onChange={handleChange}></input>
                                 <label htmlFor='terms'>I agree to these terms</label>
                             </div>
                             {errors.terms && <div className='form-error'>{errors.terms}</div>}
                         </div>
                     </>
                 }
-                <button className='btn-positive w-full h-12' type='submit'>Submit</button>
+                <button className='btn-positive w-full h-12' type='submit' disabled={processing}>Submit</button>
             </form>
         </AuthLayout>
     )

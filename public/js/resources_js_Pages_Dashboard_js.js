@@ -178,8 +178,8 @@ var Navbar = function Navbar() {
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
       _useState4 = _slicedToArray(_useState3, 2),
-      loadingState = _useState4[0],
-      setLoadingState = _useState4[1];
+      isLoading = _useState4[0],
+      setIsLoading = _useState4[1];
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("nav", {
     className: "bg-gray-800 fixed w-full z-10 shadow-md",
@@ -232,8 +232,8 @@ var Navbar = function Navbar() {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
           className: "absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-            className: "bg-gray-700 text-white px-3 py-2 rounded-md text-base font-medium mr-3",
-            children: loadingState ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("svg", {
+            className: "bg-gray-700 text-white px-3 py-2 rounded-md text-base font-medium mr-3 hidden sm:block",
+            children: isLoading ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("svg", {
               className: "animate-spin h-7 w-7 text-white",
               xmlns: "http://www.w3.org/2000/svg",
               fill: "none",
