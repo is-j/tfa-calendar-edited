@@ -22,7 +22,7 @@ var Footer = function Footer() {
     className: "mt-4 pb-3",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
       className: "text-center text-gray-400",
-      children: ["\xA9 ", new Date().getFullYear(), " Dennis Eum, TFA"]
+      children: ["\xA9 ", new Date().getFullYear(), " Tutoring for All"]
     })
   });
 };
