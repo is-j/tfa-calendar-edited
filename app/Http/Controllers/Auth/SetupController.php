@@ -15,16 +15,18 @@ use Illuminate\Support\Facades\Auth;
 class SetupController extends Controller
 {
 
-    protected function index()
+    public function index()
     {
         $role = Auth::user()->role->name;
         if ($role != 'admin' && !DB::table($role . 's')->where('user_id', Auth::user()->id)->exists()) {
-            return Inertia::render('Auth/Setup');
+            return Inertia::render('Auth/Setup', [
+                'allSubjects' => Subject::select('id', 'name')->get()
+            ]);
         }
         return redirect('dashboard');
     }
 
-    protected function create(Request $request)
+    public function create(Request $request)
     {
         if (Auth::user()->role->name === 'tutor') {
             $request->validate([

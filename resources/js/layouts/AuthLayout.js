@@ -1,16 +1,38 @@
+import { Children } from 'react'
+import Brand from '../components/Brand'
 import Footer from '../components/Footer'
 
 const AuthLayout = (props) => {
     return (
         <div className="flex flex-col justify-between min-h-screen">
-            <main className="flex-grow mt-20">
+            <main className="flex-grow flex justify-center items-center">
                 <div className="my-auto w-full mx-3 sm:mx-auto sm:w-96 rounded-md shadow-lg py-6 px-3 bg-white">
-                    {props.children}
+                    <div className="flex flex-wrap justify-center mb-6">
+                        <Brand className="mr-3 hidden sm:block" />
+                        <div className="px-3 bg-gray-300 rounded-md flex items-center h-12">
+                            <span className="text-xl">
+                                {Children.map(props.children, child => {
+                                    if (child.type.displayName === 'Title') return child
+                                })}
+                            </span>
+                        </div>
+                    </div>
+                    {Children.map(props.children, child => {
+                        if (child.type.displayName === 'Content') return child
+                    })}
                 </div>
             </main>
             <Footer />
         </div>
     )
 }
+
+const Title = ({ children }) => children
+Title.displayName = 'Title'
+AuthLayout.Title = Title
+
+const Content = ({ children }) => children
+Content.displayName = 'Content'
+AuthLayout.Content = Content
 
 export default AuthLayout

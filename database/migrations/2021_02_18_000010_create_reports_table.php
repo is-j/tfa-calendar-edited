@@ -16,8 +16,8 @@ class CreateReportsTable extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->foreignId('reporter_id')->constrained('users');
             $table->foreignId('reported_id')->constrained('users');
-            $table->string('slot_id')->constrained();
-            $table->dateTime('slot_start');
+            $table->string('event_id')->constrained();
+            $table->dateTime('event_start');
             $table->boolean('confirmed')->nullable();
             $table->timestamps();
         });

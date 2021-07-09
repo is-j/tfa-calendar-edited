@@ -50,10 +50,6 @@ html {
     height: 100%;
 }
 
-.h-adjust {
-    height: calc(100vh - 160px);
-}
-
 /* buttons */
 .btn-positive {
     @apply text-white bg-gray-700 hover:bg-gray-600 hover:text-gray-200 rounded-md focus:outline-none select-none;
@@ -69,7 +65,7 @@ html {
 
 /* forms */
 .form-field {
-    @apply border border-gray-400 rounded-md w-full outline-none focus:ring-1 focus:ring-gray-800 focus:border-gray-800 text-base px-2 sm:px-3 placeholder-gray-600 transition duration-200 disabled:bg-gray-100;
+    @apply border border-gray-400 rounded-md w-full focus:outline-none focus:ring-1 focus:ring-gray-800 focus:border-gray-800 text-base px-2 sm:px-3 placeholder-gray-600 transition duration-200 disabled:bg-gray-100;
 }
 
 .form-validate .form-field:invalid,
@@ -78,8 +74,7 @@ html {
 }
 
 textarea.form-field {
-    min-height: 12rem;
-    @apply align-top;
+    @apply !h-48 align-top resize-none;
 }
 
 select.form-field {
@@ -156,8 +151,8 @@ select.form-field {
 .form-check > input {
     background-origin: border-box;
     color: #4299e1;
-    margin-top: 0.20rem;
-    @apply h-4 w-4 appearance-none select-none flex-shrink-0 bg-white border border-gray-500 rounded focus:outline-none;
+    margin-top: 0.2rem;
+    @apply h-4 w-4 appearance-none select-none flex-shrink-0 bg-white border border-gray-500 rounded focus:outline-none hover:cursor-pointer;
 }
 
 .form-check > input:checked {
@@ -167,7 +162,7 @@ select.form-field {
 }
 
 .form-check > label {
-    @apply text-gray-700 ml-2 text-left select-none;
+    @apply text-gray-700 ml-2 text-left select-none hover:cursor-pointer;
 }
 
 .form-help {
@@ -175,7 +170,20 @@ select.form-field {
 }
 
 .form-error {
-    @apply text-red-600 text-sm;
+    @apply text-red-600 text-sm text-left;
+}
+
+.props-check > input {
+    background-origin: border-box;
+    color: #4299e1;
+    margin-top: 0.4rem;
+    @apply h-6 w-6 appearance-none select-none flex-shrink-0 bg-white border-2 border-gray-400 rounded focus:outline-none hover:cursor-pointer;
+}
+
+.props-check > input:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    background-size: 100% 100%;
+    @apply bg-no-repeat bg-center bg-gray-700 border-transparent;
 }
 
 /* links */

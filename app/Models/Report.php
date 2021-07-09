@@ -12,8 +12,8 @@ class Report extends Model
     protected $fillable = [
         'reporter_id',
         'reported_id',
-        'slot_id',
-        'slot_start'
+        'event_id',
+        'event_start'
     ];
 
     public function reporter()

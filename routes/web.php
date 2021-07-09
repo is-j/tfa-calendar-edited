@@ -2,10 +2,17 @@
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\CancelController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\Auth\SetupController;
+use App\Http\Controllers\MeetingLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,24 +25,42 @@ use App\Http\Controllers\Auth\SetupController;
 |
 */
 
-Route::get('/', fn () => redirect('dashboard'));
-Route::middleware('auth', 'setup')->group(function () {
-    Route::inertia('/dashboard', 'Dashboard');
-    Route::inertia('/calendar', 'Calendar');
-    Route::inertia('/tutors', 'Tutors');
-    Route::inertia('/settings', 'Settings');
-    Route::get('/api/slot/get/{id}', [APIController::class, 'getSlot']);
-    Route::get('/cancel', fn () => Inertia::render('Cancel', ['slot_id' => session()->get('slot_id')]));
-    Route::post('/access/slot/cancel', [CalendarController::class, 'cancelSlot']);
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect('dashboard');
+    } else {
+        return Inertia::render('Welcome');
+    }
 });
+
 Route::middleware('auth')->group(function () {
     Route::get('/setup', [SetupController::class, 'index']);
     Route::post('/setup', [SetupController::class, 'create']);
 });
+
+Route::middleware('auth', 'setup')->group(function () {
+    // Pages
+    Route::inertia('/dashboard', 'Dashboard');
+    Route::get('/calendar', [CalendarController::class, 'index']);
+    Route::get('/settings', [SettingsController::class, 'index']);
+    Route::get('/cancel', [CancelController::class, 'index']);
+    Route::post('/cancel', [CancelController::class, 'show']);
+    Route::inertia('/update-password', 'Auth/UpdatePassword');
+
+    // Resources
+    Route::get('/ml/{id}', [MeetingLinkController::class, 'index']);
+    Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{id}', [EventController::class, 'show']);
+    Route::post('/events/{id}', [EventController::class, 'destroy']);
+});
+
 Route::middleware(['auth', 'setup', 'tutor'])->group(function () {
-    Route::post('/api/slot/create', [APIController::class, 'createSlot']);
-    Route::get('/api/subject/get', [APIController::class, 'getSubject']);
-    Route::post('/api/subject/plus', [APIController::class, 'plusSubject']);
-    Route::post('/api/subject/minus', [APIController::class, 'minusSubject']);
-    Route::post('/api/information/update', [APIController::class, 'updateInformation']);
+    Route::post('/events', [EventController::class, 'store']);
+    Route::put('/user/subjects', [SubjectController::class, 'update']);
+    Route::put('/user/languages', [LanguageController::class, 'update']);
+});
+
+Route::middleware('auth', 'setup', 'student')->group(function () {
+    Route::inertia('/schedule', 'Schedule');
+    Route::put('/events/{id}', [EventController::class, 'update']);
 });
