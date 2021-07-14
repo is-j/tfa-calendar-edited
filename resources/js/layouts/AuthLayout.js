@@ -9,8 +9,8 @@ const AuthLayout = (props) => {
                 <div className="my-auto w-full mx-3 sm:mx-auto sm:w-96 rounded-md shadow-lg py-6 px-3 bg-white">
                     <div className="flex flex-wrap justify-center mb-6">
                         <Brand className="mr-3 hidden sm:block" />
-                        <div className="px-3 bg-gray-300 rounded-md flex items-center h-12">
-                            <span className="text-xl">
+                        <div className="px-3 bg-gray-800 rounded-lg flex items-center h-14">
+                            <span className="text-2xl uppercase text-[#FFF7AE]">
                                 {Children.map(props.children, child => {
                                     if (child.type.displayName === 'Title') return child
                                 })}

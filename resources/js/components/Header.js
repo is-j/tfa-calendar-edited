@@ -6,7 +6,7 @@ const Header = (props) => {
             <div>
                 {Children.map(props.children, child => {
                     if (child.type.displayName === 'Icon') return cloneElement(child.props.children, {
-                        className: 'h-12 w-12 text-white bg-gray-700 rounded-lg p-2'
+                        className: 'h-12 w-12 text-white bg-gray-800 rounded-lg p-2'
                     })
                 })}
             </div>

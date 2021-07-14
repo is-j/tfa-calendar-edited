@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { InertiaLink, usePage } from '@inertiajs/inertia-react'
+import { InertiaLink } from '@inertiajs/inertia-react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { MenuIcon, UserCircleIcon, XIcon } from '@heroicons/react/outline'
 import Brand from './Brand'
@@ -7,16 +7,12 @@ import Brand from './Brand'
 const classNames = (...classes) => classes.filter(Boolean).join(' ')
 
 const Navbar = () => {
-    const { user } = usePage().props
     const navigation = [
         { name: 'Dashboard', href: '/dashboard' },
         { name: 'Calendar', href: '/calendar' },
     ]
-    if (user.role_name === 'student') {
-        navigation.push({ name: 'Schedule', href: '/schedule' })
-    }
     return (
-        <Disclosure as="nav" className="bg-gray-800 fixed w-full z-10">
+        <Disclosure as="nav" className="bg-gray-800 shadow fixed w-full z-10">
             {({ open }) => (
                 <>
                     <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -33,7 +29,7 @@ const Navbar = () => {
                             </div>
                             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="flex-shrink-0 flex items-center">
-                                    <a href="/dashboard"><Brand /></a>
+                                    <Brand />
                                 </div>
                                 <div className="hidden sm:block sm:ml-6 my-auto">
                                     <div className="flex space-x-4">

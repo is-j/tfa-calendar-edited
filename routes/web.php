@@ -12,6 +12,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\Auth\SetupController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MeetingLinkController;
 
 /*
@@ -40,7 +41,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth', 'setup')->group(function () {
     // Pages
-    Route::inertia('/dashboard', 'Dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::get('/settings', [SettingsController::class, 'index']);
     Route::get('/cancel', [CancelController::class, 'index']);
@@ -61,6 +62,5 @@ Route::middleware(['auth', 'setup', 'tutor'])->group(function () {
 });
 
 Route::middleware('auth', 'setup', 'student')->group(function () {
-    Route::inertia('/schedule', 'Schedule');
     Route::put('/events/{id}', [EventController::class, 'update']);
 });

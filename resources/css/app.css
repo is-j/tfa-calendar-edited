@@ -52,7 +52,7 @@ html {
 
 /* buttons */
 .btn-positive {
-    @apply text-white bg-gray-700 hover:bg-gray-600 hover:text-gray-200 rounded-md focus:outline-none select-none;
+    @apply text-white bg-gray-800 hover:bg-gray-700 hover:text-gray-200 rounded-md focus:outline-none select-none;
 }
 
 .btn-negative {
