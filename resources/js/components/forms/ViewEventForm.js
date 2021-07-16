@@ -23,7 +23,7 @@ const ViewEventForm = forwardRef((props, ref) => {
     return (
         <form ref={ref} onSubmit={handleSubmit} noValidate>
             <div className="mb-3">
-                <span className="font-bold text-xl">{DateTime.fromISO(props.event.start).toFormat('DDD')}{props.event.student_name ?? ' (Unclaimed)'}</span>
+                <span className="font-bold text-xl">{DateTime.fromISO(props.event.start).toFormat('ff')} {props.event.student_name ? '' : '(Unclaimed)'}</span>
             </div>
             <div className="text-left">
                 {props.event.student_name ? (<>

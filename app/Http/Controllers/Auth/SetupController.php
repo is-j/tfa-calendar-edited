@@ -53,6 +53,6 @@ class SetupController extends Controller
                 'terms' => true
             ]);
         }
-        return redirect('dashboard');
+        return redirect('/dashboard');
     }
 }

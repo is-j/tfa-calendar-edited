@@ -327,7 +327,7 @@ const Calendar = () => {
                 </Dialog>
             </Transition.Root>
 
-            {/* viewEventModal */}
+            {/* unclaimEventModal */}
             <Transition.Root show={openUnclaimEventModal} as={Fragment}>
                 <Dialog
                     as="div"

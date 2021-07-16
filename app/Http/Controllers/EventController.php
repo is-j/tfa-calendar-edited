@@ -2,31 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EventCanceled;
 use DateTime;
-use DateInterval;
 use DateTimeZone;
-use App\Models\Event;
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Tutor;
 use DateTimeImmutable;
 use App\Models\Subject;
+use App\Models\Language;
+use App\Mail\EventClaimed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class EventController extends Controller
 {
     public function index(Request $request)
     {
         $timeframe = [
-            date('Y-m-d H:i:s', strtotime($request['start'])),
-            date('Y-m-d H:i:s', strtotime($request['end'])),
+            (new DateTimeImmutable($request['start']))->format('Y-m-d H:i:s'),
+            (new DateTimeImmutable($request['end']))->format('Y-m-d H:i:s'),
         ];
         $allEvents = [];
         if (Auth::user()->role->name === 'tutor') {
             foreach (Event::whereBetween('start', $timeframe)->where('tutor_id', Auth::user()->id)->get() as $event) {
                 $outputEvent = [
                     'id' => $event->id,
-                    'start' => date("Y-m-d\\TH:i:s\\Z", strtotime($event->start)),
-                    'end' => date("Y-m-d\\TH:i:s\\Z", strtotime($event->start . '+1 hours')),
+                    'start' => (new DateTimeImmutable($event->start))->format(DateTime::ATOM),
+                    'end' => (new DateTimeImmutable($event->start))->modify('+1 hours')->format(DateTime::ATOM),
                 ];
                 if (is_null($event->student_id)) {
                     $outputEvent['title'] = 'Unclaimed event';
@@ -44,8 +48,8 @@ class EventController extends Controller
             })->get() as $event) {
                 $outputEvent = [
                     'id' => $event->id,
-                    'start' => date("Y-m-d\\TH:i:s\\Z", strtotime($event->start)),
-                    'end' => date("Y-m-d\\TH:i:s\\Z", strtotime($event->start . '+1 hours')),
+                    'start' => (new DateTimeImmutable($event->start))->format(DateTime::ATOM),
+                    'end' => (new DateTimeImmutable($event->start))->modify('+1 hours')->format(DateTime::ATOM),
                 ];
                 if (is_null($event->student_id)) {
                     $outputEvent['title'] = 'Unclaimed event';
@@ -74,7 +78,7 @@ class EventController extends Controller
         if ($request->repeat) {
             $start = new DateTimeImmutable($request->start);
             for ($i = 0; $i < 20; $i++) {
-                $nextStart = $start->add(new DateInterval('P' . $i . 'W'))->format('Y-m-d H:i:s');
+                $nextStart = $start->modify('+' . $i . ' weeks')->format('Y-m-d H:i:s');
                 if (!Event::where('tutor_id', Auth::user()->id)->where('start', $nextStart)->exists()) {
                     Event::create([
                         'id' => uniqid(),
@@ -107,12 +111,21 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::find($id);
+        $allLanguages = Language::select('id', 'name')->get();
+        $selectedLanguageIds = json_decode(Tutor::where('user_id', $event->tutor_id)->first()->languages);
+        $selectedLanguageNames = [];
+        foreach ($allLanguages as $language) {
+            if (in_array($language['id'], $selectedLanguageIds)) {
+                array_push($selectedLanguageNames, $language['name']);
+            }
+        }
         $eventProps = [
             'id' => $event->id,
-            'start' => (new DateTime($event->start))->format(DateTime::ATOM),
+            'start' => (new DateTimeImmutable($event->start))->format(DateTime::ATOM),
             'subject_name' => Subject::where('id', $event->subject_id)->first()->name,
             'tutor_name' => User::find($event->tutor_id)->name,
             'tutor_email' => User::find($event->tutor_id)->email,
+            'tutor_languages' => $selectedLanguageNames,
             'student_name' => isset($event->student_id) ? User::find($event->student_id)->name : null,
             'student_email' => isset($event->student_id) ? User::find($event->student_id)->email : null,
             'info' => isset($event->info) ? $event->info : null,
@@ -140,9 +153,14 @@ class EventController extends Controller
         $event = Event::find($id);
         if (is_null($event->student_id)) {
             Event::where('id', $id)->update(['student_id' => Auth::user()->id, 'info' => $request->info]);
+            $event->refresh();
+            foreach ([$event->tutor_id, $event->student_id] as $userId) {
+                Mail::to(User::find($userId)->email)->queue(new EventClaimed($userId, $id));
+            }
+            $day = (new DateTimeImmutable($event->start))->setTimezone(new DateTimeZone(Auth::user()->timezone));
             $timeframe = [
-                (new DateTime(date('Y-m-d', strtotime($event->start))))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s'),
-                (new DateTime(date('Y-m-d', strtotime($event->start . '+1 day'))))->setTimezone(new DateTimeZone(Auth::user()->timezone))->format('Y-m-d H:i:s'),
+                (new DateTimeImmutable($day->format('Y-m-d'), new DateTimeZone(Auth::user()->timezone)))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d H:i:s'),
+                (new DateTimeImmutable($day->format('Y-m-d'), new DateTimeZone(Auth::user()->timezone)))->setTimezone(new DateTimeZone('UTC'))->modify('+1 days')->format('Y-m-d H:i:s'),
             ];
             if (Event::where('student_id', Auth::user()->id)->whereBetween('start', $timeframe)->count() > 1) {
                 $request->session()->flash('alert_message', 'You have another session the same day. Please be mindful of the other students who need tutoring.');
@@ -162,9 +180,9 @@ class EventController extends Controller
                     'repeat' => 'required|boolean',
                 ]);
                 if ($request->repeat) {
-                    $start = (new DateTimeImmutable(Event::find($id)->start));
+                    $start = new DateTimeImmutable(Event::find($id)->start);
                     for ($i = 0; $i < 20; $i++) {
-                        $nextStart = $start->add(new DateInterval('P' . $i . 'W'))->format('Y-m-d H:i:s');
+                        $nextStart = $start->modify('+' . $i . ' weeks')->format('Y-m-d H:i:s');
                         if (Event::where('tutor_id', Auth::user()->id)->where('start', $nextStart)->whereNull('student_id')->exists()) {
                             Event::where('tutor_id', Auth::user()->id)->where('start', $nextStart)->delete();
                         }
@@ -176,6 +194,12 @@ class EventController extends Controller
                 $request->validate([
                     'reason' => 'required|max:1000',
                 ]);
+                foreach ([$event->tutor_id, $event->student_id] as $userId) {
+                    Mail::to(User::find($userId)->email)->queue(new EventCanceled($userId, $id, [
+                        'reason' => $request->reason,
+                        'responsible' => 'tutor',
+                    ]));
+                }
                 Event::where('id', $id)->delete();
                 $request->session()->forget('event');
                 $request->session()->flash('alert_message', 'Event canceled. Please remember to avoid doing so in the future.');
@@ -184,6 +208,12 @@ class EventController extends Controller
             $request->validate([
                 'reason' => 'required|max:1000',
             ]);
+            foreach ([$event->tutor_id, $event->student_id] as $userId) {
+                Mail::to(User::find($userId)->email)->queue(new EventCanceled($userId, $id, [
+                    'reason' => $request->reason,
+                    'responsible' => 'tutor',
+                ]));
+            }
             if (Auth::user()->id === $event->student_id) {
                 Event::where('id', $id)->update(['student_id' => NULL, 'info' => NULL]);
             }
