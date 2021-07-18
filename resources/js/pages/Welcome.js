@@ -183,7 +183,7 @@ const Welcome = () => {
                             Our mission
                         </h2>
                     </div>
-                    <div className="mt-10 mx-auto text-center space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 md:w-2/3">
+                    <div className="mt-10 mx-auto text-left space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 lg:w-2/3">
                         <p>
                             Tutoring for All aims to bring impactful learning experiences for K-12th graders, especially those who are under-resourced. Our tutors are well-selected and are pleased to share their knowledge with students.
                         </p>
@@ -200,6 +200,5 @@ const Welcome = () => {
         </>
     )
 }
-
 
 export default Welcome
