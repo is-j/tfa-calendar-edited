@@ -2,7 +2,7 @@ import { InertiaLink, useForm } from '@inertiajs/inertia-react'
 import AuthLayout from '../../layouts/AuthLayout'
 
 const Login = () => {
-    const { data, setData, post, processing, errors, hasErrors } = useForm({
+    const { data, setData, post, processing, errors, hasErrors, reset } = useForm({
         email: '',
         password: '',
     })
@@ -10,7 +10,7 @@ const Login = () => {
     const handleSubmit = e => {
         e.preventDefault()
         post('/login', {
-            onError: () => setData('password', '')
+            onError: () => reset('password')
         })
     }
     return (

@@ -3,7 +3,7 @@ import AuthLayout from '../../layouts/AuthLayout'
 import { DateTime } from 'luxon'
 
 const Register = () => {
-    const { data, setData, post, processing, errors, hasErrors } = useForm({
+    const { data, setData, post, processing, errors, hasErrors, reset } = useForm({
         name: '',
         email: '',
         password: '',
@@ -15,7 +15,7 @@ const Register = () => {
     const handleSubmit = e => {
         e.preventDefault()
         post('/register', {
-            onError: () => setData('password_confirmation', '')
+            onError: () => reset('password', 'password_confirmation')
         })
     }
     return (
