@@ -8,7 +8,7 @@ const AuthLayout = (props) => {
             <main className="flex-grow flex justify-center items-center">
                 <div className="my-auto w-full mx-3 sm:mx-auto sm:w-96 rounded-md shadow-lg py-6 px-3 bg-white">
                     <div className="flex flex-wrap justify-center mb-6">
-                        <Brand className="mr-3 hidden sm:block" />
+                        <Brand className="mr-3 hidden sm:block" minimized />
                         <div className="px-3 bg-gray-800 rounded-lg flex items-center h-14">
                             <span className="text-2xl uppercase text-[#FFF7AE]">
                                 {Children.map(props.children, child => {
