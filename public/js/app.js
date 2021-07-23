@@ -29674,22 +29674,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Brand = function Brand(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-    className: props.className,
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.InertiaLink, {
-      href: "/",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        className: "bg-gray-800 rounded-lg px-3 h-14 flex items-center space-x-3 shadow",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-          className: "h-8 w-8",
-          src: _images_favicon_png__WEBPACK_IMPORTED_MODULE_1__.default
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-          className: "text-2xl select-none text-[#FFF7AE] font-black tracking-wide uppercase",
-          children: "Calendar"
-        })]
+  if (props.minimized) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: props.className,
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.Link, {
+        href: "/",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: "bg-gray-800 rounded-lg px-3 h-14 flex items-center shadow",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+            className: "h-8 w-8",
+            src: _images_favicon_png__WEBPACK_IMPORTED_MODULE_1__.default
+          })
+        })
       })
-    })
-  });
+    });
+  } else {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: props.className,
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.Link, {
+        href: "/",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "bg-gray-800 rounded-lg px-3 h-14 flex items-center space-x-3 shadow",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+            className: "h-8 w-8",
+            src: _images_favicon_png__WEBPACK_IMPORTED_MODULE_1__.default
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+            className: "text-2xl select-none text-[#FFF7AE] font-black tracking-wide uppercase",
+            children: "Calendar"
+          })]
+        })
+      })
+    });
+  }
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Brand);
@@ -29883,7 +29899,7 @@ var Navbar = function Navbar() {
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                   className: "flex space-x-4",
                   children: navigation.map(function (item) {
-                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                       href: item.href,
                       className: classNames(item.href === window.location.pathname ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium'),
                       "aria-current": item.current ? 'page' : undefined,
@@ -29925,7 +29941,7 @@ var Navbar = function Navbar() {
                         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
                           children: function children(_ref3) {
                             var active = _ref3.active;
-                            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+                            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                               href: "/settings",
                               className: classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700'),
                               children: "Settings"
@@ -29934,7 +29950,7 @@ var Navbar = function Navbar() {
                         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_6__.Menu.Item, {
                           children: function children(_ref4) {
                             var active = _ref4.active;
-                            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+                            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                               href: "/logout",
                               method: "post",
                               as: "button",
@@ -29956,7 +29972,7 @@ var Navbar = function Navbar() {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
             className: "px-2 pt-2 pb-3 space-y-1",
             children: navigation.map(function (item) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                 href: item.href,
                 className: classNames(item.href === window.location.pathname ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block px-3 py-2 rounded-md text-base font-medium'),
                 "aria-current": item.current ? 'page' : undefined,
@@ -30139,7 +30155,7 @@ var ClaimEventForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forwardR
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.GlobeIcon, {
           className: "h-7 w-7 flex-shrink-0"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-          children: ["Tutor speaks ", props.event.tutor_languages.length === 1 ? props.event.tutor_languages[0] : props.event.tutor_languages.length === 2 ? "".concat(props.event.tutor_languages[0], " and ").concat(props.event.tutor_languages[1]) : props.event.tutor_languages.map(function (language, index) {
+          children: ["Tutor speaks", ' ', props.event.tutor_languages.length === 1 ? props.event.tutor_languages[0] : props.event.tutor_languages.length === 2 ? "".concat(props.event.tutor_languages[0], " and ").concat(props.event.tutor_languages[1]) : props.event.tutor_languages.map(function (language, index) {
             return props.event.tutor_languages.length - 1 === index ? "and ".concat(language) : "".concat(language, ", ");
           })]
         })]
@@ -30608,7 +30624,7 @@ var UnclaimEventForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forwar
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.GlobeIcon, {
           className: "h-7 w-7 flex-shrink-0"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-          children: ["Tutor speaks ", props.event.tutor_languages.length === 1 ? props.event.tutor_languages[0] : props.event.tutor_languages.length === 2 ? "".concat(props.event.tutor_languages[0], " and ").concat(props.event.tutor_languages[1]) : props.event.tutor_languages.map(function (language, index) {
+          children: ["Tutor speaks", ' ', props.event.tutor_languages.length === 1 ? props.event.tutor_languages[0] : props.event.tutor_languages.length === 2 ? "".concat(props.event.tutor_languages[0], " and ").concat(props.event.tutor_languages[1]) : props.event.tutor_languages.map(function (language, index) {
             return props.event.tutor_languages.length - 1 === index ? "and ".concat(language) : "".concat(language, ", ");
           })]
         })]
@@ -30704,7 +30720,7 @@ var ViewEventForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRe
       className: "mb-3",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
         className: "font-bold text-xl",
-        children: [luxon__WEBPACK_IMPORTED_MODULE_4__.DateTime.fromISO(props.event.start).toFormat('ff'), " ", props.event.student_name ? '' : '(Unclaimed)']
+        children: [luxon__WEBPACK_IMPORTED_MODULE_4__.DateTime.fromISO(props.event.start).toFormat('ff'), ' ', props.event.student_name ? '' : '(Unclaimed)']
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "text-left",
@@ -31141,7 +31157,8 @@ var AuthLayout = function AuthLayout(props) {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "flex flex-wrap justify-center mb-6",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_Brand__WEBPACK_IMPORTED_MODULE_1__.default, {
-            className: "mr-3 hidden sm:block"
+            className: "mr-3 hidden sm:block",
+            minimized: true
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "px-3 bg-gray-800 rounded-lg flex items-center h-14",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
@@ -31217,7 +31234,8 @@ var Login = function Login() {
       post = _useForm.post,
       processing = _useForm.processing,
       errors = _useForm.errors,
-      hasErrors = _useForm.hasErrors;
+      hasErrors = _useForm.hasErrors,
+      reset = _useForm.reset;
 
   var handleChange = function handleChange(e) {
     return setData(e.target.name, e.target.value);
@@ -31227,13 +31245,23 @@ var Login = function Login() {
     e.preventDefault();
     post('/login', {
       onError: function onError() {
-        return setData('password', '');
+        return reset('password');
       }
     });
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Title, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("title", {
+        children: "Login \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("meta", {
+        name: "robots",
+        content: "none"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Title, {
       children: "Login"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Content, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
@@ -31274,7 +31302,7 @@ var Login = function Login() {
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
         className: "text-center mt-3",
-        children: ["Don't have an account? ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.InertiaLink, {
+        children: ["Don't have an account?", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.Link, {
           className: "link-inline",
           href: "/register",
           children: "Register here."
@@ -31323,7 +31351,8 @@ var Register = function Register() {
       post = _useForm.post,
       processing = _useForm.processing,
       errors = _useForm.errors,
-      hasErrors = _useForm.hasErrors;
+      hasErrors = _useForm.hasErrors,
+      reset = _useForm.reset;
 
   var handleChange = function handleChange(e) {
     return setData(e.target.name, e.target.value);
@@ -31333,13 +31362,23 @@ var Register = function Register() {
     e.preventDefault();
     post('/register', {
       onError: function onError() {
-        return setData('password_confirmation', '');
+        return reset('password', 'password_confirmation');
       }
     });
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Title, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("title", {
+        children: "Register \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("meta", {
+        name: "robots",
+        content: "none"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Title, {
       children: "Register"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Content, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
@@ -31419,7 +31458,7 @@ var Register = function Register() {
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
         className: "text-center mt-3",
-        children: ["Aready have an account? ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.InertiaLink, {
+        children: ["Aready have an account?", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.Link, {
           className: "link-inline",
           href: "/login",
           children: "Login here."
@@ -31492,7 +31531,17 @@ var Setup = function Setup() {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Title, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("title", {
+        children: "Setup \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("meta", {
+        name: "robots",
+        content: "none"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Title, {
       children: "Setup"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_1__.default.Content, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
@@ -31646,15 +31695,23 @@ var UpdatePassword = function UpdatePassword() {
         return reset();
       },
       onSuccess: function onSuccess() {
-        return _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia.visit('/settings', {
-          method: 'get'
-        });
+        return _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia.get('/settings');
       }
     });
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_2__.default, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_2__.default.Title, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("title", {
+        children: "Update Password \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("meta", {
+        name: "robots",
+        content: "none"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_2__.default.Title, {
       children: "Update Password"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_layouts_AuthLayout__WEBPACK_IMPORTED_MODULE_2__.default.Content, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
@@ -31710,7 +31767,7 @@ var UpdatePassword = function UpdatePassword() {
             type: "submit",
             disabled: processing,
             children: "Update"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
             className: "btn-neutral w-full h-12 sm:order-first",
             href: "/settings",
             as: "button",
@@ -31853,12 +31910,12 @@ var Calendar = function Calendar() {
         }
       }
     }
-  }, [eventClickInfo]); // forms
+  }, [eventClickInfo]); // Forms
 
   var createEventFormRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   var viewEventFormRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   var claimEventFormRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
-  var unclaimEventFormRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null); // modals
+  var unclaimEventFormRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null); // Modals
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState8 = _slicedToArray(_useState7, 2),
@@ -31899,7 +31956,17 @@ var Calendar = function Calendar() {
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)(_layouts_AppLayout__WEBPACK_IMPORTED_MODULE_9__.default, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_components_Alert__WEBPACK_IMPORTED_MODULE_14__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("title", {
+        children: "Calendar \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("meta", {
+        name: "robots",
+        content: "none"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_components_Alert__WEBPACK_IMPORTED_MODULE_14__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("div", {
       className: "h-[calc(100vh-132px)] md:h-full",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)(_fullcalendar_react__WEBPACK_IMPORTED_MODULE_2__.default, {
         ref: calendarRef,
@@ -32299,7 +32366,17 @@ var Cancel = function Cancel() {
       alert = _usePage$props.alert;
   var formRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_layouts_AppLayout__WEBPACK_IMPORTED_MODULE_3__.default, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_components_Header__WEBPACK_IMPORTED_MODULE_4__.default, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("title", {
+        children: "Cancel \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("meta", {
+        name: "robots",
+        content: "none"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_components_Header__WEBPACK_IMPORTED_MODULE_4__.default, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_Header__WEBPACK_IMPORTED_MODULE_4__.default.Title, {
         children: "Cancel"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_Header__WEBPACK_IMPORTED_MODULE_4__.default.Icon, {
@@ -32428,7 +32505,7 @@ var Modal = function Modal(props) {
       className: "text-left",
       type: "button",
       onClick: getEventClickInfo,
-      children: [" ", props.children]
+      children: [' ', props.children]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_headlessui_react__WEBPACK_IMPORTED_MODULE_10__.Transition.Root, {
       show: open,
       as: react__WEBPACK_IMPORTED_MODULE_0__.Fragment,
@@ -32526,7 +32603,17 @@ var Dashboard = function Dashboard() {
       nextEvent = _usePage$props.nextEvent,
       todayEvents = _usePage$props.todayEvents;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_layouts_AppLayout__WEBPACK_IMPORTED_MODULE_5__.default, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_Header__WEBPACK_IMPORTED_MODULE_6__.default, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("title", {
+        children: "Dashboard \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("meta", {
+        name: "robots",
+        content: "none"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_components_Header__WEBPACK_IMPORTED_MODULE_6__.default, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_Header__WEBPACK_IMPORTED_MODULE_6__.default.Title, {
         children: "Dashboard"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_Header__WEBPACK_IMPORTED_MODULE_6__.default.Icon, {
@@ -32539,14 +32626,14 @@ var Dashboard = function Dashboard() {
           className: "bg-white shadow rounded-md py-6 px-4 sm:px-6 lg:px-8",
           children: user.role_name === 'tutor' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
             className: "text-base",
-            children: ["You have no sessions today or in the nearby future, but you can create more open sessions ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+            children: ["You have no sessions today or in the nearby future, but you can create more open sessions", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "link-inline",
               href: "/calendar",
               children: "here"
             }), "!"]
           }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
             className: "text-base",
-            children: ["You have no sessions today or in the nearby future, but you can sign up for more sessions ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+            children: ["You have no sessions today or in the nearby future, but you can sign up for more sessions", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "link-inline",
               href: "/calendar",
               children: "here"
@@ -32573,20 +32660,20 @@ var Dashboard = function Dashboard() {
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
                   className: "sm:text-lg",
-                  children: [user.role_name === 'tutor' ? 'Teaching' : 'Learning', " ", event.subject_name, " ", user.role_name === 'tutor' ? "to ".concat(event.student_name) : "from ".concat(event.tutor_name)]
+                  children: [user.role_name === 'tutor' ? 'Teaching' : 'Learning', ' ', event.subject_name, ' ', user.role_name === 'tutor' ? "to ".concat(event.student_name) : "from ".concat(event.tutor_name)]
                 })]
               })
             }, event.id);
           }), todayEvents ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {}) : user.role_name === 'student' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
             className: "text-base",
-            children: ["None, but you can sign up for one ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+            children: ["None, but you can sign up for one", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "link-inline",
               href: "/calendar",
               children: "here"
             }), "!"]
           }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
             className: "text-base",
-            children: ["None, but you can create more open sessions ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+            children: ["None, but you can create more open sessions", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "link-inline",
               href: "/calendar",
               children: "here"
@@ -32610,19 +32697,19 @@ var Dashboard = function Dashboard() {
                 })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
                 className: "sm:text-lg",
-                children: [user.role_name === 'tutor' ? 'Teaching' : 'Learning', " ", nextEvent.subject_name, " ", user.role_name === 'tutor' ? "to ".concat(nextEvent.student_name) : "from ".concat(nextEvent.tutor_name)]
+                children: [user.role_name === 'tutor' ? 'Teaching' : 'Learning', ' ', nextEvent.subject_name, ' ', user.role_name === 'tutor' ? "to ".concat(nextEvent.student_name) : "from ".concat(nextEvent.tutor_name)]
               })]
             })
           }, nextEvent.id) : user.role_name === 'student' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
             className: "text-base",
-            children: ["None, but you can sign up for one ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+            children: ["None, but you can sign up for one", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "link-inline",
               href: "/calendar",
               children: "here"
             }), "!"]
           }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
             className: "text-base",
-            children: ["None, but you can create more open sessions ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+            children: ["None, but you can create more open sessions", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "link-inline",
               href: "/calendar",
               children: "here"
@@ -32673,7 +32760,17 @@ __webpack_require__.r(__webpack_exports__);
 var Settings = function Settings() {
   var user = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.usePage)().props.user;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_layouts_AppLayout__WEBPACK_IMPORTED_MODULE_3__.default, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_components_Header__WEBPACK_IMPORTED_MODULE_4__.default, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("title", {
+        children: "Settings \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("meta", {
+        name: "robots",
+        content: "none"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_components_Header__WEBPACK_IMPORTED_MODULE_4__.default, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_Header__WEBPACK_IMPORTED_MODULE_4__.default.Title, {
         children: "Settings"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_Header__WEBPACK_IMPORTED_MODULE_4__.default.Icon, {
@@ -32704,7 +32801,7 @@ var Settings = function Settings() {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(InfoRow.Label, {
             children: "Password"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(InfoRow.Content, {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "uppercase h-8 px-2 rounded bg-gray-200 hover:bg-gray-300",
               href: "/update-password",
               as: "button",
@@ -32825,7 +32922,23 @@ var Welcome = function Welcome() {
     icon: _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.ShieldCheckIcon
   }];
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("title", {
+        children: "Welcome \xB7 Tutoring for All Calendar"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("meta", {
+        name: "author",
+        content: "Dennis Eum"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("meta", {
+        name: "description",
+        content: "This is sponsored software by Tutoring for All, which you can easily schedule with a tutor with a clean interface and sync sessions with your Google Calendar."
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("meta", {
+        name: "robots",
+        content: "index, follow"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("link", {
+        rel: "canonical",
+        href: "https://cal.tutoringforall.org"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "relative bg-white overflow-hidden",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "max-w-7xl mx-auto",
@@ -32869,7 +32982,7 @@ var Welcome = function Welcome() {
                       })
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                       className: "hidden md:block md:ml-10 md:pr-4 md:space-x-8",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                         href: "/login",
                         className: "font-medium text-gray-600 hover:text-gray-500",
                         children: "Log in"
@@ -32908,7 +33021,7 @@ var Welcome = function Welcome() {
                             })]
                           })
                         })]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                         href: "/login",
                         className: "block w-full px-5 py-3 text-center font-medium text-gray-600 bg-gray-50 hover:bg-gray-100",
                         children: "Log in"
@@ -32930,12 +33043,12 @@ var Welcome = function Welcome() {
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
                 className: "mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0",
-                children: "Sponsored software by Tutoring for All, you can easily schedule with a tutor with a clean interface and sync sessions with your Google Calendar."
+                children: "This is sponsored software by Tutoring for All, which you can easily schedule with a tutor with a clean interface and sync sessions with your Google Calendar."
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
                 className: "mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                   className: "rounded-md shadow",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                     href: "/register",
                     className: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10",
                     children: "Get started"
@@ -33008,11 +33121,11 @@ var Welcome = function Welcome() {
             children: "Our mission"
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "mt-10 mx-auto text-center space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 md:w-2/3",
+          className: "mt-10 mx-auto text-left space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 lg:w-2/3",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
             children: "Tutoring for All aims to bring impactful learning experiences for K-12th graders, especially those who are under-resourced. Our tutors are well-selected and are pleased to share their knowledge with students."
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
-            children: ["We are a part of a larger organization, ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+            children: ["We are a part of a larger organization,", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
               className: "link-inline",
               href: "https://roboticsforall.net",
               target: "_blank",
@@ -33020,13 +33133,13 @@ var Welcome = function Welcome() {
               children: "Robotics for All"
             }), ", a 501 (c)(3) nonprofit organization that provides free STEM education to students of all backgrounds across the nation."]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
-            children: ["All volunteers are carefully screened through a comprehensive written application and interview before being accepted. All volunteers over the age of 18 must pass a detailed background check run by our contractor ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+            children: ["All volunteers are carefully screened through a comprehensive written application and interview before being accepted. All volunteers over the age of 18 must pass a detailed background check run by our contractor", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
               className: "link-inline",
               href: "https://www.sterlingvolunteers.com/",
               target: "_blank",
               rel: "noreferrer",
               children: "Sterling Volunteers"
-            }), ". If you would like to donate, please ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+            }), ". If you would like to donate, please", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
               className: "link-inline",
               href: "https://www.paypal.com/donate?hosted_button_id=9TFKKWS9M78ZS",
               target: "_blank",
