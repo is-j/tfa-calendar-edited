@@ -14,8 +14,8 @@
         "axios": "^0.21",
         "laravel-mix": "^6.0.25",
         "lodash": "^4.17.19",
-        "postcss": "^8.3.5",
-        "tailwindcss": "^2.2.4"
+        "postcss": "^8.3.6",
+        "tailwindcss": "^2.2.7"
     },
     "dependencies": {
         "@fullcalendar/daygrid": "^5.8.0",
