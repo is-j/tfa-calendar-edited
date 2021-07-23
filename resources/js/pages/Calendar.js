@@ -1,5 +1,5 @@
 import { useEffect, useRef, Fragment, useState } from 'react'
-import { usePage } from '@inertiajs/inertia-react'
+import { Head, usePage } from '@inertiajs/inertia-react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -18,23 +18,28 @@ import Alert from '../components/Alert'
 const Calendar = () => {
     const mobileToolbarState = {
         left: 'title',
-        right: 'prev,next'
+        right: 'prev,next',
     }
     const desktopToolbarState = {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay',
     }
     const { user } = usePage().props
     const calendarRef = useRef(null)
-    const [toolbarState, setToolbarState] = useState(window.innerWidth > 768 ? desktopToolbarState : mobileToolbarState)
+    const [toolbarState, setToolbarState] = useState(
+        window.innerWidth > 768 ? desktopToolbarState : mobileToolbarState
+    )
     const [dateClickInfo, setDateClickInfo] = useState(null)
     const [eventClickInfo, setEventClickInfo] = useState(null)
     useEffect(() => {
         let prevWidth
         const checkWidth = () => {
             const currentWidth = window.innerWidth
-            if ((currentWidth <= 768 && prevWidth >= 768) || (currentWidth <= 768 && prevWidth == null)) {
+            if (
+                (currentWidth <= 768 && prevWidth >= 768) ||
+                (currentWidth <= 768 && prevWidth == null)
+            ) {
                 calendarRef.current.getApi().changeView('timeGridDay')
                 setToolbarState(mobileToolbarState)
             } else if (currentWidth >= 768 && prevWidth <= 768) {
@@ -65,13 +70,13 @@ const Calendar = () => {
         }
     }, [eventClickInfo])
 
-    // forms
+    // Forms
     const createEventFormRef = useRef(null)
     const viewEventFormRef = useRef(null)
     const claimEventFormRef = useRef(null)
     const unclaimEventFormRef = useRef(null)
 
-    // modals
+    // Modals
     const [openCreateEventModal, setOpenCreateEventModal] = useState(false)
     const [openViewEventModal, setOpenViewEventModal] = useState(false)
     const [openClaimEventModal, setOpenClaimEventModal] = useState(false)
@@ -81,26 +86,35 @@ const Calendar = () => {
     const backButtonClaimEventModalRef = useRef(null)
     const backButtonUnclaimEventModalRef = useRef(null)
 
-    const getEventClickInfo = (id) => {
+    const getEventClickInfo = id => {
         NProgress.start()
         fetch(`/events/${id}`, {
-            method: 'GET'
-        }).then(response => response.json()).then(data => {
-            setEventClickInfo(data)
-            NProgress.done()
-            NProgress.remove()
+            method: 'GET',
         })
+            .then(response => response.json())
+            .then(data => {
+                setEventClickInfo(data)
+                NProgress.done()
+                NProgress.remove()
+            })
     }
     return (
         <AppLayout>
+            <Head>
+                <title>Calendar &middot; Tutoring for All Calendar</title>
+                <meta name="author" content="Dennis Eum"></meta>
+                <meta name="robots" content="none"></meta>
+            </Head>
             <Alert />
             <div className="h-[calc(100vh-132px)] md:h-full">
                 <FullCalendar
                     ref={calendarRef}
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                    initialView={window.innerWidth > 768 ? 'dayGridMonth' : 'timeGridDay'}
+                    initialView={
+                        window.innerWidth > 768 ? 'dayGridMonth' : 'timeGridDay'
+                    }
                     headerToolbar={toolbarState}
-                    timeZone='local'
+                    timeZone="local"
                     selectable={true}
                     nowIndicator={true}
                     lazyFetching={true}
@@ -109,15 +123,27 @@ const Calendar = () => {
                     }}
                     eventClick={info => getEventClickInfo(info.event.id)}
                     events={(info, successCallback) => {
-                        if (!openCreateEventModal && !openViewEventModal && !openClaimEventModal && !openUnclaimEventModal) {
+                        if (
+                            !openCreateEventModal &&
+                            !openViewEventModal &&
+                            !openClaimEventModal &&
+                            !openUnclaimEventModal
+                        ) {
                             NProgress.start()
-                            fetch(`/events?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`, {
-                                method: 'GET'
-                            }).then(response => response.json()).then(data => {
-                                successCallback(data)
-                                NProgress.done()
-                                NProgress.remove()
-                            })
+                            fetch(
+                                `/events?start=${encodeURIComponent(
+                                    info.startStr
+                                )}&end=${encodeURIComponent(info.endStr)}`,
+                                {
+                                    method: 'GET',
+                                }
+                            )
+                                .then(response => response.json())
+                                .then(data => {
+                                    successCallback(data)
+                                    NProgress.done()
+                                    NProgress.remove()
+                                })
                         }
                     }}
                 />
@@ -145,7 +171,10 @@ const Calendar = () => {
                         >
                             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                         </Transition.Child>
-                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                        <span
+                            className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true"
+                        >
                             &#8203;
                         </span>
                         <Transition.Child
@@ -161,10 +190,21 @@ const Calendar = () => {
                                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                     <div className="sm:flex sm:items-start">
                                         <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                                            <PlusIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
+                                            <PlusIcon
+                                                className="h-6 w-6 text-blue-600"
+                                                aria-hidden="true"
+                                            />
                                         </div>
                                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                            <CreateEventForm ref={createEventFormRef} info={dateClickInfo} onSuccess={() => setOpenCreateEventModal(false)} />
+                                            <CreateEventForm
+                                                ref={createEventFormRef}
+                                                info={dateClickInfo}
+                                                onSuccess={() =>
+                                                    setOpenCreateEventModal(
+                                                        false
+                                                    )
+                                                }
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -172,14 +212,18 @@ const Calendar = () => {
                                     <button
                                         type="button"
                                         className="w-full inline-flex justify-center btn-positive px-4 py-2 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => createEventFormRef.current.requestSubmit()}
+                                        onClick={() =>
+                                            createEventFormRef.current.requestSubmit()
+                                        }
                                     >
                                         Create
                                     </button>
                                     <button
                                         type="button"
                                         className="mt-3 w-full inline-flex justify-center btn-neutral px-4 py-2  sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => setOpenCreateEventModal(false)}
+                                        onClick={() =>
+                                            setOpenCreateEventModal(false)
+                                        }
                                         ref={backButtonCreateEventModalRef}
                                     >
                                         Back
@@ -213,7 +257,10 @@ const Calendar = () => {
                         >
                             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                         </Transition.Child>
-                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                        <span
+                            className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true"
+                        >
                             &#8203;
                         </span>
                         <Transition.Child
@@ -229,10 +276,19 @@ const Calendar = () => {
                                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                     <div className="sm:flex sm:items-start">
                                         <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                                            <EyeIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
+                                            <EyeIcon
+                                                className="h-6 w-6 text-blue-600"
+                                                aria-hidden="true"
+                                            />
                                         </div>
                                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                            <ViewEventForm ref={viewEventFormRef} event={eventClickInfo} onSuccess={() => setOpenViewEventModal(false)} />
+                                            <ViewEventForm
+                                                ref={viewEventFormRef}
+                                                event={eventClickInfo}
+                                                onSuccess={() =>
+                                                    setOpenViewEventModal(false)
+                                                }
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -240,14 +296,18 @@ const Calendar = () => {
                                     <button
                                         type="button"
                                         className="w-full inline-flex justify-center btn-negative px-4 py-2 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => viewEventFormRef.current.requestSubmit()}
+                                        onClick={() =>
+                                            viewEventFormRef.current.requestSubmit()
+                                        }
                                     >
                                         Delete
                                     </button>
                                     <button
                                         type="button"
                                         className="mt-3 w-full inline-flex justify-center btn-neutral px-4 py-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => setOpenViewEventModal(false)}
+                                        onClick={() =>
+                                            setOpenViewEventModal(false)
+                                        }
                                         ref={backButtonViewEventModalRef}
                                     >
                                         Back
@@ -281,7 +341,10 @@ const Calendar = () => {
                         >
                             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                         </Transition.Child>
-                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                        <span
+                            className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true"
+                        >
                             &#8203;
                         </span>
                         <Transition.Child
@@ -297,10 +360,21 @@ const Calendar = () => {
                                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                     <div className="sm:flex sm:items-start">
                                         <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                                            <EyeIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
+                                            <EyeIcon
+                                                className="h-6 w-6 text-blue-600"
+                                                aria-hidden="true"
+                                            />
                                         </div>
                                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                            <ClaimEventForm ref={claimEventFormRef} event={eventClickInfo} onSuccess={() => setOpenClaimEventModal(false)} />
+                                            <ClaimEventForm
+                                                ref={claimEventFormRef}
+                                                event={eventClickInfo}
+                                                onSuccess={() =>
+                                                    setOpenClaimEventModal(
+                                                        false
+                                                    )
+                                                }
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -308,14 +382,18 @@ const Calendar = () => {
                                     <button
                                         type="button"
                                         className="w-full inline-flex justify-center btn-positive px-4 py-2 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => claimEventFormRef.current.requestSubmit()}
+                                        onClick={() =>
+                                            claimEventFormRef.current.requestSubmit()
+                                        }
                                     >
                                         Claim
                                     </button>
                                     <button
                                         type="button"
                                         className="mt-3 w-full inline-flex justify-center btn-neutral px-4 py-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => setOpenClaimEventModal(false)}
+                                        onClick={() =>
+                                            setOpenClaimEventModal(false)
+                                        }
                                         ref={backButtonClaimEventModalRef}
                                     >
                                         Back
@@ -349,7 +427,10 @@ const Calendar = () => {
                         >
                             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                         </Transition.Child>
-                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+                        <span
+                            className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                            aria-hidden="true"
+                        >
                             &#8203;
                         </span>
                         <Transition.Child
@@ -365,10 +446,21 @@ const Calendar = () => {
                                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                     <div className="sm:flex sm:items-start">
                                         <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                                            <EyeIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
+                                            <EyeIcon
+                                                className="h-6 w-6 text-blue-600"
+                                                aria-hidden="true"
+                                            />
                                         </div>
                                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                            <UnclaimEventForm ref={unclaimEventFormRef} event={eventClickInfo} onSuccess={() => setOpenUnclaimEventModal(false)} />
+                                            <UnclaimEventForm
+                                                ref={unclaimEventFormRef}
+                                                event={eventClickInfo}
+                                                onSuccess={() =>
+                                                    setOpenUnclaimEventModal(
+                                                        false
+                                                    )
+                                                }
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -376,14 +468,18 @@ const Calendar = () => {
                                     <button
                                         type="button"
                                         className="w-full inline-flex justify-center btn-negative px-4 py-2 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => unclaimEventFormRef.current.requestSubmit()}
+                                        onClick={() =>
+                                            unclaimEventFormRef.current.requestSubmit()
+                                        }
                                     >
                                         Unclaim
                                     </button>
                                     <button
                                         type="button"
                                         className="mt-3 w-full inline-flex justify-center btn-neutral px-4 py-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                                        onClick={() => setOpenUnclaimEventModal(false)}
+                                        onClick={() =>
+                                            setOpenUnclaimEventModal(false)
+                                        }
                                         ref={backButtonUnclaimEventModalRef}
                                     >
                                         Back
@@ -394,7 +490,7 @@ const Calendar = () => {
                     </div>
                 </Dialog>
             </Transition.Root>
-        </AppLayout >
+        </AppLayout>
     )
 }
 

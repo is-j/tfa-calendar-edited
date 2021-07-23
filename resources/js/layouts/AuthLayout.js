@@ -2,7 +2,7 @@ import { Children } from 'react'
 import Brand from '../components/Brand'
 import Footer from '../components/Footer'
 
-const AuthLayout = (props) => {
+const AuthLayout = props => {
     return (
         <div className="flex flex-col justify-between min-h-screen">
             <main className="flex-grow flex justify-center items-center">
@@ -12,7 +12,8 @@ const AuthLayout = (props) => {
                         <div className="px-3 bg-gray-800 rounded-lg flex items-center h-14">
                             <span className="text-2xl uppercase text-[#FFF7AE]">
                                 {Children.map(props.children, child => {
-                                    if (child.type.displayName === 'Title') return child
+                                    if (child.type.displayName === 'Title')
+                                        return child
                                 })}
                             </span>
                         </div>

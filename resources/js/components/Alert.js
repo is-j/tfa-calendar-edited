@@ -24,10 +24,13 @@ const Alert = () => {
         >
             <div className="text-white px-6 py-4 rounded-lg shadow-lg bg-gray-700">
                 <div className="flex justify-between items-center">
-                    <div className="pr-2">
-                        {alert.message && alert.message}
-                    </div>
-                    <button ref={closeButtonRef} type="button" className="focus:outline-none" onClick={() => setOpen(false)}>
+                    <div className="pr-2">{alert.message && alert.message}</div>
+                    <button
+                        ref={closeButtonRef}
+                        type="button"
+                        className="focus:outline-none"
+                        onClick={() => setOpen(false)}
+                    >
                         <XIcon className="h-6 w-6" />
                     </button>
                 </div>

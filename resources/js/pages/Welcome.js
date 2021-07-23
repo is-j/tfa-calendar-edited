@@ -1,7 +1,14 @@
 import { Fragment } from 'react'
-import { InertiaLink } from '@inertiajs/inertia-react'
-import { Disclosure, Popover, Transition } from '@headlessui/react'
-import { MenuIcon, XIcon, EyeIcon, GiftIcon, ShieldCheckIcon, LightningBoltIcon } from '@heroicons/react/outline'
+import { Head, Link } from '@inertiajs/inertia-react'
+import { Popover, Transition } from '@headlessui/react'
+import {
+    MenuIcon,
+    XIcon,
+    EyeIcon,
+    GiftIcon,
+    ShieldCheckIcon,
+    LightningBoltIcon,
+} from '@heroicons/react/outline'
 import Brand from '../components/Brand'
 import Footer from '../components/Footer'
 import Example from '../../images/example.png'
@@ -35,6 +42,19 @@ const Welcome = () => {
     ]
     return (
         <>
+            <Head>
+                <title>Welcome &middot; Tutoring for All Calendar</title>
+                <meta name="author" content="Dennis Eum"></meta>
+                <meta
+                    name="description"
+                    content="This is sponsored software by Tutoring for All, which you can easily schedule with a tutor with a clean interface and sync sessions with your Google Calendar."
+                />
+                <meta name="robots" content="index, follow"></meta>
+                <link
+                    rel="canonical"
+                    href="https://cal.tutoringforall.org"
+                ></link>
+            </Head>
             <div className="relative bg-white overflow-hidden">
                 <div className="max-w-7xl mx-auto">
                     <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
@@ -61,16 +81,24 @@ const Welcome = () => {
                                                     <Brand />
                                                     <div className="-mr-2 flex items-center md:hidden">
                                                         <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
-                                                            <span className="sr-only">Open main menu</span>
-                                                            <MenuIcon className="h-6 w-6" aria-hidden="true" />
+                                                            <span className="sr-only">
+                                                                Open main menu
+                                                            </span>
+                                                            <MenuIcon
+                                                                className="h-6 w-6"
+                                                                aria-hidden="true"
+                                                            />
                                                         </Popover.Button>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
-                                                <InertiaLink href="/login" className="font-medium text-gray-600 hover:text-gray-500">
+                                                <Link
+                                                    href="/login"
+                                                    className="font-medium text-gray-600 hover:text-gray-500"
+                                                >
                                                     Log in
-                                                </InertiaLink>
+                                                </Link>
                                             </div>
                                         </nav>
                                     </div>
@@ -97,17 +125,22 @@ const Welcome = () => {
                                                     </div>
                                                     <div className="-mr-2">
                                                         <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
-                                                            <span className="sr-only">Close main menu</span>
-                                                            <XIcon className="h-6 w-6" aria-hidden="true" />
+                                                            <span className="sr-only">
+                                                                Close main menu
+                                                            </span>
+                                                            <XIcon
+                                                                className="h-6 w-6"
+                                                                aria-hidden="true"
+                                                            />
                                                         </Popover.Button>
                                                     </div>
                                                 </div>
-                                                <InertiaLink
+                                                <Link
                                                     href="/login"
                                                     className="block w-full px-5 py-3 text-center font-medium text-gray-600 bg-gray-50 hover:bg-gray-100"
                                                 >
                                                     Log in
-                                                </InertiaLink>
+                                                </Link>
                                             </div>
                                         </Popover.Panel>
                                     </Transition>
@@ -117,19 +150,24 @@ const Welcome = () => {
                         <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                             <div className="sm:text-center lg:text-left">
                                 <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                                    <span className="block xl:inline">Convenient scheduling</span>
+                                    <span className="block xl:inline">
+                                        Convenient scheduling
+                                    </span>
                                 </h1>
                                 <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                                    Sponsored software by Tutoring for All, you can easily schedule with a tutor with a clean interface and sync sessions with your Google Calendar.
+                                    This is sponsored software by Tutoring for
+                                    All, which you can easily schedule with a
+                                    tutor with a clean interface and sync
+                                    sessions with your Google Calendar.
                                 </p>
                                 <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                                     <div className="rounded-md shadow">
-                                        <InertiaLink
+                                        <Link
                                             href="/register"
                                             className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10"
                                         >
                                             Get started
-                                        </InertiaLink>
+                                        </Link>
                                     </div>
                                     <div className="mt-3 sm:mt-0 sm:ml-3">
                                         <a
@@ -161,15 +199,22 @@ const Welcome = () => {
                     </div>
                     <div className="mt-10">
                         <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-                            {features.map((feature) => (
+                            {features.map(feature => (
                                 <div key={feature.name} className="relative">
                                     <dt>
                                         <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gray-800 text-white">
-                                            <feature.icon className="h-6 w-6" aria-hidden="true" />
+                                            <feature.icon
+                                                className="h-6 w-6"
+                                                aria-hidden="true"
+                                            />
                                         </div>
-                                        <p className="ml-16 text-lg leading-6 font-medium text-gray-900">{feature.name}</p>
+                                        <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                                            {feature.name}
+                                        </p>
                                     </dt>
-                                    <dd className="mt-2 ml-16 text-base text-gray-500">{feature.description}</dd>
+                                    <dd className="mt-2 ml-16 text-base text-gray-500">
+                                        {feature.description}
+                                    </dd>
                                 </div>
                             ))}
                         </dl>
@@ -185,13 +230,50 @@ const Welcome = () => {
                     </div>
                     <div className="mt-10 mx-auto text-left space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 lg:w-2/3">
                         <p>
-                            Tutoring for All aims to bring impactful learning experiences for K-12th graders, especially those who are under-resourced. Our tutors are well-selected and are pleased to share their knowledge with students.
+                            Tutoring for All aims to bring impactful learning
+                            experiences for K-12th graders, especially those who
+                            are under-resourced. Our tutors are well-selected
+                            and are pleased to share their knowledge with
+                            students.
                         </p>
                         <p>
-                            We are a part of a larger organization, <a className="link-inline" href="https://roboticsforall.net" target="_blank" rel="noreferrer">Robotics for All</a>, a 501 (c)(3) nonprofit organization that provides free STEM education to students of all backgrounds across the nation.
+                            We are a part of a larger organization,{' '}
+                            <a
+                                className="link-inline"
+                                href="https://roboticsforall.net"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Robotics for All
+                            </a>
+                            , a 501 (c)(3) nonprofit organization that provides
+                            free STEM education to students of all backgrounds
+                            across the nation.
                         </p>
                         <p>
-                            All volunteers are carefully screened through a comprehensive written application and interview before being accepted. All volunteers over the age of 18 must pass a detailed background check run by our contractor <a className="link-inline" href="https://www.sterlingvolunteers.com/" target="_blank" rel="noreferrer">Sterling Volunteers</a>. If you would like to donate, please <a className="link-inline" href="https://www.paypal.com/donate?hosted_button_id=9TFKKWS9M78ZS" target="_blank" rel="noreferrer">click here</a>.
+                            All volunteers are carefully screened through a
+                            comprehensive written application and interview
+                            before being accepted. All volunteers over the age
+                            of 18 must pass a detailed background check run by
+                            our contractor{' '}
+                            <a
+                                className="link-inline"
+                                href="https://www.sterlingvolunteers.com/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Sterling Volunteers
+                            </a>
+                            . If you would like to donate, please{' '}
+                            <a
+                                className="link-inline"
+                                href="https://www.paypal.com/donate?hosted_button_id=9TFKKWS9M78ZS"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                click here
+                            </a>
+                            .
                         </p>
                     </div>
                 </div>
