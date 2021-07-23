@@ -41,7 +41,7 @@ class EventController extends Controller
                 }
                 array_push($allEvents, $outputEvent);
             };
-        } else if (Auth::user()->role->name === 'student') {
+        } elseif (Auth::user()->role->name === 'student') {
             foreach (Event::whereBetween('start', $timeframe)->where(function ($query) {
                 $query->where('student_id', Auth::user()->id)
                     ->orWhereNull('student_id');
@@ -204,7 +204,7 @@ class EventController extends Controller
                 $request->session()->forget('event');
                 $request->session()->flash('alert_message', 'Event canceled. Please remember to avoid doing so in the future.');
             }
-        } else if (Auth::user()->role->name === 'student') {
+        } elseif (Auth::user()->role->name === 'student') {
             $request->validate([
                 'reason' => 'required|max:1000',
             ]);
@@ -215,7 +215,7 @@ class EventController extends Controller
                 ]));
             }
             if (Auth::user()->id === $event->student_id) {
-                Event::where('id', $id)->update(['student_id' => NULL, 'info' => NULL]);
+                Event::where('id', $id)->update(['student_id' => null, 'info' => null]);
             }
             $request->session()->forget('event');
             $request->session()->flash('alert_message', 'Event canceled. Please remember to avoid doing so in the future.');
