@@ -29694,13 +29694,13 @@ var Brand = function Brand(props) {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.Link, {
         href: "/",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          className: "bg-gray-800 rounded-lg px-3 h-14 flex items-center space-x-3 shadow",
+          className: "bg-[#FF8C00] rounded-lg px-3 h-14 flex items-center space-x-3 shadow",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
             className: "h-8 w-8",
             src: _images_favicon_png__WEBPACK_IMPORTED_MODULE_1__.default
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
-            className: "text-2xl select-none text-[#FFF7AE] font-black tracking-wide uppercase",
-            children: "Calendar"
+            className: "text-2xl select-none text-[#FFD580] font-[black]tracking-wide uppercase",
+            children: "Classbook"
           })]
         })
       })
@@ -30051,14 +30051,14 @@ var CancelEventForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forward
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.InformationCircleIcon, {
           className: "h-7 w-7"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-          children: [user.role_name === 'tutor' && "Tutoring ".concat(props.event.subject_name, " to ").concat(props.event.student_name), user.role_name === 'student' && "Learning ".concat(props.event.subject_name, " from ").concat(props.event.tutor_name)]
+          children: [user.role_name === 'speaker' && "Speaking ".concat(props.event.subject_name, " to ").concat(props.event.student_name), user.role_name === 'student' && "Teaching ".concat(props.event.subject_name, " from ").concat(props.event.tutor_name)]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "flex items-center space-x-2 mb-4",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.AtSymbolIcon, {
           className: "h-7 w-7"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
-          children: [user.role_name === 'tutor' && props.event.student_email, user.role_name === 'student' && props.event.tutor_email]
+          children: [user.role_name === 'speaker' && props.event.student_email, user.role_name === 'student' && props.event.tutor_email]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "form-floating mb-5",
@@ -30148,7 +30148,7 @@ var ClaimEventForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forwardR
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.InformationCircleIcon, {
           className: "h-7 w-7 flex-shrink-0"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-          children: "".concat(props.event.tutor_name, " is tutoring ").concat(props.event.subject_name)
+          children: "".concat(props.event.tutor_name, " is speaking ").concat(props.event.subject_name)
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "flex items-center space-x-2 mb-4",
@@ -30511,7 +30511,7 @@ var SubjectsForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef
         onChange: function onChange(e) {
           return setSearchValue(e.target.value);
         },
-        placeholder: "Search subjects..."
+        placeholder: "Search modules..."
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "sm:max-h-96 h-[calc(100vh-326px)] overflow-auto",
@@ -30730,7 +30730,7 @@ var ViewEventForm = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRe
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.InformationCircleIcon, {
             className: "h-7 w-7"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("span", {
-            children: "Tutoring ".concat(props.event.subject_name, " to ").concat(props.event.student_name)
+            children: "Speaking ".concat(props.event.subject_name, " to ").concat(props.event.student_name)
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "flex items-center space-x-2 mb-4",
@@ -31900,9 +31900,9 @@ var Calendar = function Calendar() {
   }, [dateClickInfo]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (eventClickInfo !== null) {
-      if (user.role_name === 'tutor') {
+      if (user.role_name === 'speaker') {
         setOpenViewEventModal(true);
-      } else if (user.role_name === 'student') {
+      } else if (user.role_name === 'teacher') {
         if (eventClickInfo.student_name) {
           setOpenUnclaimEventModal(true);
         } else {
@@ -32368,7 +32368,7 @@ var Cancel = function Cancel() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_layouts_AppLayout__WEBPACK_IMPORTED_MODULE_3__.default, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("title", {
-        children: "Cancel \xB7 Tutoring for All Calendar"
+        children: "Cancel \xB7 Robotics For All Calendar"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("meta", {
         name: "author",
         content: "Dennis Eum"
@@ -32555,7 +32555,7 @@ var Modal = function Modal(props) {
                     })
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
                     className: "mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full",
-                    children: user.role_name === 'tutor' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_forms_ViewEventForm__WEBPACK_IMPORTED_MODULE_8__.default, {
+                    children: user.role_name === 'speaker' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_forms_ViewEventForm__WEBPACK_IMPORTED_MODULE_8__.default, {
                       ref: formRef,
                       event: eventClickInfo,
                       onSuccess: function onSuccess() {
@@ -32578,7 +32578,7 @@ var Modal = function Modal(props) {
                   onClick: function onClick() {
                     return formRef.current.requestSubmit();
                   },
-                  children: user.role_name === 'tutor' ? 'Delete' : 'Unclaim'
+                  children: user.role_name === 'speaker' ? 'Delete' : 'Unclaim'
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("button", {
                   type: "button",
                   className: "mt-3 w-full inline-flex justify-center btn-neutral px-4 py-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm",
@@ -32660,11 +32660,11 @@ var Dashboard = function Dashboard() {
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
                   className: "sm:text-lg",
-                  children: [user.role_name === 'tutor' ? 'Teaching' : 'Learning', ' ', event.subject_name, ' ', user.role_name === 'tutor' ? "to ".concat(event.student_name) : "from ".concat(event.tutor_name)]
+                  children: [user.role_name === 'speaker' ? 'Teaching' : 'Learning', ' ', event.subject_name, ' ', user.role_name === 'speaker' ? "to ".concat(event.student_name) : "from ".concat(event.tutor_name)]
                 })]
               })
             }, event.id);
-          }), todayEvents ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {}) : user.role_name === 'student' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
+          }), todayEvents ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {}) : user.role_name === 'teacher' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
             className: "text-base",
             children: ["None, but you can sign up for one", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "link-inline",
@@ -32697,10 +32697,10 @@ var Dashboard = function Dashboard() {
                 })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("span", {
                 className: "sm:text-lg",
-                children: [user.role_name === 'tutor' ? 'Teaching' : 'Learning', ' ', nextEvent.subject_name, ' ', user.role_name === 'tutor' ? "to ".concat(nextEvent.student_name) : "from ".concat(nextEvent.tutor_name)]
+                children: [user.role_name === 'speaker' ? 'Teaching' : 'Learning', ' ', nextEvent.subject_name, ' ', user.role_name === 'speaker' ? "to ".concat(nextEvent.student_name) : "from ".concat(nextEvent.tutor_name)]
               })]
             })
-          }, nextEvent.id) : user.role_name === 'student' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
+          }, nextEvent.id) : user.role_name === 'teacher' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("h3", {
             className: "text-base",
             children: ["None, but you can sign up for one", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
               className: "link-inline",
@@ -32809,10 +32809,10 @@ var Settings = function Settings() {
               children: "Update"
             })
           })]
-        }), user.role_name === 'tutor' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
+        }), user.role_name === 'speaker' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(InfoRow, {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(InfoRow.Label, {
-              children: "Subjects"
+              children: "Modules"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(InfoRow.Content, {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_modals_SubjectsModal__WEBPACK_IMPORTED_MODULE_6__.default, {})
             })]
@@ -32914,7 +32914,7 @@ var Welcome = function Welcome() {
     icon: _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.EyeIcon
   }, {
     name: 'Free',
-    description: 'This software is sponsored by Tutoring for All, a branch under Robotics for All. That means you can use this at no cost!',
+    description: 'This software is sponsored by Digital Literacy Team, a branch under Robotics for All. That means you can use this at no cost!',
     icon: _heroicons_react_outline__WEBPACK_IMPORTED_MODULE_2__.GiftIcon
   }, {
     name: 'Secure',
@@ -32924,28 +32924,28 @@ var Welcome = function Welcome() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Head, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("title", {
-        children: "Welcome \xB7 Tutoring for All Calendar"
+        children: "Welcome \xB7 Robotics for All Calendar"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("meta", {
         name: "author",
-        content: "Dennis Eum"
+        content: "Digital Literacy Team"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("meta", {
         name: "description",
-        content: "This is sponsored software by Tutoring for All, which you can easily schedule with a tutor with a clean interface and sync sessions with your Google Calendar."
+        content: "This is sponsored software by Digital Literacy Team, which a educator can use to easily attend a speaker or influencer's event with their class!"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("meta", {
         name: "robots",
         content: "index, follow"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("link", {
         rel: "canonical",
-        href: "https://cal.tutoringforall.org"
+        href: "https://cal.roboticsforall.org"
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-      className: "relative bg-white overflow-hidden",
+      className: "relative bg-[#FEF3C7] overflow-hidden",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "max-w-7xl mx-auto",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32",
+          className: "relative z-10 pb-8 bg-[#FEF3C7] sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("svg", {
-            className: "hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2",
+            className: "hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-[#FEF3C7] transform translate-x-1/2",
             fill: "currentColor",
             viewBox: "0 0 100 100",
             preserveAspectRatio: "none",
@@ -32984,8 +32984,8 @@ var Welcome = function Welcome() {
                       className: "hidden md:block md:ml-10 md:pr-4 md:space-x-8",
                       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                         href: "/login",
-                        className: "font-medium text-gray-600 hover:text-gray-500",
-                        children: "Log in"
+                        className: "font-xxlarge font-extrabold text-gray hover:text-gray-500",
+                        children: "Log In"
                       })
                     })]
                   })
@@ -33034,30 +33034,30 @@ var Welcome = function Welcome() {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("main", {
             className: "mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28",
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-              className: "sm:text-center lg:text-left",
+              className: "sm:text-center lg:text-center",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h1", {
                 className: "text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
                   className: "block xl:inline",
-                  children: "Convenient scheduling"
+                  children: "RFA Scheduler"
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-                className: "mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0",
-                children: "This is sponsored software by Tutoring for All, which you can easily schedule with a tutor with a clean interface and sync sessions with your Google Calendar."
+                className: "mt-3 text-base text-gray sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0",
+                children: "This is sponsored software by Digital Literacy Team, which a educator can use to easily attend a speaker or influencer's event with their class!"
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-                className: "mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start",
+                className: "mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-center",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                   className: "rounded-md shadow",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
                     href: "/register",
-                    className: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10",
+                    className: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#FF8C00] hover:bg-[#FFD580] md:py-4 md:text-lg md:px-10",
                     children: "Get started"
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                   className: "mt-3 sm:mt-0 sm:ml-3",
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
                     href: "mailto:info@tutoringforall.org",
-                    className: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-gray-700 bg-gray-300 hover:bg-gray-200 md:py-4 md:text-lg md:px-10",
+                    className: "w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-gray-700 bg-[#FFD580] hover:bg-[#FF8C00] md:py-4 md:text-lg md:px-10",
                     children: "Contact us"
                   })
                 })]
@@ -33074,14 +33074,14 @@ var Welcome = function Welcome() {
         })
       })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "py-12 bg-white",
+      className: "py-12 bg-[#DBEAFE]",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "lg:text-center",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h2", {
             className: "mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl",
-            children: "Better tutoring"
+            children: "Better Scheduling"
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "mt-10",
@@ -33098,11 +33098,11 @@ var Welcome = function Welcome() {
                       "aria-hidden": "true"
                     })
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-                    className: "ml-16 text-lg leading-6 font-medium text-gray-900",
+                    className: "ml-16 text-lg leading-6 font-large font-extrabold text-gray-900",
                     children: feature.name
                   })]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("dd", {
-                  className: "mt-2 ml-16 text-base text-gray-500",
+                  className: "mt-2 ml-16 text-base text-gray",
                   children: feature.description
                 })]
               }, feature.name);
@@ -33111,19 +33111,19 @@ var Welcome = function Welcome() {
         })]
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-      className: "bg-white",
+      className: "bg-[#D1FAE5]",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
         className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "lg:text-center",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h2", {
             className: "mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl",
-            children: "Our mission"
+            children: "Our Mission"
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-          className: "mt-10 mx-auto text-left space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 lg:w-2/3",
+          className: "mt-10 mx-auto text-center space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 lg:w-2/3",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-            children: "Tutoring for All aims to bring impactful learning experiences for K-12th graders, especially those who are under-resourced. Our tutors are well-selected and are pleased to share their knowledge with students."
+            children: "The Digital Literacy team aims to bring educators to speakers and influencers. With the RFA Scheduler, teachers are able to bring their classes to educational events hosted by individuals from different communites."
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
             children: ["We are a part of a larger organization,", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
               className: "link-inline",
@@ -33133,13 +33133,7 @@ var Welcome = function Welcome() {
               children: "Robotics for All"
             }), ", a 501 (c)(3) nonprofit organization that provides free STEM education to students of all backgrounds across the nation."]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
-            children: ["All volunteers are carefully screened through a comprehensive written application and interview before being accepted. All volunteers over the age of 18 must pass a detailed background check run by our contractor", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
-              className: "link-inline",
-              href: "https://www.sterlingvolunteers.com/",
-              target: "_blank",
-              rel: "noreferrer",
-              children: "Sterling Volunteers"
-            }), ". If you would like to donate, please", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+            children: ["The Digital Literacy team is made up of passionate and determined individuals who want to bring quality education to students from all communites", ' ', ". If you would like to donate, please", ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
               className: "link-inline",
               href: "https://www.paypal.com/donate?hosted_button_id=9TFKKWS9M78ZS",
               target: "_blank",
@@ -33583,7 +33577,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/favicon.png?eb77b38240ee7f7bc1b719cdc90ebe19");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/favicon.png?df7907527943608a5669a3df9e5b9190");
 
 /***/ }),
 

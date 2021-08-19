@@ -29,16 +29,16 @@ const CancelEventForm = forwardRef((props, ref) => {
                 <div className="flex items-center space-x-2 mb-2">
                     <InformationCircleIcon className="h-7 w-7" />
                     <span>
-                        {user.role_name === 'tutor' &&
-                            `Tutoring ${props.event.subject_name} to ${props.event.student_name}`}
+                        {user.role_name === 'speaker' &&
+                            `Speaking ${props.event.subject_name} to ${props.event.student_name}`}
                         {user.role_name === 'student' &&
-                            `Learning ${props.event.subject_name} from ${props.event.tutor_name}`}
+                            `Teaching ${props.event.subject_name} from ${props.event.tutor_name}`}
                     </span>
                 </div>
                 <div className="flex items-center space-x-2 mb-4">
                     <AtSymbolIcon className="h-7 w-7" />
                     <span>
-                        {user.role_name === 'tutor' &&
+                        {user.role_name === 'speaker' &&
                             props.event.student_email}
                         {user.role_name === 'student' &&
                             props.event.tutor_email}

@@ -51,10 +51,10 @@ const Settings = () => {
                             </Link>
                         </InfoRow.Content>
                     </InfoRow>
-                    {user.role_name === 'tutor' && (
+                    {user.role_name === 'speaker' && (
                         <>
                             <InfoRow>
-                                <InfoRow.Label>Subjects</InfoRow.Label>
+                                <InfoRow.Label>Modules</InfoRow.Label>
                                 <InfoRow.Content>
                                     <SubjectsModal />
                                 </InfoRow.Content>

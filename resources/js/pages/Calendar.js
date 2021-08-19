@@ -58,9 +58,9 @@ const Calendar = () => {
     }, [dateClickInfo])
     useEffect(() => {
         if (eventClickInfo !== null) {
-            if (user.role_name === 'tutor') {
+            if (user.role_name === 'speaker') {
                 setOpenViewEventModal(true)
-            } else if (user.role_name === 'student') {
+            } else if (user.role_name === 'teacher') {
                 if (eventClickInfo.student_name) {
                     setOpenUnclaimEventModal(true)
                 } else {

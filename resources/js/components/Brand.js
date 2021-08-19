@@ -16,10 +16,10 @@ const Brand = props => {
         return (
             <div className={props.className}>
                 <Link href="/">
-                    <div className="bg-gray-800 rounded-lg px-3 h-14 flex items-center space-x-3 shadow">
+                    <div className="bg-[#FF8C00] rounded-lg px-3 h-14 flex items-center space-x-3 shadow">
                         <img className="h-8 w-8" src={Favicon}></img>
-                        <span className="text-2xl select-none text-[#FFF7AE] font-black tracking-wide uppercase">
-                            Calendar
+                        <span className="text-2xl select-none text-[#FFD580] font-[black]tracking-wide uppercase">
+                            Classbook
                         </span>
                     </div>
                 </Link>

@@ -29,7 +29,7 @@ const ClaimEventForm = forwardRef((props, ref) => {
             <div className="text-left">
                 <div className="flex items-center space-x-2 mb-2">
                     <InformationCircleIcon className="h-7 w-7 flex-shrink-0" />
-                    <span>{`${props.event.tutor_name} is tutoring ${props.event.subject_name}`}</span>
+                    <span>{`${props.event.tutor_name} is speaking ${props.event.subject_name}`}</span>
                 </div>
                 <div className="flex items-center space-x-2 mb-4">
                     <GlobeIcon className="h-7 w-7 flex-shrink-0" />

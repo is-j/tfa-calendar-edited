@@ -24,7 +24,7 @@ const SubjectsForm = forwardRef((props, ref) => {
                     type="text"
                     value={searchValue}
                     onChange={e => setSearchValue(e.target.value)}
-                    placeholder="Search subjects..."
+                    placeholder="Search modules..."
                 ></input>
             </div>
             <div

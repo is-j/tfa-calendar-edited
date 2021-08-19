@@ -12,7 +12,7 @@ const Cancel = () => {
     return (
         <AppLayout>
             <Head>
-                <title>Cancel &middot; Tutoring for All Calendar</title>
+                <title>Cancel &middot; Robotics For All Calendar</title>
                 <meta name="author" content="Dennis Eum"></meta>
                 <meta name="robots" content="none"></meta>
             </Head>

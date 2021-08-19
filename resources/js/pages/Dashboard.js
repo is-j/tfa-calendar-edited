@@ -87,7 +87,7 @@ const Modal = props => {
                                             />
                                         </div>
                                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                            {user.role_name === 'tutor' ? (
+                                            {user.role_name === 'speaker' ? (
                                                 <ViewEventForm
                                                     ref={formRef}
                                                     event={eventClickInfo}
@@ -115,7 +115,7 @@ const Modal = props => {
                                             formRef.current.requestSubmit()
                                         }
                                     >
-                                        {user.role_name === 'tutor'
+                                        {user.role_name === 'speaker'
                                             ? 'Delete'
                                             : 'Unclaim'}
                                     </button>
@@ -208,11 +208,11 @@ const Dashboard = () => {
                                                 </span>
                                             </div>
                                             <span className="sm:text-lg">
-                                                {user.role_name === 'tutor'
+                                                {user.role_name === 'speaker'
                                                     ? 'Teaching'
                                                     : 'Learning'}{' '}
                                                 {event.subject_name}{' '}
-                                                {user.role_name === 'tutor'
+                                                {user.role_name === 'speaker'
                                                     ? `to ${event.student_name}`
                                                     : `from ${event.tutor_name}`}
                                             </span>
@@ -221,7 +221,7 @@ const Dashboard = () => {
                                 ))}
                             {todayEvents ? (
                                 <></>
-                            ) : user.role_name === 'student' ? (
+                            ) : user.role_name === 'teacher' ? (
                                 <h3 className="text-base">
                                     None, but you can sign up for one{' '}
                                     <Link
@@ -261,17 +261,17 @@ const Dashboard = () => {
                                             </span>
                                         </div>
                                         <span className="sm:text-lg">
-                                            {user.role_name === 'tutor'
+                                            {user.role_name === 'speaker'
                                                 ? 'Teaching'
                                                 : 'Learning'}{' '}
                                             {nextEvent.subject_name}{' '}
-                                            {user.role_name === 'tutor'
+                                            {user.role_name === 'speaker'
                                                 ? `to ${nextEvent.student_name}`
                                                 : `from ${nextEvent.tutor_name}`}
                                         </span>
                                     </div>
                                 </Modal>
-                            ) : user.role_name === 'student' ? (
+                            ) : user.role_name === 'teacher' ? (
                                 <h3 className="text-base">
                                     None, but you can sign up for one{' '}
                                     <Link

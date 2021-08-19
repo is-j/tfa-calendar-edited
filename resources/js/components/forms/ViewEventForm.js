@@ -40,7 +40,7 @@ const ViewEventForm = forwardRef((props, ref) => {
                     <>
                         <div className="flex items-center space-x-2 mb-2">
                             <InformationCircleIcon className="h-7 w-7" />
-                            <span>{`Tutoring ${props.event.subject_name} to ${props.event.student_name}`}</span>
+                            <span>{`Speaking ${props.event.subject_name} to ${props.event.student_name}`}</span>
                         </div>
                         <div className="flex items-center space-x-2 mb-4">
                             <AtSymbolIcon className="h-7 w-7" />

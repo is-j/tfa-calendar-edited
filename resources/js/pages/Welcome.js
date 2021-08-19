@@ -30,7 +30,7 @@ const Welcome = () => {
         {
             name: 'Free',
             description:
-                'This software is sponsored by Tutoring for All, a branch under Robotics for All. That means you can use this at no cost!',
+                'This software is sponsored by Digital Literacy Team, a branch under Robotics for All. That means you can use this at no cost!',
             icon: GiftIcon,
         },
         {
@@ -43,23 +43,24 @@ const Welcome = () => {
     return (
         <>
             <Head>
-                <title>Welcome &middot; Tutoring for All Calendar</title>
-                <meta name="author" content="Dennis Eum"></meta>
+                <title>Welcome &middot; Robotics for All Calendar</title>
+                <meta name="author" content="Digital Literacy Team"></meta>
                 <meta
                     name="description"
-                    content="This is sponsored software by Tutoring for All, which you can easily schedule with a tutor with a clean interface and sync sessions with your Google Calendar."
+                    content="This is sponsored software by Digital Literacy Team, which a educator can use to easily attend a speaker or influencer's event with their class!"
                 />
+                
                 <meta name="robots" content="index, follow"></meta>
                 <link
                     rel="canonical"
-                    href="https://cal.tutoringforall.org"
+                    href="https://cal.roboticsforall.org"
                 ></link>
             </Head>
-            <div className="relative bg-white overflow-hidden">
+            <div className="relative bg-[#FEF3C7] overflow-hidden">
                 <div className="max-w-7xl mx-auto">
-                    <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+                    <div className="relative z-10 pb-8 bg-[#FEF3C7] sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
                         <svg
-                            className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2"
+                            className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-[#FEF3C7] transform translate-x-1/2"
                             fill="currentColor"
                             viewBox="0 0 100 100"
                             preserveAspectRatio="none"
@@ -95,9 +96,9 @@ const Welcome = () => {
                                             <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
                                                 <Link
                                                     href="/login"
-                                                    className="font-medium text-gray-600 hover:text-gray-500"
+                                                    className="font-xxlarge font-extrabold text-gray hover:text-gray-500"
                                                 >
-                                                    Log in
+                                                    Log In
                                                 </Link>
                                             </div>
                                         </nav>
@@ -148,23 +149,22 @@ const Welcome = () => {
                             )}
                         </Popover>
                         <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                            <div className="sm:text-center lg:text-left">
+                            <div className="sm:text-center lg:text-center">
                                 <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                                     <span className="block xl:inline">
-                                        Convenient scheduling
+                                        RFA Scheduler
                                     </span>
                                 </h1>
-                                <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-                                    This is sponsored software by Tutoring for
-                                    All, which you can easily schedule with a
-                                    tutor with a clean interface and sync
-                                    sessions with your Google Calendar.
+                                <p className="mt-3 text-base text-gray sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                                This is sponsored software by Digital Literacy Team, 
+                                which a educator can use to easily attend a speaker or 
+                                influencer's event with their class!
                                 </p>
-                                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-center">
                                     <div className="rounded-md shadow">
                                         <Link
                                             href="/register"
-                                            className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 md:py-4 md:text-lg md:px-10"
+                                            className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#FF8C00] hover:bg-[#FFD580] md:py-4 md:text-lg md:px-10"
                                         >
                                             Get started
                                         </Link>
@@ -172,7 +172,7 @@ const Welcome = () => {
                                     <div className="mt-3 sm:mt-0 sm:ml-3">
                                         <a
                                             href="mailto:info@tutoringforall.org"
-                                            className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-gray-700 bg-gray-300 hover:bg-gray-200 md:py-4 md:text-lg md:px-10"
+                                            className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-gray-700 bg-[#FFD580] hover:bg-[#FF8C00] md:py-4 md:text-lg md:px-10"
                                         >
                                             Contact us
                                         </a>
@@ -190,11 +190,11 @@ const Welcome = () => {
                     />
                 </div>
             </div>
-            <div className="py-12 bg-white">
+            <div className="py-12 bg-[#DBEAFE]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="lg:text-center">
                         <h2 className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                            Better tutoring
+                            Better Scheduling
                         </h2>
                     </div>
                     <div className="mt-10">
@@ -208,11 +208,11 @@ const Welcome = () => {
                                                 aria-hidden="true"
                                             />
                                         </div>
-                                        <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                                        <p className="ml-16 text-lg leading-6 font-large font-extrabold text-gray-900">
                                             {feature.name}
                                         </p>
                                     </dt>
-                                    <dd className="mt-2 ml-16 text-base text-gray-500">
+                                    <dd className="mt-2 ml-16 text-base text-gray">
                                         {feature.description}
                                     </dd>
                                 </div>
@@ -221,20 +221,20 @@ const Welcome = () => {
                     </div>
                 </div>
             </div>
-            <div className="bg-white">
+            <div className="bg-[#D1FAE5]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <div className="lg:text-center">
                         <h2 className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                            Our mission
+                            Our Mission
                         </h2>
                     </div>
-                    <div className="mt-10 mx-auto text-left space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 lg:w-2/3">
+                    <div className="mt-10 mx-auto text-center space-y-6 text-xl sm:text-2xl leading-6 font-medium text-gray-900 lg:w-2/3">
                         <p>
-                            Tutoring for All aims to bring impactful learning
-                            experiences for K-12th graders, especially those who
-                            are under-resourced. Our tutors are well-selected
-                            and are pleased to share their knowledge with
-                            students.
+                            The Digital Literacy team aims to bring educators
+                            to speakers and influencers. With the RFA Scheduler, 
+                            teachers are able to bring their classes
+                            to educational events hosted by individuals from 
+                            different communites.  
                         </p>
                         <p>
                             We are a part of a larger organization,{' '}
@@ -251,19 +251,9 @@ const Welcome = () => {
                             across the nation.
                         </p>
                         <p>
-                            All volunteers are carefully screened through a
-                            comprehensive written application and interview
-                            before being accepted. All volunteers over the age
-                            of 18 must pass a detailed background check run by
-                            our contractor{' '}
-                            <a
-                                className="link-inline"
-                                href="https://www.sterlingvolunteers.com/"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Sterling Volunteers
-                            </a>
+                            The Digital Literacy team is made up of passionate 
+                            and determined individuals who want to bring quality 
+                            education to students from all communites{' '}
                             . If you would like to donate, please{' '}
                             <a
                                 className="link-inline"
